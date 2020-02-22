@@ -41,13 +41,3 @@ target 'buzz' do
 
   use_native_modules!
 end
-
-target 'buzz-tvOS' do
-  # Pods for buzz-tvOS
-
-  target 'buzz-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
-end
