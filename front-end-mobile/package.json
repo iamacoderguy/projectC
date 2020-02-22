@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
+    "android": "SET ENVFILE=.env.development && react-native run-android",
     "android:clean": "cd android && gradlew clean",
     "ios": "react-native run-ios",
     "ios:clean": "cd ios && xcodebuild clean",
@@ -14,7 +14,8 @@
   },
   "dependencies": {
     "react": "16.9.0",
-    "react-native": "0.61.5"
+    "react-native": "0.61.5",
+    "react-native-config": "^0.12.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
