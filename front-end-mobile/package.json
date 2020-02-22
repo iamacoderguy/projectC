@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "SET ENVFILE=.env.development && react-native run-android",
+    "android": "react-native run-android --variant debug",
     "android:clean": "cd android && gradlew clean",
     "ios": "react-native run-ios --scheme 'buzz.production'",
     "ios:clean": "cd ios && xcodebuild clean",
