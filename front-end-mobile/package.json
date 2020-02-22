@@ -5,7 +5,7 @@
   "scripts": {
     "android": "SET ENVFILE=.env.development && react-native run-android",
     "android:clean": "cd android && gradlew clean",
-    "ios": "react-native run-ios",
+    "ios": "ENVFILE=.env.development react-native run-ios",
     "ios:clean": "cd ios && xcodebuild clean",
     "ios:update": "cd ios && pod update && pod install",
     "start": "react-native start",
