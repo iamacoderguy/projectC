@@ -1,4 +1,4 @@
-package com.buzz;
+package me.iamacoderguy.buzz;
 
 import android.app.Application;
 import android.content.Context;
