@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
+    "android:clean": "cd android && gradlew clean",
     "ios": "react-native run-ios",
     "ios:clean": "cd ios && xcodebuild clean",
     "ios:update": "cd ios && pod update && pod install",
