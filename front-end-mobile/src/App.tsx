@@ -26,11 +26,12 @@ declare var global: { HermesInternal: null | {} };
 const App = () => {
   return (
     <>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar barStyle='dark-content' />
       <SafeAreaView>
         <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
+          contentInsetAdjustmentBehavior='automatic'
+          style={styles.scrollView}
+        >
           <Header />
           {global.HermesInternal == null ? null : (
             <View style={styles.engine}>
@@ -42,8 +43,8 @@ const App = () => {
               <Text style={styles.sectionTitle}>Environment</Text>
               <Text style={styles.sectionDescription}>
                 ENV = <Text style={styles.highlight}>{ENV}</Text>
-                {"\n"}IS_PRODUCTION = <Text style={styles.highlight}>{IS_PRODUCTION.toString()}</Text>
-                {"\n"}API_HOST = <Text style={styles.highlight}>{API_HOST}</Text>
+                {'\n'}IS_PRODUCTION = <Text style={styles.highlight}>{IS_PRODUCTION.toString()}</Text>
+                {'\n'}API_HOST = <Text style={styles.highlight}>{API_HOST}</Text>
               </Text>
             </View>
           </View>
