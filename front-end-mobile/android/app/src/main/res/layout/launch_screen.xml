@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- This one is used after splash_screen_background when the app is ready -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:gravity="center">
-    <ImageView
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:src="@mipmap/ic_splash"
-    />
+    android:background="@drawable/splash_screen_background"
+    android:orientation="vertical">
 </LinearLayout>
