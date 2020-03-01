@@ -37,7 +37,7 @@ const App = () => {
           backgroundColor: 'white', 
         }}>
         <Image source={images.ic_splash} />
-        <DotsLoader style={{ marginTop: 20 }} size={30} />
+        <DotsLoader style={{ marginTop: 20 }} width={100} dotNumber={4} />
       </SafeAreaView>
     </>
   );
