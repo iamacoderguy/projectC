@@ -8,7 +8,7 @@
  * @format
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -20,13 +20,19 @@ import {
 
 import { Header, Colors } from 'react-native/Libraries/NewAppScreen';
 import { ENV, IS_PRODUCTION, API_HOST } from './config';
+import SplashScreen from 'react-native-splash-screen';
 
 declare var global: { HermesInternal: null | {} };
 
 const App = () => {
+
+  useEffect(() => {
+    SplashScreen.hide();
+  });
+
   return (
     <>
-      <StatusBar barStyle='dark-content' />
+      <StatusBar barStyle='dark-content'/>
       <SafeAreaView>
         <ScrollView
           contentInsetAdjustmentBehavior='automatic'
