@@ -11,18 +11,13 @@
 import React, { useEffect } from 'react';
 import {
   SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
   StatusBar,
+  Image,
 } from 'react-native';
 
-import { Header, Colors } from 'react-native/Libraries/NewAppScreen';
-import { ENV, IS_PRODUCTION, API_HOST } from './config';
 import SplashScreen from 'react-native-splash-screen';
+import images from './assets/images';
 
-declare var global: { HermesInternal: null | {} };
 
 const App = () => {
 
@@ -33,70 +28,12 @@ const App = () => {
   return (
     <>
       <StatusBar barStyle='dark-content'/>
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior='automatic'
-          style={styles.scrollView}
-        >
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Environment</Text>
-              <Text style={styles.sectionDescription}>
-                ENV = <Text style={styles.highlight}>{ENV}</Text>
-                {'\n'}IS_PRODUCTION = <Text style={styles.highlight}>{IS_PRODUCTION.toString()}</Text>
-                {'\n'}API_HOST = <Text style={styles.highlight}>{API_HOST}</Text>
-              </Text>
-            </View>
-          </View>
-        </ScrollView>
+      <SafeAreaView style={{backgroundColor:'#ff00ff', flex:1, justifyContent:'center', alignItems:'center'}}>
+        <Image source={images.ic_splash}/>
       </SafeAreaView>
     </>
   );
 };
 
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
-});
 
 export default App;
