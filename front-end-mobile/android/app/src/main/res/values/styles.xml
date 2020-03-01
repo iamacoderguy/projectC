@@ -11,4 +11,8 @@
         <item name="android:statusBarColor">@color/white</item>
     </style>
 
+    <style name="LaunchScreenTheme" parent="SplashScreen_SplashTheme">
+        <item name="colorPrimaryDark">@color/white</item>
+    </style>
+
 </resources>
