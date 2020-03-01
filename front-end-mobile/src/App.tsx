@@ -27,9 +27,9 @@ const App = () => {
 
   return (
     <>
-      <StatusBar barStyle='dark-content'/>
-      <SafeAreaView style={{backgroundColor:'#ff00ff', flex:1, justifyContent:'center', alignItems:'center'}}>
-        <Image source={images.ic_splash}/>
+      <StatusBar barStyle='dark-content' />
+      <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#ffffff' }}>
+        <Image source={images.ic_splash} />
       </SafeAreaView>
     </>
   );

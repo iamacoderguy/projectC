@@ -4,17 +4,15 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="android:textColor">#000000</item>
+        <item name="android:statusBarColor">@android:color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="SplashTheme" parent="AppTheme">
         <item name="android:windowAnimationStyle">@style/SplashScreen_SplashAnimation</item>
         <item name="android:background">@drawable/splash_screen_background</item>
 
-        <item name="android:statusBarColor">@color/white</item>
-        <item name="colorPrimaryDark">@color/white</item>
-        <item name="android:windowLightStatusBar">true</item>
-
-        <item name="android:windowDisablePreview">false</item>
+        <item name="colorPrimaryDark">@android:color/white</item>
     </style>
 
 </resources>
