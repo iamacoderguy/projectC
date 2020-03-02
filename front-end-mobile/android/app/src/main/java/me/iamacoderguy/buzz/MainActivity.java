@@ -2,6 +2,8 @@ package me.iamacoderguy.buzz;
 
 import com.facebook.react.ReactActivity;
 import org.devio.rn.splashscreen.SplashScreen;
+
+import android.os.Build;
 import android.os.Bundle;
 
 public class MainActivity extends ReactActivity {
@@ -17,7 +19,18 @@ public class MainActivity extends ReactActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-      SplashScreen.show(this, R.style.SplashTheme);
-      super.onCreate(savedInstanceState);
+    int themeId = R.style.SplashTheme;
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+      switch (Build.MANUFACTURER) {
+        case "Xiaomi":
+          themeId = R.style.SplashThemeXiaomi;
+          break;
+        default:
+          break;
+      }
+    }
+
+    SplashScreen.show(this, themeId);
+    super.onCreate(savedInstanceState);
   }
 }
