@@ -1,1 +1,1 @@
-export { default as AuthenticationStack, stackMap } from './navigator';
+export { default as AuthenticationStack } from './navigator';

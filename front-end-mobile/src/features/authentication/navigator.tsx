@@ -4,14 +4,9 @@ import { SignInScreen } from './signIn';
 import { SignUpScreen } from './signUp';
 import { ForgotPasswordScreen } from './forgotPassword';
 
-type StackParamList = {
-  SignIn: undefined;
-  SignUp: undefined;
-  ForgotPassword: undefined;
-};
-const Stack = createStackNavigator<StackParamList>();
+const Stack = createStackNavigator();
 
-export const stackMap = {
+const navigationMap = {
   SignIn: 'SignIn',
   SignUp: 'SignUp',
   ForgotPassword: 'ForgotPassword',
@@ -27,12 +22,12 @@ const AuthenticationStack: React.FC<AuthenticationStackProps> = (props: Authenti
   };
 
   return (
-    <Stack.Navigator initialRouteName={stackMap.SignIn}>
-      <Stack.Screen name={stackMap.SignIn}>
+    <Stack.Navigator initialRouteName={navigationMap.SignIn}>
+      <Stack.Screen name={navigationMap.SignIn}>
         {() => <SignInScreen onSignedIn={_handleOnSignedIn} />}
       </Stack.Screen>
-      <Stack.Screen name={stackMap.SignUp} component={SignUpScreen} />
-      <Stack.Screen name={stackMap.ForgotPassword} component={ForgotPasswordScreen} />
+      <Stack.Screen name={navigationMap.SignUp} component={SignUpScreen} />
+      <Stack.Screen name={navigationMap.ForgotPassword} component={ForgotPasswordScreen} />
     </Stack.Navigator>
   );
 };
