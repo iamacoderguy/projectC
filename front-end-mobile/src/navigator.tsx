@@ -14,7 +14,7 @@ const navigationMap = {
   Profile: 'ProfileTab',
 };
 
-const InAppStack = () => {  
+const InAppTabs = () => {  
   return (
     <Tab.Navigator initialRouteName={navigationMap.Buzz}>
       <Tab.Screen name={navigationMap.Activities} component={ActivitiesStack} />
@@ -42,7 +42,7 @@ const RootStack = () => {
       return <AuthenticationStack onAuthenticated={(token: string) => _handleAuthentication(token)} />;
     }
 
-    return <InAppStack />;
+    return <InAppTabs />;
   };
 
   return (
