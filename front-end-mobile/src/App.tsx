@@ -18,6 +18,7 @@ import {
 import { NavigationContainer } from '@react-navigation/native';
 import SplashScreen from 'react-native-splash-screen';
 import RootStack from './navigator';
+import { rootNavigationRef } from 'lib/utils/navigation';
 
 const App = () => {
   useEffect(() => {
@@ -25,7 +26,7 @@ const App = () => {
   });
 
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={rootNavigationRef}>
       <StatusBar barStyle='dark-content' />
       <RootStack />
     </NavigationContainer>
