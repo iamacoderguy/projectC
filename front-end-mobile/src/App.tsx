@@ -8,27 +8,28 @@
  * @format
  */
 
+import 'react-native-gesture-handler'; // this line should be on the top
+
 import React, { useEffect } from 'react';
 import {
   StatusBar,
 } from 'react-native';
 
+import { NavigationContainer } from '@react-navigation/native';
 import SplashScreen from 'react-native-splash-screen';
-import { LoadingScreen } from 'features/loading';
+import RootStack from './navigator';
 
 const App = () => {
-
   useEffect(() => {
     SplashScreen.hide();
   });
 
   return (
-    <>
+    <NavigationContainer>
       <StatusBar barStyle='dark-content' />
-      <LoadingScreen />
-    </>
+      <RootStack />
+    </NavigationContainer>
   );
 };
-
 
 export default App;

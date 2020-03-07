@@ -2,13 +2,13 @@ import React, { useEffect } from 'react';
 import { Animated, View, ViewStyle, StyleProp } from 'react-native';
 import R from 'res/R';
 
-interface IDotsLoaderProps {
+type DotsLoaderProps = {
   width: number;
   style: StyleProp<ViewStyle>;
   dotNumber?: number;
 }
 
-const DotsLoader: React.FC<IDotsLoaderProps> = (props: IDotsLoaderProps) => {
+const DotsLoader: React.FC<DotsLoaderProps> = (props: DotsLoaderProps) => {
   const opacities: Animated.Value[] = [];
   const appearingSequence: Animated.CompositeAnimation[] = [];
   const disappearingSequence: Animated.CompositeAnimation[] = [];

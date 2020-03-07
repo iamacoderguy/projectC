@@ -1,0 +1,1 @@
+export { default as AuthenticationStack, stackMap } from './navigator';
