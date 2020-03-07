@@ -10,14 +10,11 @@
 
 import React, { useEffect } from 'react';
 import {
-  SafeAreaView,
   StatusBar,
-  Image,
 } from 'react-native';
 
 import SplashScreen from 'react-native-splash-screen';
-import images from './assets/images';
-import DotsLoader from './components/DotsLoader';
+import { LoadingScreen } from 'features/loading';
 
 const App = () => {
 
@@ -28,17 +25,7 @@ const App = () => {
   return (
     <>
       <StatusBar barStyle='dark-content' />
-      <SafeAreaView
-        style={{ 
-          flex: 1, 
-          flexDirection: 'column', 
-          justifyContent: 'center', 
-          alignItems: 'center',
-          backgroundColor: 'white', 
-        }}>
-        <Image source={images.ic_splash} />
-        <DotsLoader style={{ marginTop: 20 }} width={100} dotNumber={4} />
-      </SafeAreaView>
+      <LoadingScreen />
     </>
   );
 };
