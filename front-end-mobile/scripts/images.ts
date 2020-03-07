@@ -16,7 +16,7 @@ const imageFileNames = () => {
 const generate = () => {
   let properties = imageFileNames()
     .map((name) => {
-      return `${name}: require('./images/${name}.png')`;
+      return `${name}: require('./${name}.png')`;
     })
     .join(',\n  ');
 
