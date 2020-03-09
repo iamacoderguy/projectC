@@ -5,13 +5,12 @@ import DotsLoader from './components/DotsLoader';
 import styles from './LoadingScreen.styles';
 
 type LoadingScreenProps = {
-  onLoadingFinished: () => void;
+  onLoadingStarted: () => void;
 }
 
 const LoadingScreen: React.FC<LoadingScreenProps> = (props: LoadingScreenProps) => {
-
   useEffect(() => {
-    setTimeout(() => props.onLoadingFinished(), 2000);
+    props.onLoadingStarted();
   });
 
   return (
