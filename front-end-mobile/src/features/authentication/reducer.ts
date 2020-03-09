@@ -10,13 +10,13 @@ const initialState: RootState = {
   token: '',
 };
 
-const rootReducer = (state: RootState = initialState, action: Action) => {
+const rootReducer = (previousState: RootState = initialState, action: Action) => {
   switch (action.type) {
     case getType(signInSuccess):
-      return { ...state, token: (action as ReturnType<typeof signInSuccess>).payload.token };
+      return { ...previousState, token: (action as ReturnType<typeof signInSuccess>).payload.token };
 
     default:
-      return state;
+      return previousState;
   }
 };
 
