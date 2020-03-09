@@ -9,16 +9,16 @@ export type RootState = {
 
 const initialState: RootState = {};
 
-const rootReducer = (state: RootState = initialState, action: Action) => {
+const rootReducer = (previousState: RootState = initialState, action: Action) => {
   switch (action.type) {
     case getType(finishLoadingRequest):
-      return { ...state, auth: {}, inApp: undefined };
+      return { ...previousState, auth: {}, inApp: undefined };
     
     case getType(finishAuthenticationSuccess):
-      return { ...state, auth: undefined, inApp: {} };
+      return { ...previousState, auth: undefined, inApp: {} };
 
     default:
-      return state;
+      return previousState;
   }
 };
 
