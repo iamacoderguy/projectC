@@ -5,14 +5,14 @@ import R from 'res/R';
 const strings = R.strings.authentication.signIn;
 
 type SignInScreenProps = {
-  onSignedIn: (token: string) => void;
+  onSignIn: (username: string, password: string) => void;
 };
 
 const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => {
   return (
     <>
       <Text>SignInScreen.tsx</Text>
-      <Button title={strings.signInButtonTitle} onPress={() => props.onSignedIn('fake_token')} />
+      <Button title={strings.signInButtonTitle} onPress={() => props.onSignIn('fake_username', 'fake_password')} />
     </>
   );
 };

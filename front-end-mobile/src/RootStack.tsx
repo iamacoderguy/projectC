@@ -1,6 +1,6 @@
 import React from 'react';
 import { LoadingScreen } from 'features/loading';
-import { AuthenticationStack } from 'features/authentication';
+import { Authentication } from 'features/authentication';
 import { connect } from 'react-redux';
 import { mapDispatchToProps, mapStateToProps, Stage } from './RootStack.container';
 import InAppTabs from './InAppTabs';
@@ -20,7 +20,7 @@ const RootStack : React.FunctionComponent<RootStackProps> = ({
   const _render = () => {
     switch (stage) {
       case Stage.Authenticating:
-        return <AuthenticationStack onAuthenticated={onAuthenticationFinished}/>;
+        return <Authentication onAuthenticated={onAuthenticationFinished}/>;
 
       case Stage.InApp:
         return <InAppTabs />;
