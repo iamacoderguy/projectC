@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { Surface, Image, Animated, View, ViewProps, ViewStyle, StyleProp } from 'react-native';
-import images from 'src/assets/images';
+import React, { useEffect } from 'react';
+import { Animated, View, ViewStyle, StyleProp } from 'react-native';
+import R from 'res/R';
 
-interface IDotsLoaderProps {
+type DotsLoaderProps = {
   width: number;
   style: StyleProp<ViewStyle>;
   dotNumber?: number;
 }
 
-const DotsLoader: React.FC<IDotsLoaderProps> = (props: IDotsLoaderProps) => {
+const DotsLoader: React.FC<DotsLoaderProps> = (props: DotsLoaderProps) => {
   const opacities: Animated.Value[] = [];
   const appearingSequence: Animated.CompositeAnimation[] = [];
   const disappearingSequence: Animated.CompositeAnimation[] = [];
@@ -43,7 +43,7 @@ const DotsLoader: React.FC<IDotsLoaderProps> = (props: IDotsLoaderProps) => {
     const animatedDots: Element[] = [];
 
     for (let index = 0; index < dotNumbers; index++) {
-      animatedDots.push(<Animated.Image key={index} style={{ opacity: opacities[index] }} source={images.dot} />);
+      animatedDots.push(<Animated.Image key={index} style={{ opacity: opacities[index] }} source={R.images.dot} />);
     }
 
     return animatedDots;

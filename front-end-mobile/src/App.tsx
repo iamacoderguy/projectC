@@ -8,40 +8,31 @@
  * @format
  */
 
-import React, { useEffect } from 'react';
-import {
-  SafeAreaView,
-  StatusBar,
-  Image,
-} from 'react-native';
+import 'react-native-gesture-handler'; // this line should be on the top
 
+import React, { useEffect } from 'react';
+import { StatusBar } from 'react-native';
+
+import { Provider } from 'react-redux';
+import { NavigationContainer } from '@react-navigation/native';
 import SplashScreen from 'react-native-splash-screen';
-import images from './assets/images';
-import DotsLoader from './components/DotsLoader';
+import RootStack from './RootStack';
+import { rootNavigationRef } from 'lib/utils/navigation';
+import store from './store';
 
 const App = () => {
-
   useEffect(() => {
     SplashScreen.hide();
   });
 
   return (
-    <>
-      <StatusBar barStyle='dark-content' />
-      <SafeAreaView
-        style={{ 
-          flex: 1, 
-          flexDirection: 'column', 
-          justifyContent: 'center', 
-          alignItems: 'center',
-          backgroundColor: 'white', 
-        }}>
-        <Image source={images.ic_splash} />
-        <DotsLoader style={{ marginTop: 20 }} width={100} dotNumber={4} />
-      </SafeAreaView>
-    </>
+    <Provider store={store}>
+      <NavigationContainer ref={rootNavigationRef}>
+        <StatusBar barStyle='dark-content' />
+        <RootStack />
+      </NavigationContainer>
+    </Provider>
   );
 };
-
 
 export default App;

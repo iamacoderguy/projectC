@@ -15,6 +15,4 @@ const API_HOST = config.api.host;
 const ENV = config.env.name;
 const IS_PRODUCTION = config.env.isProduction;
 
-export { ENV, API_HOST, IS_PRODUCTION };
-
-export default config;
+export default { ENV, API_HOST, IS_PRODUCTION };
