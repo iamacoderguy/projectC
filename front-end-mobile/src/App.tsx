@@ -11,14 +11,14 @@
 import 'react-native-gesture-handler'; // this line should be on the top
 
 import React, { useEffect } from 'react';
-import {
-  StatusBar,
-} from 'react-native';
+import { StatusBar } from 'react-native';
 
+import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import SplashScreen from 'react-native-splash-screen';
-import RootStack from './navigator';
+import RootStack from './RootStack';
 import { rootNavigationRef } from 'lib/utils/navigation';
+import store from './store';
 
 const App = () => {
   useEffect(() => {
@@ -26,10 +26,12 @@ const App = () => {
   });
 
   return (
-    <NavigationContainer ref={rootNavigationRef}>
-      <StatusBar barStyle='dark-content' />
-      <RootStack />
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer ref={rootNavigationRef}>
+        <StatusBar barStyle='dark-content' />
+        <RootStack />
+      </NavigationContainer>
+    </Provider>
   );
 };
 
