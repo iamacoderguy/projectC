@@ -9,6 +9,8 @@ export enum Stage {
   'InApp',
 }
 
+// === mapStateToProps ===
+
 export const mapStateToProps = (state: RootState) => ({
   stage: getActivatedStage(state),
 });
@@ -33,7 +35,13 @@ const isInAppStageReady = (state: RootState) => {
   return state.inApp !== undefined && loadCredentials() !== '';
 };
 
+// === mapDispatchToProps ===
+
 export const mapDispatchToProps = (dispatch: Dispatch) => ({
-  onLoadingFinished: () => dispatch(finishLoadingRequest()),
+  onLoadingStarted: () => handleLoadingStarted(dispatch),
   onAuthenticationFinished: (token: string) => dispatch(finishAuthenticationRequest({ token })),
 });
+
+const handleLoadingStarted = (dispatch: Dispatch) => {
+  setTimeout(() => dispatch(finishLoadingRequest()), 2000);
+};
