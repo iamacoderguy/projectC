@@ -28,7 +28,7 @@ const InAppTabs = () => {
               iconSource = R.images.ic_nav_activities_inactivated;
               break;
             case navigationMap.Buzz:
-              iconSource = R.images.ic_nav_activities_inactivated;
+              iconSource = R.images.ic_nav_buzz_inactivated;
               break;
             case navigationMap.Profile:
               iconSource = R.images.ic_nav_profile_inactivated;
@@ -37,10 +37,10 @@ const InAppTabs = () => {
               throw new Error(`Route's name ${route.name} is not supported, yet`);
           }
 
-          return <Image source={iconSource} style={{ tintColor: color }} />;
+          return <Image source={iconSource} style={{ tintColor: color, marginBottom: 5, marginTop: 10 }} />;
         },
         // eslint-disable-next-line react/display-name
-        tabBarLabel: () => {
+        tabBarLabel: ({ focused, color }: { focused: boolean, color: string }) => {
           let labelText;
           switch (route.name) {
             case navigationMap.Activities:
@@ -56,12 +56,15 @@ const InAppTabs = () => {
               throw new Error(`Route's name ${route.name} is not supported, yet`);
           }
 
-          return <Text style={{ fontSize: 12 }} >{labelText.toUpperCase()}</Text>;
+          return <Text style={{ fontSize: 12, color: color, fontWeight: focused ? 'bold' : 'normal', marginBottom: 5 }} >{labelText}</Text>;
         },
       })}
       tabBarOptions={{
         activeTintColor: R.colors.YELLOW,
         inactiveTintColor: R.colors.GREY,
+        style: {
+          height: 65,
+        },
       }}
     >
       <Tab.Screen name={navigationMap.Activities} component={ActivitiesStack} />
