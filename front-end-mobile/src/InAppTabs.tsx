@@ -56,14 +56,14 @@ const InAppTabs = () => {
               throw new Error(`Route's name ${route.name} is not supported, yet`);
           }
 
-          return <Text style={{ fontSize: 12, color: color, fontWeight: focused ? 'bold' : 'normal', marginBottom: 5 }} >{labelText}</Text>;
+          return <Text style={{ fontSize: 10, color: color, fontWeight: focused ? 'bold' : 'normal', marginBottom: 5 }} >{labelText}</Text>;
         },
       })}
       tabBarOptions={{
         activeTintColor: R.colors.YELLOW,
         inactiveTintColor: R.colors.GREY,
         style: {
-          height: 65,
+          height: 55,
         },
       }}
     >
