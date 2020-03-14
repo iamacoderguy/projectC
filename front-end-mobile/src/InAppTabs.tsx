@@ -3,8 +3,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { ActivitiesStack } from 'features/activities';
 import { BuzzStack } from 'features/buzz';
 import { ProfileStack } from 'features/profile';
-import { Image, Text, View, StyleProp, ViewStyle } from 'react-native';
+import { Image, Text, StyleProp, ImageStyle } from 'react-native';
 import R from 'res/R';
+import styles from './InAppTabs.styles';
 
 const Tab = createBottomTabNavigator();
 
@@ -20,24 +21,28 @@ const InAppTabs = () => {
       initialRouteName={navigationMap.Buzz}
       screenOptions={({ route }) => ({
         // eslint-disable-next-line react/display-name
-        tabBarIcon: ({ color }: { focused: boolean, color: string, size: number }) => {
+        tabBarIcon: ({ focused, color }: { focused: boolean, color: string, size: number }) => {
           let iconSource;
+          let style: StyleProp<ImageStyle>;
 
           switch (route.name) {
             case navigationMap.Activities:
               iconSource = R.images.ic_nav_activities;
+              style = { tintColor: color };
               break;
             case navigationMap.Buzz:
-              iconSource = R.images.ic_nav_buzz;
+              iconSource = focused ? R.images.ic_buzz_actiavated : R.images.ic_buzz_inactiavated;
+              style = { position: 'absolute', top: -28 };
               break;
             case navigationMap.Profile:
               iconSource = R.images.ic_nav_profile;
+              style = { tintColor: color };
               break;
             default:
               throw new Error(`Route's name ${route.name} is not supported, yet`);
           }
 
-          return <Image source={iconSource} style={{ tintColor: color }} />;
+          return <Image style={style} source={iconSource} />;
         },
         // eslint-disable-next-line react/display-name
         tabBarLabel: ({ focused, color }: { focused: boolean, color: string }) => {
@@ -56,7 +61,7 @@ const InAppTabs = () => {
               throw new Error(`Route's name ${route.name} is not supported, yet`);
           }
 
-          return <Text style={{ fontSize: 12, lineHeight: 14, color: color, fontWeight: focused ? 'bold' : 'normal', marginBottom: 5 }} >{labelText.toUpperCase()}</Text>;
+          return <Text style={styles(focused, color).labelStyle}>{labelText.toUpperCase()}</Text>;
         },
       })}
       tabBarOptions={{
