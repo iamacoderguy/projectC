@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { ActivitiesStack } from 'features/activities';
 import { BuzzStack } from 'features/buzz';
 import { ProfileStack } from 'features/profile';
-import { Image, Text } from 'react-native';
+import { Image, Text, View, StyleProp, ViewStyle } from 'react-native';
 import R from 'res/R';
 
 const Tab = createBottomTabNavigator();
@@ -37,7 +37,7 @@ const InAppTabs = () => {
               throw new Error(`Route's name ${route.name} is not supported, yet`);
           }
 
-          return <Image source={iconSource} style={{ tintColor: color, marginBottom: 5, marginTop: 10 }} />;
+          return <Image source={iconSource} style={{ tintColor: color }} />;
         },
         // eslint-disable-next-line react/display-name
         tabBarLabel: ({ focused, color }: { focused: boolean, color: string }) => {
@@ -56,14 +56,14 @@ const InAppTabs = () => {
               throw new Error(`Route's name ${route.name} is not supported, yet`);
           }
 
-          return <Text style={{ fontSize: 10, color: color, fontWeight: focused ? 'bold' : 'normal', marginBottom: 5 }} >{labelText}</Text>;
+          return <Text style={{ fontSize: 12, lineHeight: 14, color: color, fontWeight: focused ? 'bold' : 'normal', marginBottom: 5 }} >{labelText.toUpperCase()}</Text>;
         },
       })}
       tabBarOptions={{
         activeTintColor: R.colors.YELLOW,
         inactiveTintColor: R.colors.GREY,
         style: {
-          height: 55,
+          height: 75,
         },
       }}
     >
