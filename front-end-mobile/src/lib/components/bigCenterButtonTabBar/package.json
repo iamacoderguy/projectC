@@ -1,0 +1,10 @@
+{
+  "name": "bigcenterbuttontabbar",
+  "version": "1.0.0",
+  "dependencies": {
+    "color": "^3.1.2"
+  },
+  "devDependencies": {
+    "@types/color": "^3.0.1"
+  }
+}

@@ -6,6 +6,7 @@ import { ProfileStack } from 'features/profile';
 import { Image, Text, StyleProp, ImageStyle } from 'react-native';
 import R from 'res/R';
 import styles from './InAppTabs.styles';
+import BigCenterBottomTabBar from 'lib/components/bigCenterButtonTabBar/BigCenterBottomTabBar';
 
 const Tab = createBottomTabNavigator();
 
@@ -18,6 +19,7 @@ const navigationMap = {
 const InAppTabs = () => {
   return (
     <Tab.Navigator
+      tabBar={props => <BigCenterBottomTabBar {...props}/>}
       initialRouteName={navigationMap.Buzz}
       screenOptions={({ route }) => ({
         // eslint-disable-next-line react/display-name
