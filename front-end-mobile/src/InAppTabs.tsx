@@ -25,13 +25,13 @@ const InAppTabs = () => {
 
           switch (route.name) {
             case navigationMap.Activities:
-              iconSource = R.images.ic_nav_activities_inactivated;
+              iconSource = R.images.ic_nav_activities;
               break;
             case navigationMap.Buzz:
-              iconSource = R.images.ic_nav_buzz_inactivated;
+              iconSource = R.images.ic_nav_buzz;
               break;
             case navigationMap.Profile:
-              iconSource = R.images.ic_nav_profile_inactivated;
+              iconSource = R.images.ic_nav_profile;
               break;
             default:
               throw new Error(`Route's name ${route.name} is not supported, yet`);
@@ -61,9 +61,10 @@ const InAppTabs = () => {
       })}
       tabBarOptions={{
         activeTintColor: R.colors.YELLOW,
-        inactiveTintColor: R.colors.GREY,
+        inactiveTintColor: R.colors.WHITE,
         style: {
           height: 75,
+          backgroundColor: R.colors.BLACK,
         },
       }}
     >
