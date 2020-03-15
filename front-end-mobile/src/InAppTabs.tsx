@@ -3,10 +3,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { ActivitiesStack } from 'features/activities';
 import { BuzzStack } from 'features/buzz';
 import { ProfileStack } from 'features/profile';
-import { Image, Text, StyleProp, ImageStyle } from 'react-native';
+import { Image, Text, StyleProp, ImageStyle, TouchableWithoutFeedback, View } from 'react-native';
 import R from 'res/R';
 import styles from './InAppTabs.styles';
-import BigCenterBottomTabBar from 'lib/components/bigCenterButtonTabBar/BigCenterBottomTabBar';
+import { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs/lib/typescript/src/types';
 
 const Tab = createBottomTabNavigator();
 
@@ -19,9 +19,36 @@ const navigationMap = {
 const InAppTabs = () => {
   return (
     <Tab.Navigator
-      tabBar={props => <BigCenterBottomTabBar {...props}/>}
       initialRouteName={navigationMap.Buzz}
       screenOptions={({ route }) => ({
+        tabBarButton: ({ style, children, ...rest }: BottomTabBarButtonProps) => {
+          switch (route.name) {
+            case navigationMap.Activities:
+              return (
+                <TouchableWithoutFeedback {...rest} >
+                  <View style={[style, { height: 75 }]}>{children}</View>
+                </TouchableWithoutFeedback>
+              );
+            case navigationMap.Buzz:
+              return (
+                <TouchableWithoutFeedback {...rest}>
+                  <View style={[style, { backgroundColor: R.colors.TRANSPARENT }]}>
+                    <View style={{ backgroundColor: R.colors.BLACK, width: '100%', height: 75, position: 'absolute' }}/>
+                    {children}
+                  </View>
+                </TouchableWithoutFeedback>
+              );
+            case navigationMap.Profile:
+              return (
+                <TouchableWithoutFeedback {...rest}>
+                  <View style={[style, { height: 75 }]}>{children}</View>
+                </TouchableWithoutFeedback>
+              );
+
+            default:
+              throw new Error(`Route's name ${route.name} is not supported, yet`);
+          }
+        },
         // eslint-disable-next-line react/display-name
         tabBarIcon: ({ focused, color }: { focused: boolean, color: string, size: number }) => {
           let iconSource;
@@ -34,7 +61,6 @@ const InAppTabs = () => {
               break;
             case navigationMap.Buzz:
               iconSource = focused ? R.images.ic_buzz_actiavated : R.images.ic_buzz_inactiavated;
-              style = { position: 'absolute', top: -28 };
               break;
             case navigationMap.Profile:
               iconSource = R.images.ic_nav_profile;
@@ -69,9 +95,17 @@ const InAppTabs = () => {
       tabBarOptions={{
         activeTintColor: R.colors.YELLOW,
         inactiveTintColor: R.colors.WHITE,
-        style: {
-          height: 75,
+        style: { // clickable
+          height: 100,
+          backgroundColor: R.colors.TRANSPARENT,
+          elevation: 0,
+          position: 'absolute',
+          borderTopWidth: 0,
+        },
+        tabStyle: {
+          height: 100,
           backgroundColor: R.colors.BLACK,
+          alignSelf: 'flex-end',
         },
       }}
     >
