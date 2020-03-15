@@ -24,24 +24,19 @@ const InAppTabs = () => {
         tabBarButton: ({ style, children, ...rest }: BottomTabBarButtonProps) => {
           switch (route.name) {
             case navigationMap.Activities:
+            case navigationMap.Profile:
               return (
-                <TouchableWithoutFeedback {...rest} >
-                  <View style={[style, { height: 75 }]}>{children}</View>
+                <TouchableWithoutFeedback {...rest}>
+                  <View style={[style, styles.tabBarButtonNormal]}>{children}</View>
                 </TouchableWithoutFeedback>
               );
             case navigationMap.Buzz:
               return (
                 <TouchableWithoutFeedback {...rest}>
-                  <View style={[style, { backgroundColor: R.colors.TRANSPARENT }]}>
-                    <View style={{ backgroundColor: R.colors.BLACK, width: '100%', height: 75, position: 'absolute' }}/>
+                  <View style={[style, styles.tabBarCenterButton.outer]}>
+                    <View style={styles.tabBarCenterButton.inner} />
                     {children}
                   </View>
-                </TouchableWithoutFeedback>
-              );
-            case navigationMap.Profile:
-              return (
-                <TouchableWithoutFeedback {...rest}>
-                  <View style={[style, { height: 75 }]}>{children}</View>
                 </TouchableWithoutFeedback>
               );
 
@@ -52,19 +47,18 @@ const InAppTabs = () => {
         // eslint-disable-next-line react/display-name
         tabBarIcon: ({ focused, color }: { focused: boolean, color: string, size: number }) => {
           let iconSource;
-          let style: StyleProp<ImageStyle>;
+          let style: StyleProp<ImageStyle> = { tintColor: color };
 
           switch (route.name) {
             case navigationMap.Activities:
               iconSource = R.images.ic_nav_activities;
-              style = { tintColor: color };
-              break;
-            case navigationMap.Buzz:
-              iconSource = focused ? R.images.ic_buzz_actiavated : R.images.ic_buzz_inactiavated;
               break;
             case navigationMap.Profile:
               iconSource = R.images.ic_nav_profile;
-              style = { tintColor: color };
+              break;
+            case navigationMap.Buzz:
+              iconSource = focused ? R.images.ic_buzz_actiavated : R.images.ic_buzz_inactiavated;
+              style = {};
               break;
             default:
               throw new Error(`Route's name ${route.name} is not supported, yet`);
@@ -89,23 +83,24 @@ const InAppTabs = () => {
               throw new Error(`Route's name ${route.name} is not supported, yet`);
           }
 
-          return <Text style={styles(focused, color).labelStyle}>{labelText.toUpperCase()}</Text>;
+          return <Text style={styles.tabBarLabel(focused, color)}>{labelText.toUpperCase()}</Text>;
         },
       })}
       tabBarOptions={{
         activeTintColor: R.colors.YELLOW,
         inactiveTintColor: R.colors.WHITE,
-        style: { // clickable
-          height: 100,
+        style: { // clickable region
+          height: styles.tabBarHeight + styles.extraCenterButtonHeight,
           backgroundColor: R.colors.TRANSPARENT,
           elevation: 0,
           position: 'absolute',
           borderTopWidth: 0,
         },
         tabStyle: {
-          height: 100,
-          backgroundColor: R.colors.BLACK,
+          height: styles.tabBarHeight + styles.extraCenterButtonHeight,
+          backgroundColor: styles.tabBarColor,
           alignSelf: 'flex-end',
+          elevation: styles.tabBarElevation,
         },
       }}
     >
