@@ -57,7 +57,7 @@ const InAppTabs = () => {
               iconSource = R.images.ic_nav_profile;
               break;
             case navigationMap.Buzz:
-              iconSource = focused ? R.images.ic_buzz_actiavated : R.images.ic_buzz_inactiavated;
+              iconSource = focused ? R.images.ic_buzz_actiavated_2 : R.images.ic_buzz_inactiavated;
               style = {};
               break;
             default:
