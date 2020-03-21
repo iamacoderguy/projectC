@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { ActivitiesStack } from 'features/activities';
 import { BuzzStack } from 'features/buzz';
-import { ProfileStack } from 'features/profile';
+import { Profile } from 'features/profile';
 import { Image, Text, StyleProp, ImageStyle, TouchableWithoutFeedback, View } from 'react-native';
 import R from 'res/R';
 import styles from './InAppTabs.styles';
 import { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs/lib/typescript/src/types';
+import { Theme } from 'lib/types/theme';
 
 const Tab = createBottomTabNavigator();
 
@@ -17,6 +18,8 @@ const navigationMap = {
 };
 
 const InAppTabs = () => {
+  const [theme, changeTheme] = useState(Theme.Theme1);
+
   return (
     <Tab.Navigator
       initialRouteName={navigationMap.Buzz}
@@ -48,6 +51,11 @@ const InAppTabs = () => {
         tabBarIcon: ({ focused, color }: { focused: boolean, color: string, size: number }) => {
           let iconSource;
           let style: StyleProp<ImageStyle> = { tintColor: color };
+          const themeAndIconSoucePairs = {
+            [Theme.Theme1]: R.images.ic_nav_buzz_activated_1,
+            [Theme.Theme2]: R.images.ic_nav_buzz_activated_2,
+            [Theme.Theme3]: R.images.ic_nav_buzz_activated_3,
+          };
 
           switch (route.name) {
             case navigationMap.Activities:
@@ -57,7 +65,7 @@ const InAppTabs = () => {
               iconSource = R.images.ic_nav_profile;
               break;
             case navigationMap.Buzz:
-              iconSource = focused ? R.images.ic_buzz_actiavated_2 : R.images.ic_buzz_inactiavated;
+              iconSource = focused ? themeAndIconSoucePairs[theme] : R.images.ic_nav_buzz_inactivated;
               style = {};
               break;
             default:
@@ -106,7 +114,9 @@ const InAppTabs = () => {
     >
       <Tab.Screen name={navigationMap.Activities} component={ActivitiesStack} />
       <Tab.Screen name={navigationMap.Buzz} component={BuzzStack} />
-      <Tab.Screen name={navigationMap.Profile} component={ProfileStack} />
+      <Tab.Screen name={navigationMap.Profile} >
+        {() => <Profile onThemeChanged={changeTheme} />}
+      </Tab.Screen>
     </Tab.Navigator>
   );
 };
