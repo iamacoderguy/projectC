@@ -1,9 +1,12 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
+import R from 'res/R';
 
 const ActivitiesScreen = () => {
   return (
-    <Text>ActivitiesScreen.tsx</Text>
+    <View style={{backgroundColor: R.colors.WHITE, flex: 1}}>
+      <Text>ActivitiesScreen.tsx</Text>
+    </View>
   );
 };
 
