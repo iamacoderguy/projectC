@@ -8,6 +8,9 @@ import R from 'res/R';
 import styles from './InAppTabs.styles';
 import { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs/lib/typescript/src/types';
 import { Theme } from 'lib/types/theme';
+import { localizer } from 'features/localization';
+import { connect } from 'react-redux';
+import { mapDispatchToProps, mapStateToProps } from './InAppTabs.container';
 
 const Tab = createBottomTabNavigator();
 
@@ -17,8 +20,42 @@ const navigationMap = {
   Profile: 'ProfileTab',
 };
 
-const InAppTabs = () => {
+export type InAppTabsPropsForMapState = {
+  lng?: string;
+  isLocalizationInstalled?: boolean;
+}
+
+export type InAppTabsPropsForMapDispatch = {
+  onLanguageChangeTriggered?: (lng: string) => void;
+
+  onLocalizationInstallationTriggered?: () => void;
+  onLocalizationUninstallationTriggered?: () => void;
+}
+
+type InAppTabsPropsForContainer = InAppTabsPropsForMapState & InAppTabsPropsForMapDispatch;
+
+type InAppTabsProps = InAppTabsPropsForContainer & {}
+
+const InAppTabs: React.FC<InAppTabsProps> = (props: InAppTabsProps) => {
   const [theme, changeTheme] = useState(Theme.Theme1);
+
+  const _handleLanguageChangeTrigger = (lng: string) => {
+    if (props.onLanguageChangeTriggered) {
+      props.onLanguageChangeTriggered(lng);
+    }
+  };
+
+  const _handleonLocalizationInstallationTrigger = () => {
+    if (props.onLocalizationInstallationTriggered) {
+      props.onLocalizationInstallationTriggered();
+    }
+  };
+
+  const _handleLocalizationUninstallationTrigger = () => {
+    if (props.onLocalizationUninstallationTriggered) {
+      props.onLocalizationUninstallationTriggered();
+    }
+  };
 
   return (
     <Tab.Navigator
@@ -31,7 +68,7 @@ const InAppTabs = () => {
               return (
                 <TouchableWithoutFeedback {...rest}>
                   <View style={[style, styles.tabBarButtonNormal.outer]}>
-                    <View style={styles.tabBarButtonNormal.shadow}/>
+                    <View style={styles.tabBarButtonNormal.shadow} />
                     <View style={styles.tabBarButtonNormal.inner} >
                       {children}
                     </View>
@@ -72,7 +109,7 @@ const InAppTabs = () => {
               break;
             case navigationMap.Buzz:
               iconSource = focused ? themeAndIconSoucePairs[theme] : R.images.ic_nav_buzz_inactivated;
-              style = { };
+              style = {};
               break;
             default:
               throw new Error(`Route's name ${route.name} is not supported, yet`);
@@ -85,13 +122,13 @@ const InAppTabs = () => {
           let labelText;
           switch (route.name) {
             case navigationMap.Activities:
-              labelText = R.strings.inAppTabs.activitiesLabel;
+              labelText = R.strings.inAppTabs.activitiesLabel();
               break;
             case navigationMap.Buzz:
-              labelText = R.strings.inAppTabs.buzzLabel;
+              labelText = R.strings.inAppTabs.buzzLabel();
               break;
             case navigationMap.Profile:
-              labelText = R.strings.inAppTabs.profileLabel;
+              labelText = R.strings.inAppTabs.profileLabel();
               break;
             default:
               throw new Error(`Route's name ${route.name} is not supported, yet`);
@@ -110,10 +147,17 @@ const InAppTabs = () => {
       <Tab.Screen name={navigationMap.Activities} component={ActivitiesStack} />
       <Tab.Screen name={navigationMap.Buzz} component={BuzzStack} />
       <Tab.Screen name={navigationMap.Profile} >
-        {() => <Profile onThemeChanged={changeTheme} />}
+        {() =>
+          <Profile
+            theme={theme} onThemeChangeTriggered={changeTheme}
+            lng={props.lng || localizer.getLanguageCodeOnly()} onLanguageChangeTriggered={_handleLanguageChangeTrigger}
+            isLocalizationInstalled={props.isLocalizationInstalled || false}
+            onLocalizationInstallationTriggered={_handleonLocalizationInstallationTrigger}
+            onLocalizationUninstallationTriggered={_handleLocalizationUninstallationTrigger}
+          />}
       </Tab.Screen>
     </Tab.Navigator>
   );
 };
 
-export default InAppTabs;
+export default connect(mapStateToProps, mapDispatchToProps)(InAppTabs);

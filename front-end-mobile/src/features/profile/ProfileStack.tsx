@@ -1,7 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import ProfileScreen from './ProfileScreen';
-import { Theme } from 'lib/types/theme';
+import ProfileScreen, { ProfileScreenPropsForOutput } from './ProfileScreen';
 
 const Stack = createStackNavigator();
 
@@ -9,16 +8,15 @@ const navigationMap = {
   Profile: 'Profile',
 };
 
-type ProfileStackProps = {
-  // for output
-  onThemeChanged: (theme: Theme) => void;
-}
+export type ProfileStackPropsForOutput = ProfileScreenPropsForOutput & {}
+
+type ProfileStackProps = ProfileStackPropsForOutput & {}
 
 const ProfileStack: React.FC<ProfileStackProps> = (props: ProfileStackProps) => {
   return (
     <Stack.Navigator initialRouteName={navigationMap.Profile}>
       <Stack.Screen name={navigationMap.Profile} >
-        {() => <ProfileScreen onThemeChanged={props.onThemeChanged} />}
+        {() => <ProfileScreen {...props} />}
       </Stack.Screen>
     </Stack.Navigator>
   );

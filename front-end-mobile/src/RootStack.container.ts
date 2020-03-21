@@ -1,7 +1,13 @@
 import { Dispatch } from 'redux';
 import { RootState } from './reducer';
-import { finishLoadingRequest, finishAuthenticationRequest } from './actions';
+import { 
+  finishLoadingRequest,
+  finishAuthenticationRequest,
+  installLocalizationRequest,
+  uninstallLocalizationRequest,
+} from './actions';
 import { loadCredentials } from 'lib/utils/storage';
+import { RootStackPropsForMapState, RootStackPropsForMapDispatch } from './RootStack';
 
 export enum Stage {
   'Loading',
@@ -10,10 +16,11 @@ export enum Stage {
 }
 
 // === mapStateToProps ===
-
-export const mapStateToProps = (state: RootState) => ({
-  stage: getActivatedStage(state),
-});
+export function mapStateToProps(state: RootState): RootStackPropsForMapState {
+  return {
+    stage: getActivatedStage(state),
+  };
+}
 
 const getActivatedStage = (state: RootState) => {
   if (isAuthStageReady(state)) {
@@ -36,12 +43,22 @@ const isInAppStageReady = (state: RootState) => {
 };
 
 // === mapDispatchToProps ===
+export function mapDispatchToProps(dispatch: Dispatch): RootStackPropsForMapDispatch {
+  return {
+    onAppStarted: (stage: Stage) => handleAppStarted(dispatch, stage),
+    onAppFinished: () => handleAppFinished(dispatch),
+    onAuthenticationFinished: (token: string) => dispatch(finishAuthenticationRequest({ token })),
+  };
+}
 
-export const mapDispatchToProps = (dispatch: Dispatch) => ({
-  onLoadingStarted: () => handleLoadingStarted(dispatch),
-  onAuthenticationFinished: (token: string) => dispatch(finishAuthenticationRequest({ token })),
-});
+const handleAppStarted = (dispatch: Dispatch, stage: Stage) => {
+  dispatch(installLocalizationRequest());
 
-const handleLoadingStarted = (dispatch: Dispatch) => {
-  setTimeout(() => dispatch(finishLoadingRequest()), 2000);
+  if (stage == Stage.Loading) {
+    setTimeout(() => dispatch(finishLoadingRequest()), 2000);
+  }
+};
+
+const handleAppFinished = (dispatch: Dispatch) => {
+  dispatch(uninstallLocalizationRequest());
 };

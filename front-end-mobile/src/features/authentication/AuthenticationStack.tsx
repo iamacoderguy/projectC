@@ -14,14 +14,19 @@ const navigationMap = {
   ForgotPassword: 'ForgotPassword',
 };
 
-type AuthenticationStackProps = {
-  // for container
+export type AuthenticationStackPropsForMapState = {
   token?: string;
+}
+export type AuthenticationStackPropsForMapDispatch = {
   onAuthenticating?: (username: string, password: string) => void;
+}
+type AuthenticationStackPropsForContainer = AuthenticationStackPropsForMapState & AuthenticationStackPropsForMapDispatch;
 
-  // for output
+type AuthenticationStackPropsForOutput = {
   onAuthenticated: (token: string) => void;
 }
+
+type AuthenticationStackProps = AuthenticationStackPropsForContainer & AuthenticationStackPropsForOutput;
 
 const AuthenticationStack: React.FC<AuthenticationStackProps> = (props: AuthenticationStackProps) => {
   useEffect(() => {

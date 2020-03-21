@@ -1,18 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { SafeAreaView, Image } from 'react-native';
 import R from 'res/R';
 import DotsLoader from './components/DotsLoader';
 import styles from './LoadingScreen.styles';
 
-type LoadingScreenProps = {
-  onLoadingStarted: () => void;
-}
-
-const LoadingScreen: React.FC<LoadingScreenProps> = (props: LoadingScreenProps) => {
-  useEffect(() => {
-    props.onLoadingStarted();
-  });
-
+const LoadingScreen = () => {
   return (
     <>
       <SafeAreaView
