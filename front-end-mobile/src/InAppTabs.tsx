@@ -49,7 +49,6 @@ const InAppTabs = () => {
                   </View>
                 </TouchableWithoutFeedback>
               );
-
             default:
               throw new Error(`Route's name ${route.name} is not supported, yet`);
           }
