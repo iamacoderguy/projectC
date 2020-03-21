@@ -30,13 +30,20 @@ const InAppTabs = () => {
             case navigationMap.Profile:
               return (
                 <TouchableWithoutFeedback {...rest}>
-                  <View style={[style, styles.tabBarButtonNormal]}>{children}</View>
+                  <View style={[style, styles.tabBarButtonNormal.outer]}>
+                    <View style={styles.tabBarButtonNormal.shadow}/>
+                    <View style={styles.tabBarButtonNormal.inner} >
+                      {children}
+                    </View>
+                  </View>
                 </TouchableWithoutFeedback>
               );
             case navigationMap.Buzz:
               return (
                 <TouchableWithoutFeedback {...rest}>
                   <View style={[style, styles.tabBarCenterButton.outer]}>
+                    <View style={styles.tabBarCenterButton.circleShadow} />
+                    <View style={styles.tabBarCenterButton.rectShadow} />
                     <View style={styles.tabBarCenterButton.inner} />
                     {children}
                   </View>
@@ -66,7 +73,7 @@ const InAppTabs = () => {
               break;
             case navigationMap.Buzz:
               iconSource = focused ? themeAndIconSoucePairs[theme] : R.images.ic_nav_buzz_inactivated;
-              style = {};
+              style = { };
               break;
             default:
               throw new Error(`Route's name ${route.name} is not supported, yet`);
