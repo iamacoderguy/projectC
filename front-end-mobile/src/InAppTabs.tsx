@@ -127,8 +127,8 @@ const InAppTabs: React.FC<InAppTabsProps> = (props: InAppTabsProps) => {
       <Tab.Screen name={navigationMap.Profile} >
         {() =>
           <Profile
-            onThemeChanged={changeTheme}
-            locale={props.lng || localizer.getLanguageCodeOnly()} onLanguageChanged={_handleLanguageChanged} />}
+            theme={theme} onThemeChanged={changeTheme}
+            lng={props.lng || localizer.getLanguageCodeOnly()} onLanguageChanged={_handleLanguageChanged} />}
       </Tab.Screen>
     </Tab.Navigator>
   );

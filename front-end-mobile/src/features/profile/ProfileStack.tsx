@@ -11,8 +11,10 @@ const navigationMap = {
 
 type ProfileStackProps = {
   // for output
-  locale: string;
+  lng: string;
   onLanguageChanged: (lng: string) => void;
+
+  theme: Theme;
   onThemeChanged: (theme: Theme) => void;
 }
 
@@ -21,9 +23,9 @@ const ProfileStack: React.FC<ProfileStackProps> = (props: ProfileStackProps) => 
     <Stack.Navigator initialRouteName={navigationMap.Profile}>
       <Stack.Screen name={navigationMap.Profile} >
         {() =>
-          <ProfileScreen 
-            onThemeChanged={props.onThemeChanged}
-            lng={props.locale} onLanguageChanged={props.onLanguageChanged}
+          <ProfileScreen
+            theme={props.theme} onThemeChanged={props.onThemeChanged}
+            lng={props.lng} onLanguageChanged={props.onLanguageChanged}
           />}
       </Stack.Screen>
     </Stack.Navigator>

@@ -3,8 +3,10 @@ import { Theme } from 'lib/types/theme';
 import ProfileStack from './ProfileStack';
 
 type ProfileProps = {
-  locale: string;
+  lng: string;
   onLanguageChanged: (lng: string) => void;
+
+  theme: Theme;
   onThemeChanged: (theme: Theme) => void
 }
 
@@ -15,8 +17,8 @@ type ProfileProps = {
 export const Profile: React.FC<ProfileProps> = (props: ProfileProps) => {
   return (
     <ProfileStack
-      onThemeChanged={props.onThemeChanged}
-      locale={props.locale} onLanguageChanged={props.onLanguageChanged}
+      theme={props.theme} onThemeChanged={props.onThemeChanged}
+      lng={props.lng} onLanguageChanged={props.onLanguageChanged}
     />
   );
 };
