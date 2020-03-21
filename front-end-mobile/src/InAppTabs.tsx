@@ -85,13 +85,13 @@ const InAppTabs = () => {
           let labelText;
           switch (route.name) {
             case navigationMap.Activities:
-              labelText = R.strings.inAppTabs.activitiesLabel;
+              labelText = R.strings.inAppTabs.activitiesLabel();
               break;
             case navigationMap.Buzz:
-              labelText = R.strings.inAppTabs.buzzLabel;
+              labelText = R.strings.inAppTabs.buzzLabel();
               break;
             case navigationMap.Profile:
-              labelText = R.strings.inAppTabs.profileLabel;
+              labelText = R.strings.inAppTabs.profileLabel();
               break;
             default:
               throw new Error(`Route's name ${route.name} is not supported, yet`);

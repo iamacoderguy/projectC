@@ -2,6 +2,7 @@ import { Dispatch } from 'redux';
 import { RootState } from './reducer';
 import { finishLoadingRequest, finishAuthenticationRequest } from './actions';
 import { loadCredentials } from 'lib/utils/storage';
+import { localization } from 'features/localization';
 
 export enum Stage {
   'Loading',
@@ -43,5 +44,6 @@ export const mapDispatchToProps = (dispatch: Dispatch) => ({
 });
 
 const handleLoadingStarted = (dispatch: Dispatch) => {
+  localization.install();
   setTimeout(() => dispatch(finishLoadingRequest()), 2000);
 };

@@ -12,7 +12,7 @@ const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => 
   return (
     <>
       <Text>SignInScreen.tsx</Text>
-      <Button title={strings.signInButtonTitle} onPress={() => props.onSignIn('fake_username', 'fake_password')} />
+      <Button title={strings.signInButtonTitle()} onPress={() => props.onSignIn('fake_username', 'fake_password')} />
     </>
   );
 };
