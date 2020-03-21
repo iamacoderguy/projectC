@@ -3,6 +3,8 @@ import { Theme } from 'lib/types/theme';
 import ProfileStack from './ProfileStack';
 
 type ProfileProps = {
+  locale: string;
+  onLanguageChanged: (lng: string) => void;
   onThemeChanged: (theme: Theme) => void
 }
 
@@ -12,6 +14,9 @@ type ProfileProps = {
 // Profile module will display the list dynamically
 export const Profile: React.FC<ProfileProps> = (props: ProfileProps) => {
   return (
-    <ProfileStack onThemeChanged={props.onThemeChanged} />
+    <ProfileStack
+      onThemeChanged={props.onThemeChanged}
+      locale={props.locale} onLanguageChanged={props.onLanguageChanged}
+    />
   );
 };

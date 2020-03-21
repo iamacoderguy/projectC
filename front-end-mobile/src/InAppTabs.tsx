@@ -8,6 +8,9 @@ import R from 'res/R';
 import styles from './InAppTabs.styles';
 import { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs/lib/typescript/src/types';
 import { Theme } from 'lib/types/theme';
+import { localizer } from 'features/localization';
+import { connect } from 'react-redux';
+import { mapDispatchToProps, mapStateToProps } from './InAppTabs.container';
 
 const Tab = createBottomTabNavigator();
 
@@ -17,8 +20,20 @@ const navigationMap = {
   Profile: 'ProfileTab',
 };
 
-const InAppTabs = () => {
+type InAppTabsProps = {
+  // for container
+  lng?: string;
+  onLanguageChanged?: (lng: string) => void;
+}
+
+const InAppTabs: React.FC<InAppTabsProps> = (props: InAppTabsProps) => {
   const [theme, changeTheme] = useState(Theme.Theme1);
+
+  const _handleLanguageChanged = (lng: string) => {
+    if (props.onLanguageChanged) {
+      props.onLanguageChanged(lng);
+    }
+  };
 
   return (
     <Tab.Navigator
@@ -110,10 +125,13 @@ const InAppTabs = () => {
       <Tab.Screen name={navigationMap.Activities} component={ActivitiesStack} />
       <Tab.Screen name={navigationMap.Buzz} component={BuzzStack} />
       <Tab.Screen name={navigationMap.Profile} >
-        {() => <Profile onThemeChanged={changeTheme} />}
+        {() =>
+          <Profile
+            onThemeChanged={changeTheme}
+            locale={props.lng || localizer.getLanguageCodeOnly()} onLanguageChanged={_handleLanguageChanged} />}
       </Tab.Screen>
     </Tab.Navigator>
   );
 };
 
-export default InAppTabs;
+export default connect(mapStateToProps, mapDispatchToProps)(InAppTabs);

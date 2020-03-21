@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { LoadingScreen } from 'features/loading';
 import { Authentication } from 'features/authentication';
 import { connect } from 'react-redux';
@@ -12,11 +12,19 @@ type RootStackProps = {
   onAppFinished: () => void;
 }
 
-const RootStack : React.FunctionComponent<RootStackProps> = ({
+const RootStack : React.FC<RootStackProps> = ({
   stage,
   onLoadingStarted,
   onAuthenticationFinished,
+  onAppFinished,
 } : RootStackProps) => {
+
+  useEffect(() => {
+    return function cleanup() {
+      onAppFinished();
+    };
+  });
+
   const _render = () => {
     switch (stage) {
       case Stage.Authenticating:

@@ -2,7 +2,7 @@ import { Dispatch } from 'redux';
 import { RootState } from './reducer';
 import { finishLoadingRequest, finishAuthenticationRequest } from './actions';
 import { loadCredentials } from 'lib/utils/storage';
-import { localization } from 'features/localization';
+import { localizer } from 'features/localization';
 
 export enum Stage {
   'Loading',
@@ -11,7 +11,6 @@ export enum Stage {
 }
 
 // === mapStateToProps ===
-
 export const mapStateToProps = (state: RootState) => ({
   stage: getActivatedStage(state),
 });
@@ -37,13 +36,25 @@ const isInAppStageReady = (state: RootState) => {
 };
 
 // === mapDispatchToProps ===
-
 export const mapDispatchToProps = (dispatch: Dispatch) => ({
   onLoadingStarted: () => handleLoadingStarted(dispatch),
   onAuthenticationFinished: (token: string) => dispatch(finishAuthenticationRequest({ token })),
+  onAppFinished: () => handleAppFinished(dispatch),
 });
 
+let isLocalizationInstalled = false;
 const handleLoadingStarted = (dispatch: Dispatch) => {
-  localization.install();
+  if (!isLocalizationInstalled) {
+    localizer.install();
+    isLocalizationInstalled = true;
+  }
+
   setTimeout(() => dispatch(finishLoadingRequest()), 2000);
+};
+
+const handleAppFinished = (dispatch: Dispatch) => {
+  if (isLocalizationInstalled) {
+    localizer.uninstall();
+    isLocalizationInstalled = false;
+  }
 };
