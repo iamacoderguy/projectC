@@ -1,8 +1,13 @@
 import { Dispatch } from 'redux';
 import { RootState } from './reducer';
-import { finishLoadingRequest, finishAuthenticationRequest } from './actions';
+import { 
+  finishLoadingRequest,
+  finishAuthenticationRequest,
+  installLocalizationRequest,
+  uninstallLocalizationRequest,
+} from './actions';
 import { loadCredentials } from 'lib/utils/storage';
-import { localizer } from 'features/localization';
+import { RootStackPropsForMapState, RootStackPropsForMapDispatch } from './RootStack';
 
 export enum Stage {
   'Loading',
@@ -11,9 +16,11 @@ export enum Stage {
 }
 
 // === mapStateToProps ===
-export const mapStateToProps = (state: RootState) => ({
-  stage: getActivatedStage(state),
-});
+export function mapStateToProps(state: RootState): RootStackPropsForMapState {
+  return {
+    stage: getActivatedStage(state),
+  };
+}
 
 const getActivatedStage = (state: RootState) => {
   if (isAuthStageReady(state)) {
@@ -36,25 +43,22 @@ const isInAppStageReady = (state: RootState) => {
 };
 
 // === mapDispatchToProps ===
-export const mapDispatchToProps = (dispatch: Dispatch) => ({
-  onLoadingStarted: () => handleLoadingStarted(dispatch),
-  onAuthenticationFinished: (token: string) => dispatch(finishAuthenticationRequest({ token })),
-  onAppFinished: () => handleAppFinished(dispatch),
-});
+export function mapDispatchToProps(dispatch: Dispatch): RootStackPropsForMapDispatch {
+  return {
+    onAppStarted: (stage: Stage) => handleAppStarted(dispatch, stage),
+    onAppFinished: () => handleAppFinished(dispatch),
+    onAuthenticationFinished: (token: string) => dispatch(finishAuthenticationRequest({ token })),
+  };
+}
 
-let isLocalizationInstalled = false;
-const handleLoadingStarted = (dispatch: Dispatch) => {
-  if (!isLocalizationInstalled) {
-    localizer.install();
-    isLocalizationInstalled = true;
+const handleAppStarted = (dispatch: Dispatch, stage: Stage) => {
+  dispatch(installLocalizationRequest());
+
+  if (stage == Stage.Loading) {
+    setTimeout(() => dispatch(finishLoadingRequest()), 2000);
   }
-
-  setTimeout(() => dispatch(finishLoadingRequest()), 2000);
 };
 
 const handleAppFinished = (dispatch: Dispatch) => {
-  if (isLocalizationInstalled) {
-    localizer.uninstall();
-    isLocalizationInstalled = false;
-  }
+  dispatch(uninstallLocalizationRequest());
 };

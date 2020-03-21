@@ -25,14 +25,11 @@ const install = () => {
   });
 
   RNLocalize.addEventListener('change', handleLocalizationChange);
-  console.warn('subscribed to');
-  console.warn(handleLocalizationChange);
 };
 
 const uninstall = () => {
+  extension.uninstall();
   RNLocalize.removeEventListener('change', handleLocalizationChange);
-  console.warn('subscribed to');
-  console.warn(handleLocalizationChange);
 };
 
 const handleLocalizationChange = async () => {
@@ -42,7 +39,7 @@ const handleLocalizationChange = async () => {
 
 const getLanguageCodeOnly = () => {
   let language = i18n.language;
-  if (language.indexOf('-') !== -1) {
+  if (language && language.indexOf('-') !== -1) {
     language = language.substring(0, language.indexOf('-'));
   }
 

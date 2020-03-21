@@ -1,11 +1,12 @@
 import { Action } from 'lib/types/action';
 import { getType } from 'typesafe-actions';
-import { finishLoadingRequest, finishAuthenticationSuccess, changeLanguageSuccess } from './actions';
+import { finishLoadingRequest, finishAuthenticationSuccess, changeLanguageSuccess, installLocalizationSuccess, uninstallLocalizationSuccess } from './actions';
 
 export type RootState = {
   auth?: any,
   inApp?: any,
   lng?: string,
+  isLocalizationInstalled?: boolean;
 }
 
 const initialState: RootState = {};
@@ -23,6 +24,12 @@ function rootReducer (
 
     case getType(changeLanguageSuccess):
       return { ...previousState, lng: (action as ReturnType<typeof changeLanguageSuccess>).payload.lng };
+
+    case getType(installLocalizationSuccess):
+      return { ...previousState, isLocalizationInstalled: true};
+
+    case getType(uninstallLocalizationSuccess):
+      return { ...previousState, isLocalizationInstalled: false};
 
     default:
       return previousState;

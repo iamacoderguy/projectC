@@ -10,26 +10,38 @@
 
 import 'react-native-gesture-handler'; // this line should be on the top
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { StatusBar } from 'react-native';
 
 import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import SplashScreen from 'react-native-splash-screen';
-import RootStack from './RootStack';
+import RootStack, { IRootStack } from './RootStack';
 import { rootNavigationRef } from 'lib/utils/navigation';
 import store from './store';
 
 const App = () => {
+  const rootStackRef = useRef<IRootStack>(null);
+
   useEffect(() => {
     SplashScreen.hide();
+
+    if (rootStackRef && rootStackRef.current) {
+      rootStackRef.current.start();
+    }
+
+    return function cleanup() {
+      if (rootStackRef && rootStackRef.current) {
+        rootStackRef.current.finish();
+      }
+    };
   });
 
   return (
     <Provider store={store}>
       <NavigationContainer ref={rootNavigationRef}>
         <StatusBar barStyle='dark-content' />
-        <RootStack />
+        <RootStack ref={rootStackRef} />
       </NavigationContainer>
     </Provider>
   );

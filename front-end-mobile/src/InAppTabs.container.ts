@@ -1,19 +1,27 @@
 import { Dispatch } from 'redux';
 import { localizer } from 'features/localization';
-import { changeLanguageSuccess } from './actions';
+import { changeLanguageSuccess, installLocalizationRequest, uninstallLocalizationRequest } from './actions';
 import { RootState } from './reducer';
+import { InAppTabsPropsForMapState, InAppTabsPropsForMapDispatch } from './InAppTabs';
 
 // === mapStateToProps ===
-export const mapStateToProps = (state: RootState) => ({
-  lng: state.lng,
-});
+export function mapStateToProps(state: RootState): InAppTabsPropsForMapState {
+  return {
+    lng: state.lng,
+    isLocalizationInstalled: state.isLocalizationInstalled,
+  };
+}
 
 // === mapDispatchToProps ===
-export const mapDispatchToProps = (dispatch: Dispatch) => ({
-  onLanguageChanged: (lng: string) => handleLanguageChanged(dispatch, lng),
-});
+export function mapDispatchToProps(dispatch: Dispatch): InAppTabsPropsForMapDispatch {
+  return {
+    onLanguageChangeTriggered: (lng: string) => handleLanguageChangeTrigger(dispatch, lng),
+    onLocalizationInstallationTriggered: () => dispatch(installLocalizationRequest()),
+    onLocalizationUninstallationTriggered: () => dispatch(uninstallLocalizationRequest()),
+  };
+}
 
-const handleLanguageChanged = async (dispatch: Dispatch, lng: string) => {
+const handleLanguageChangeTrigger = async (dispatch: Dispatch, lng: string) => {
   await localizer.changeLanguage(lng);
   dispatch(changeLanguageSuccess({lng}));
 };

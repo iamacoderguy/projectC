@@ -7,14 +7,18 @@ interface ILocalizer {
   t: (key: SKey) => string;
 }
 
-let _localizer: ILocalizer = {
+const defaultLocalizer = {
   t: (key: SKey) => {
     return oriStrings[key];
   },
 };
+let _localizer: ILocalizer = defaultLocalizer;
 
 export const install = (localizer: ILocalizer) => {
   _localizer = localizer;
+};
+export const uninstall = () => {
+  _localizer = defaultLocalizer;
 };
 
 export const strings = {

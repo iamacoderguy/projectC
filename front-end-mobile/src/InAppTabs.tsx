@@ -20,18 +20,41 @@ const navigationMap = {
   Profile: 'ProfileTab',
 };
 
-type InAppTabsProps = {
-  // for container
+export type InAppTabsPropsForMapState = {
   lng?: string;
-  onLanguageChanged?: (lng: string) => void;
+  isLocalizationInstalled?: boolean;
 }
+
+export type InAppTabsPropsForMapDispatch = {
+  onLanguageChangeTriggered?: (lng: string) => void;
+
+  onLocalizationInstallationTriggered?: () => void;
+  onLocalizationUninstallationTriggered?: () => void;
+}
+
+type InAppTabsPropsForContainer = InAppTabsPropsForMapState & InAppTabsPropsForMapDispatch;
+
+type InAppTabsProps = InAppTabsPropsForContainer & {}
 
 const InAppTabs: React.FC<InAppTabsProps> = (props: InAppTabsProps) => {
   const [theme, changeTheme] = useState(Theme.Theme1);
 
-  const _handleLanguageChanged = (lng: string) => {
-    if (props.onLanguageChanged) {
-      props.onLanguageChanged(lng);
+  const _handleLanguageChangeTrigger = (lng: string) => {
+    if (props.onLanguageChangeTriggered) {
+      props.onLanguageChangeTriggered(lng);
+    }
+  };
+
+  const _handleonLocalizationInstallationTrigger = () => {
+    if (props.onLocalizationInstallationTriggered) {
+      console.warn('_handleonLocalizationInstallationTrigger');
+      props.onLocalizationInstallationTriggered();
+    }
+  };
+
+  const _handleLocalizationUninstallationTrigger = () => {
+    if (props.onLocalizationUninstallationTriggered) {
+      props.onLocalizationUninstallationTriggered();
     }
   };
 
@@ -127,8 +150,12 @@ const InAppTabs: React.FC<InAppTabsProps> = (props: InAppTabsProps) => {
       <Tab.Screen name={navigationMap.Profile} >
         {() =>
           <Profile
-            theme={theme} onThemeChanged={changeTheme}
-            lng={props.lng || localizer.getLanguageCodeOnly()} onLanguageChanged={_handleLanguageChanged} />}
+            theme={theme} onThemeChangeTriggered={changeTheme}
+            lng={props.lng || localizer.getLanguageCodeOnly()} onLanguageChangeTriggered={_handleLanguageChangeTrigger}
+            isLocalizationInstalled={props.isLocalizationInstalled || false}
+            onLocalizationInstallationTriggered={_handleonLocalizationInstallationTrigger}
+            onLocalizationUninstallationTriggered={_handleLocalizationUninstallationTrigger}
+          />}
       </Tab.Screen>
     </Tab.Navigator>
   );
