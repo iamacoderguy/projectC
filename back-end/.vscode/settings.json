@@ -1,0 +1,12 @@
+{
+  // https://github.com/PKief/vscode-material-icon-theme/issues/208
+  "material-icon-theme.activeIconPack": "react_redux",
+  "explorer.compactFolders": false,
+  "eslint.format.enable": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "editor.tabSize": 2,
+  "javascript.preferences.quoteStyle": "single",
+  "typescript.preferences.quoteStyle": "single"
+}

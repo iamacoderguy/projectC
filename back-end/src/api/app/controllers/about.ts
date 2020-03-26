@@ -1,11 +1,11 @@
-import express, { Request, Response } from 'express'
+import express, { Request, Response } from 'express';
 
-let router = express.Router();
+const router = express.Router();
 
 router.get('/', about);
 
-function about(req: Request, res: Response) {
-    res.send('hello!');
+function about (_req: Request, res: Response): void {
+  res.send('hello!');
 }
 
 export default router;
