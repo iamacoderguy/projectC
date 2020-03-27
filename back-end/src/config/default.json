@@ -1,0 +1,6 @@
+{
+  "dbConfig": {
+    "connectionString": "",
+    "connectTimeoutInMs": 10000
+  }
+}
