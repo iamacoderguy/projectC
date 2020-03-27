@@ -21,6 +21,7 @@ module.exports = {
     'comma-dangle': ['error', 'always-multiline'],
     'semi': ['error', 'always'],
     'no-extra-semi': 'error',
+    'space-before-function-paren': ['error', 'never'],
     '@typescript-eslint/no-use-before-define': ['error', { 'functions': false, }]
   },
 };
