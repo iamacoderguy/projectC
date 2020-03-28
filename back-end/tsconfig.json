@@ -16,6 +16,7 @@
     "plugins": [
       {
         "transform": "ts-nameof",
+        "type": "raw" 
       }
     ],
     "forceConsistentCasingInFileNames": true  /* Disallow inconsistently-cased references to the same file. */
