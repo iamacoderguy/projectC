@@ -2,8 +2,8 @@
   "name": "buzz-back-end",
   "version": "0.0.1",
   "scripts": {
-    "start": "cross-env-shell NODE_ENV='development' env_mongoDB_pwd='<pwd>' \"ts-node src/api/app/installer.dev.ts\"",
-    "code:check": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "start": "cross-env-shell NODE_ENV='development' env_mongoDB_pwd='<pwd>' \"ts-node -C ttypescript src/api/app/installer.dev.ts\"",
+    "code:check": "ttsc --project tsconfig.lint.json && eslint . --ext .js,.jsx,.ts,.tsx",
     "code:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix"
   },
   "dependencies": {
@@ -12,7 +12,6 @@
     "mongoose": "^5.9.6",
     "reflect-metadata": "^0.1.13",
     "ts-mongoose": "0.0.21",
-    "ts-nameof": "^4.2.2",
     "tsyringe": "^4.1.0",
     "uuid": "^7.0.2"
   },
@@ -32,7 +31,9 @@
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
+    "ts-nameof": "^4.2.2",
     "ts-node": "^8.8.1",
+    "ttypescript": "^1.5.10",
     "typescript": "^3.8.3"
   }
 }

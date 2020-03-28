@@ -37,7 +37,7 @@ const DotsLoader: React.FC<DotsLoaderProps> = (props: DotsLoaderProps) => {
         Animated.parallel(disappearingSequence),
       ]),
     ).start();
-  }, []);
+  }, [appearingSequence, disappearingSequence]);
 
   const _renderDots = (dotNumbers: number) => {
     const animatedDots: Element[] = [];

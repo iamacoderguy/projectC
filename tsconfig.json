@@ -1,20 +1,14 @@
 {
-  "extends": "../tsconfig.json",
   "compilerOptions": {
     /* Basic Options */
-
+    "target": "esnext",
+    "module": "commonjs",
     /* Strict Type-Checking Options */
-
+    "strict": true,
     /* Additional Checks */
-
+    "esModuleInterop": true,
     /* Source Map Options */
-
     /* Advanced Options */
-    "plugins": [
-      {
-        "transform": "ts-nameof",
-        "type": "raw" 
-      }
-    ],
+    "forceConsistentCasingInFileNames": true
   }
 }
