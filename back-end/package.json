@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "start": "cross-env-shell NODE_ENV='development' env_mongoDB_pwd='<pwd>' \"ts-node -C ttypescript src/api/app/installer.dev.ts\"",
-    "code:check": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "code:check": "ttsc --project tsconfig.lint.json && eslint . --ext .js,.jsx,.ts,.tsx",
     "code:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix"
   },
   "dependencies": {

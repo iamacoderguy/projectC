@@ -10,7 +10,7 @@
     "ios:update": "cd ios && pod update && pod install",
     "start": "react-native start",
     "test": "jest",
-    "code:check": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "code:check": "tsc --project tsconfig.lint.json && eslint . --ext .js,.jsx,.ts,.tsx",
     "code:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "images:update": "ts-node scripts/images.ts"
   },
