@@ -26,16 +26,18 @@ const App = () => {
   useEffect(() => {
     SplashScreen.hide();
 
+    let rootStackRefCurrent: IRootStack;
     if (rootStackRef && rootStackRef.current) {
-      rootStackRef.current.start();
+      rootStackRefCurrent = rootStackRef.current;
+      rootStackRefCurrent.start();
     }
 
     return function cleanup() {
-      if (rootStackRef && rootStackRef.current) {
-        rootStackRef.current.finish();
+      if (rootStackRefCurrent) {
+        rootStackRefCurrent.finish();
       }
     };
-  });
+  }, []);
 
   return (
     <Provider store={store}>
