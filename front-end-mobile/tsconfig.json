@@ -1,33 +1,37 @@
-
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
     /* Basic Options */
-    "lib": ["es6"],
+    "lib": [
+      "es6"
+    ],
     "jsx": "react-native",
     "incremental": true,
     "isolatedModules": true,
-
     /* Strict Type-Checking Options */
-
     /* Additional Checks */
-
     /* Module Resolution Options */
     "resolveJsonModule": true,
     "moduleResolution": "node",
     "baseUrl": "./",
     "paths": {
-      "features/*": ["src/features/*"],
-      "lib/*": ["src/lib/*"],
-      "res/*": ["src/res/*"]
+      "features/*": [
+        "src/features/*"
+      ],
+      "lib/*": [
+        "src/lib/*"
+      ],
+      "res/*": [
+        "src/res/*"
+      ]
     },
-    "allowSyntheticDefaultImports": true,
-
     /* Source Map Options */
-
     /* Experimental Options */
   },
   "exclude": [
-    "node_modules", "babel.config.js", "metro.config.js", "jest.config.js"
+    "node_modules",
+    "babel.config.js",
+    "metro.config.js",
+    "jest.config.js"
   ]
 }

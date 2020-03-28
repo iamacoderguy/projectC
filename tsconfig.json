@@ -3,15 +3,11 @@
     /* Basic Options */
     "target": "esnext",
     "module": "commonjs",
-
     /* Strict Type-Checking Options */
     "strict": true,
-
     /* Additional Checks */
     "esModuleInterop": true,
-
     /* Source Map Options */
-
     /* Advanced Options */
     "forceConsistentCasingInFileNames": true
   }
