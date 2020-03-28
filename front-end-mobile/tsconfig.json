@@ -4,7 +4,6 @@
   "compilerOptions": {
     /* Basic Options */
     "lib": ["es6"],
-    "allowJs": true,                          /* Allow javascript files to be compiled. */
     "jsx": "react-native",
     "noEmit": true,
     "incremental": true,
