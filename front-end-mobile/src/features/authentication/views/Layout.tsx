@@ -6,7 +6,6 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  StatusBar as StatusBarRN,
 } from 'react-native';
 import R from 'res/R';
 import StatusBar from 'res/components/statusBar/StatusBar';
