@@ -80,6 +80,6 @@ const styles = StyleSheet.create({
     elevation: 5,
     borderRadius: 25,
   },
-})
+});
 
 export default Layout;
