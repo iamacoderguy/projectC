@@ -45,7 +45,7 @@ const contentMargin = 50;
 const contentContainerTop = contentMargin - statusBarHeight;
 const contentContainerHeight = (Dimensions.get('window').height - contentContainerTop - statusBarHeight);
 const logoHeight = 80;
-const titleHeight = 35;
+const titleHeight = Number(R.palette.title.height);
 const contentSpace = 20;
 
 const styles = StyleSheet.create({
@@ -87,11 +87,8 @@ const styles = StyleSheet.create({
     width: logoHeight,
   },
   contentTitle: {
+    ...R.palette.title,
     marginVertical: contentSpace,
-    height: titleHeight,
-    fontSize: 24,
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
   },
   contentInnerContainer: {
     maxHeight: contentContainerHeight - (logoHeight + titleHeight + contentSpace * 2 + contentMargin),
