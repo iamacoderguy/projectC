@@ -1,12 +1,12 @@
 import React from 'react';
-import { 
+import {
   View,
-  Dimensions, 
-  Image, 
-  Text, 
-  StatusBar, 
-  StyleSheet, 
-  SafeAreaView, 
+  Dimensions,
+  Image,
+  Text,
+  StatusBar,
+  StyleSheet,
+  SafeAreaView,
 } from 'react-native';
 import R from 'res/R';
 
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     paddingBottom: 25,
     paddingTop: 50,
     backgroundColor: R.colors.WHITE,
-    elevation: 5,
+    elevation: 10,
     shadowOffset: {
       width: 0, // X
       height: 10, // Y
