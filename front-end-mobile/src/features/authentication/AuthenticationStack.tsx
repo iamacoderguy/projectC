@@ -42,11 +42,11 @@ const AuthenticationStack: React.FC<AuthenticationStackProps> = (props: Authenti
   };
 
   return (
-    <Stack.Navigator initialRouteName={navigationMap.SignIn}>
+    <Stack.Navigator initialRouteName={navigationMap.SignUp}>
       <Stack.Screen name={navigationMap.SignIn} >
         {() => <SignInScreen onSignIn={_handleOnSignIn} />}
       </Stack.Screen>
-      <Stack.Screen name={navigationMap.SignUp} component={SignUpScreen} />
+      <Stack.Screen name={navigationMap.SignUp} component={SignUpScreen} options={{ headerShown: false }} />
       <Stack.Screen name={navigationMap.ForgotPassword} component={ForgotPasswordScreen} />
     </Stack.Navigator>
   );

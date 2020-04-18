@@ -26,6 +26,9 @@ export const strings = {
     signIn: {
       signInButtonTitle: () => _localizer.t('authentication_signIn_signInButtonTitle'),
     },
+    signUp: {
+      title: () => _localizer.t('authentication_signUp_title'),
+    }
   },
   inAppTabs: {
     activitiesLabel: () => _localizer.t('inAppTabs_activitiesLabel'),
