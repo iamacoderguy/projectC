@@ -4,11 +4,10 @@ import {
   Dimensions,
   Image,
   Text,
-  StatusBar,
   StyleSheet,
-  SafeAreaView,
 } from 'react-native';
 import R from 'res/R';
+import StatusBar from 'res/components/statusBar/StatusBar';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -19,7 +18,6 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
   return (
     <>
       <StatusBar backgroundColor={R.colors.YELLOW} barStyle={'dark-content'} />
-      <SafeAreaView style={styles.safeArea} />
       <View style={styles.container}>
         <View style={styles.backgroundTopContainer}>
           <View style={styles.backgroundTopRectangle} />
@@ -40,10 +38,6 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
 const backgroundTopHeight = 0.7;
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 0,
-    backgroundColor: R.colors.YELLOW,
-  },
   container: {
     flex: 1,
     backgroundColor: R.colors.WHITE,

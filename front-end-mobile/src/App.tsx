@@ -11,7 +11,6 @@
 import 'react-native-gesture-handler'; // this line should be on the top
 
 import React, { useEffect, useRef } from 'react';
-import { StatusBar } from 'react-native';
 
 import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
@@ -19,6 +18,7 @@ import SplashScreen from 'react-native-splash-screen';
 import RootStack, { IRootStack } from './RootStack';
 import { rootNavigationRef } from 'lib/utils/navigation';
 import store from './store';
+import StatusBar from 'res/components/statusBar/StatusBar';
 
 const App = () => {
   const rootStackRef = useRef<IRootStack>(null);
