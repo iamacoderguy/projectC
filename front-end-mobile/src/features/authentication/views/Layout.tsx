@@ -5,6 +5,8 @@ import {
   Image,
   Text,
   StyleSheet,
+  ScrollView,
+  StatusBar as StatusBarRN,
 } from 'react-native';
 import R from 'res/R';
 import StatusBar from 'res/components/statusBar/StatusBar';
@@ -24,10 +26,12 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
           <View style={styles.backgroundTopEllipse} />
         </View>
         <View style={styles.contentContainer}>
-          <Image source={R.images.ic_black_yellow} />
+          <Image source={R.images.ic_black_yellow} style={styles.contentImage} />
           <Text style={styles.contentTitle} >{props.title}</Text>
           <View style={styles.contentInnerContainer} >
-            {props.children}
+            <ScrollView style={styles.contentInnerScrollView} >
+              {props.children}
+            </ScrollView>
           </View>
         </View>
       </View>
@@ -35,7 +39,14 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
   );
 };
 
-const backgroundTopHeight = 0.7;
+const circleDiameter = Dimensions.get('window').width * 0.7;
+const statusBarHeight = StatusBarRN.currentHeight || 24;
+const contentMargin = 50;
+const contentContainerTop = contentMargin - statusBarHeight;
+const contentContainerHeight = (Dimensions.get('window').height - contentContainerTop - statusBarHeight);
+const logoHeight = 80;
+const titleHeight = 35;
+const contentSpace = 20;
 
 const styles = StyleSheet.create({
   container: {
@@ -44,19 +55,19 @@ const styles = StyleSheet.create({
   },
   backgroundTopContainer: {
     width: '100%',
-    height: Dimensions.get('screen').width * backgroundTopHeight,
+    height: circleDiameter,
   },
   backgroundTopRectangle: {
     width: '100%',
-    height: Dimensions.get('screen').width * (backgroundTopHeight / 2),
+    height: circleDiameter / 2,
     backgroundColor: R.colors.YELLOW,
   },
   backgroundTopEllipse: {
     position: 'absolute',
     alignSelf: 'center',
-    width: Dimensions.get('screen').width * backgroundTopHeight,
-    height: Dimensions.get('screen').width * backgroundTopHeight,
-    borderRadius: Dimensions.get('screen').width * (backgroundTopHeight / 2),
+    width: circleDiameter,
+    height: circleDiameter,
+    borderRadius: circleDiameter / 2,
     backgroundColor: R.colors.YELLOW,
     transform: [
       { scaleX: 2 },
@@ -65,25 +76,31 @@ const styles = StyleSheet.create({
   contentContainer: {
     position: 'absolute',
     width: '100%',
-    height: '100%',
-    top: 30,
+    height: contentContainerHeight,
+    top: contentContainerTop,
     alignSelf: 'center',
     alignItems: 'center',
     paddingHorizontal: 35,
-    paddingBottom: 60,
+  },
+  contentImage: {
+    height: logoHeight,
+    width: logoHeight,
   },
   contentTitle: {
-    marginVertical: 20,
+    marginVertical: contentSpace,
+    height: titleHeight,
     fontSize: 24,
     fontWeight: 'bold',
     textTransform: 'uppercase',
   },
   contentInnerContainer: {
+    maxHeight: contentContainerHeight - (logoHeight + titleHeight + contentSpace * 2 + contentMargin),
     width: '100%',
     paddingHorizontal: 35,
     paddingBottom: 25,
     paddingTop: 50,
     backgroundColor: R.colors.WHITE,
+    borderRadius: 25,
     elevation: 10,
     shadowOffset: {
       width: 0, // X
@@ -92,8 +109,8 @@ const styles = StyleSheet.create({
     shadowRadius: 5, // Blur
     shadowColor: R.colors.BLACK,
     shadowOpacity: 0.25,
-    borderRadius: 25,
   },
+  contentInnerScrollView: {},
 });
 
 export default Layout;
