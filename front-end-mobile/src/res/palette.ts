@@ -1,4 +1,4 @@
-import { StyleSheet, TextStyle } from 'react-native';
+import { StyleSheet, TextStyle, Platform } from 'react-native';
 
 type Style = {
   title: TextStyle
@@ -7,7 +7,11 @@ type Style = {
 const palette = StyleSheet.create<Style>({
   title: {
     fontSize: 24,
-    height: 32,
+    height: Platform.select({
+      // default font's height
+      ios: 28,
+      android: 32,
+    }),
     fontWeight: 'bold',
     textTransform: 'uppercase',
   },
