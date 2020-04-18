@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import R from 'res/R';
 import StatusBar from 'res/components/statusBar/StatusBar';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -40,7 +41,7 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
 };
 
 const circleDiameter = Dimensions.get('window').width * 0.7;
-const statusBarHeight = StatusBarRN.currentHeight || 24;
+const statusBarHeight = getStatusBarHeight();
 const contentMargin = 50;
 const contentContainerTop = contentMargin - statusBarHeight;
 const contentContainerHeight = (Dimensions.get('window').height - contentContainerTop - statusBarHeight);

@@ -15,6 +15,10 @@ const SignUpScreen = () => {
       <TextInput placeholder='Password' style={styles.textInput} />
       <TextInput placeholder='Password' style={styles.textInput} />
       <TextInput placeholder='Password' style={styles.textInput} />
+      <TextInput placeholder='Password' style={styles.textInput} />
+      <TextInput placeholder='Password' style={styles.textInput} />
+      <TextInput placeholder='Password' style={styles.textInput} />
+      <TextInput placeholder='Password' style={styles.textInput} />
       <TextInput placeholder='Password-End' style={styles.textInput} />
     </Layout>
   );
@@ -25,6 +29,7 @@ const styles = StyleSheet.create({
     borderColor: R.colors.GREY,
     borderWidth: 1,
     marginBottom: 20,
+    height: 45,
   },
 });
 

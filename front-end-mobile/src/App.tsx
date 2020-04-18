@@ -18,7 +18,6 @@ import SplashScreen from 'react-native-splash-screen';
 import RootStack, { IRootStack } from './RootStack';
 import { rootNavigationRef } from 'lib/utils/navigation';
 import store from './store';
-import StatusBar from 'res/components/statusBar/StatusBar';
 
 const App = () => {
   const rootStackRef = useRef<IRootStack>(null);
@@ -42,7 +41,6 @@ const App = () => {
   return (
     <Provider store={store}>
       <NavigationContainer ref={rootNavigationRef}>
-        <StatusBar barStyle='dark-content' />
         <RootStack ref={rootStackRef} />
       </NavigationContainer>
     </Provider>
