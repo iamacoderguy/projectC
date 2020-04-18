@@ -1,5 +1,13 @@
 import React from 'react';
-import { View, Dimensions, Image, Text, StatusBar, StyleSheet } from 'react-native';
+import { 
+  View,
+  Dimensions, 
+  Image, 
+  Text, 
+  StatusBar, 
+  StyleSheet, 
+  SafeAreaView, 
+} from 'react-native';
 import R from 'res/R';
 
 type LayoutProps = {
@@ -10,7 +18,8 @@ type LayoutProps = {
 const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
   return (
     <>
-      <StatusBar backgroundColor={R.colors.YELLOW} />
+      <StatusBar backgroundColor={R.colors.YELLOW} barStyle={'dark-content'} />
+      <SafeAreaView style={styles.safeArea} />
       <View style={styles.container}>
         <View style={styles.backgroundTopContainer}>
           <View style={styles.backgroundTopRectangle} />
@@ -31,6 +40,10 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
 const backgroundTopHeight = 0.7;
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 0,
+    backgroundColor: R.colors.YELLOW,
+  },
   container: {
     flex: 1,
     backgroundColor: R.colors.WHITE,
@@ -78,6 +91,13 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     backgroundColor: R.colors.WHITE,
     elevation: 5,
+    shadowOffset: {
+      width: 0, // X
+      height: 10, // Y
+    },
+    shadowRadius: 5, // Blur
+    shadowColor: R.colors.BLACK,
+    shadowOpacity: 0.25,
     borderRadius: 25,
   },
 });

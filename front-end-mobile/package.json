@@ -7,6 +7,7 @@
     "android:clean": "cd android && gradlew clean",
     "ios": "react-native run-ios --scheme buzz.development",
     "ios:clean": "cd ios && xcodebuild clean",
+    "ios:install": "cd ios && pod install",
     "ios:update": "cd ios && pod update && pod install",
     "start": "react-native start",
     "test": "jest",

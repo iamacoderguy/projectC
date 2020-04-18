@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TextInput } from 'react-native';
+import { TextInput } from 'react-native';
 import Layout from '../views/Layout';
 import R from 'res/R';
 
