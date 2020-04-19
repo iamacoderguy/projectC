@@ -8,6 +8,7 @@
   "authentication_signUp_signUpButton": "Sign up",
   "authentication_components_show": "Show",
   "authentication_components_hide": "Hide",
+  "authentication_components_or": "Or",
   "inAppTabs_activitiesLabel": "Activities",
   "inAppTabs_buzzLabel": "Buzz",
   "inAppTabs_profileLabel": "Profile"

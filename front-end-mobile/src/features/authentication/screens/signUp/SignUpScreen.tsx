@@ -10,6 +10,7 @@ import R from 'res/R';
 import TextInput from 'res/components/textInput/TextInput';
 import Button from 'res/components/button/Button';
 import PasswordInputWithAction from 'features/authentication/components/passwordInputWithAction/PasswordInputWithAction';
+import SeparateLine from 'features/authentication/components/separateLine/SeparateLine';
 
 const strings = R.strings.authentication.signUp;
 const dimens = R.dimens.authentication;
@@ -44,9 +45,7 @@ const SignUpScreen = () => {
             onPress={() => { }} />
         </View>
         {/* OR component */}
-        <View style={styles.OR}>
-
-        </View>
+        <SeparateLine style={styles.OR} />
         <View style={styles.socialSignUpContainer}>
           <Button onPress={() => { }} title='something' />
         </View>

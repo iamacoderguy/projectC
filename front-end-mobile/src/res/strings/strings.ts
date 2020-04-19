@@ -37,6 +37,7 @@ export const strings = {
     components: {
       show: () => _localizer.t('authentication_components_show'),
       hide: () => _localizer.t('authentication_components_hide'),
+      or: () => _localizer.t('authentication_components_or'),
     },
   },
   inAppTabs: {
