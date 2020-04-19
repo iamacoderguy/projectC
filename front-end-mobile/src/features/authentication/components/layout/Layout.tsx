@@ -17,6 +17,7 @@ import { getStatusBarHeight } from 'react-native-status-bar-height';
 enum Theme {
   OutsideScrolling = 0,
   InsideScrolling = 1,
+  InsideScrollingWithMaxHeight = 2,
 }
 
 type LayoutProps = {
@@ -26,7 +27,7 @@ type LayoutProps = {
 }
 
 const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
-  const [theme, changeTheme] = useState(Theme.OutsideScrolling);
+  const [theme, changeTheme] = useState(Theme.InsideScrollingWithMaxHeight);
 
   const _handleOnLogoPress = () => {
     const themeCount = Object.keys(Theme).length / 2;
@@ -67,7 +68,6 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
         );
 
       case Theme.OutsideScrolling:
-      default:
         return (
           <View style={styleSheetOutsideScrolling.contentContainer}>
             <ScrollView
@@ -81,6 +81,24 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
                 {props.children}
               </View>
             </ScrollView>
+          </View>
+        );
+
+      case Theme.InsideScrollingWithMaxHeight:
+      default:
+        return (
+          <View style={styleSheetInsideScrolling.contentContainer}>
+            {_renderLogoAndTitle(props)}
+            <View style={styleSheetInsideScrollingWithMaxHeight.contentInnerContainer} >
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                  ...styleSheetInsideScrollingWithMaxHeight.scrollViewContainerStyle,
+                  ...(props.contentContainerStyle as object),
+                }}>
+                {props.children}
+              </ScrollView>
+            </View>
           </View>
         );
     }
@@ -108,6 +126,8 @@ const contentContainerHeight = (Dimensions.get('window').height - statusBarHeigh
 const logoHeight = 80;
 const titleHeight = Number(R.palette.title.height);
 const contentSpace = 20;
+const contentInnerContainerBorderRadius = 25;
+const scrollViewPadding = 10;
 
 const styles = StyleSheet.create({
   container: {
@@ -151,7 +171,7 @@ const styles = StyleSheet.create({
   contentInnerContainer: {
     width: '100%',
     backgroundColor: R.colors.WHITE,
-    borderRadius: 25,
+    borderRadius: contentInnerContainerBorderRadius,
     shadowOffset: {
       width: 0, // X
       height: 10, // Y
@@ -162,6 +182,26 @@ const styles = StyleSheet.create({
   },
   scrollViewContainerStyle: {
     alignItems: 'center',
+  },
+});
+
+const styleSheetOutsideScrolling = StyleSheet.create({
+  contentContainer: {
+    ...styles.contentContainer,
+    paddingHorizontal: 25,
+  },
+  contentInnerContainer: {
+    ...styles.contentInnerContainer,
+    paddingHorizontal: 35,
+    paddingBottom: 35,
+    paddingTop: 35,
+    elevation: 8,
+  },
+  scrollViewContainerStyle: {
+    ...styles.scrollViewContainerStyle,
+    paddingHorizontal: 10,
+    paddingBottom: contentMargin,
+    paddingTop: contentContainerPaddingTop,
   },
 });
 
@@ -176,33 +216,25 @@ const styleSheetInsideScrolling = StyleSheet.create({
     ...styles.contentInnerContainer,
     maxHeight: contentContainerHeight - (contentContainerPaddingTop + logoHeight + titleHeight + contentSpace * 2 + contentMargin),
     paddingHorizontal: 25,
-    paddingBottom: 20,
-    paddingTop: 40,
+    paddingBottom: 35,
+    paddingTop: 35,
     elevation: 10,
   },
   scrollViewContainerStyle: {
     ...styles.scrollViewContainerStyle,
-    padding: 10,
+    padding: scrollViewPadding,
+    paddingTop: 0,
   },
 });
 
-const styleSheetOutsideScrolling = StyleSheet.create({
-  contentContainer: {
-    ...styles.contentContainer,
-    paddingHorizontal: 25,
-  },
+const styleSheetInsideScrollingWithMaxHeight = StyleSheet.create({
   contentInnerContainer: {
-    ...styles.contentInnerContainer,
-    paddingHorizontal: 35,
-    paddingBottom: 30,
-    paddingTop: 50,
-    elevation: 8,
+    ...styleSheetInsideScrolling.contentInnerContainer,
+    maxHeight: contentContainerHeight - (contentContainerPaddingTop + logoHeight + titleHeight + contentSpace * 2) + contentInnerContainerBorderRadius + scrollViewPadding,
   },
   scrollViewContainerStyle: {
-    ...styles.scrollViewContainerStyle,
-    paddingHorizontal: 10,
+    ...styleSheetInsideScrolling.scrollViewContainerStyle,
     paddingBottom: contentMargin,
-    paddingTop: contentContainerPaddingTop,
   },
 });
 
