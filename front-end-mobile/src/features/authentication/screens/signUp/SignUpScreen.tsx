@@ -1,6 +1,6 @@
 import React from 'react';
 import { TextInput, StyleSheet } from 'react-native';
-import Layout from '../views/Layout';
+import Layout from '../../views/Layout';
 import R from 'res/R';
 
 const strings = R.strings.authentication.signUp;

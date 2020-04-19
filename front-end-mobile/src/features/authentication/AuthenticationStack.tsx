@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { SignInScreen } from './signIn';
-import { SignUpScreen } from './signUp';
-import { ForgotPasswordScreen } from './forgotPassword';
 import { connect } from 'react-redux';
 import { mapStateToProps, mapDispatchToProps } from './AuthenticationStack.container';
+import SignInScreen from './screens/signIn/SignInScreen';
+import SignUpScreen from './screens/signUp/SignUpScreen';
+import ForgotPasswordScreen from './screens/forgotPassword/ForgotPasswordScreen';
 
 const Stack = createStackNavigator();
 
