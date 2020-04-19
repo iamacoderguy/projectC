@@ -28,7 +28,11 @@ export const strings = {
     },
     signUp: {
       title: () => _localizer.t('authentication_signUp_title'),
-    }
+      usernamePlaceholder: () => _localizer.t('authentication_signUp_usernamePlaceholder'),
+      displayNamePlaceholder: () => _localizer.t('authentication_signUp_displayNamePlaceholder'),
+      passwordPlaceholder: () => _localizer.t('authentication_signUp_passwordPlaceholder'),
+      confirmPasswordPlaceholder: () => _localizer.t('authentication_signUp_confirmPasswordPlaceholder'),
+    },
   },
   inAppTabs: {
     activitiesLabel: () => _localizer.t('inAppTabs_activitiesLabel'),

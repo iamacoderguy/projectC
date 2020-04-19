@@ -6,6 +6,8 @@ import {
   Text,
   StyleSheet,
   ScrollView,
+  StyleProp,
+  ViewStyle,
 } from 'react-native';
 import R from 'res/R';
 import StatusBar from 'res/components/statusBar/StatusBar';
@@ -14,6 +16,8 @@ import { getStatusBarHeight } from 'react-native-status-bar-height';
 type LayoutProps = {
   children: React.ReactNode;
   title: string;
+  style?: StyleProp<ViewStyle>;
+  contentContainerStyle?: StyleProp<ViewStyle>;
 }
 
 const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
@@ -29,7 +33,9 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
           <Image source={R.images.ic_black_yellow} style={styles.contentImage} />
           <Text style={styles.contentTitle} >{props.title}</Text>
           <View style={styles.contentInnerContainer} >
-            <ScrollView style={styles.contentInnerScrollView} >
+            <ScrollView
+              style={{ ...styles.contentInnerScrollView, ...(props.style as object) }}
+              contentContainerStyle={{ ...styles.contentInnerScrollViewContainerStyle, ...(props.contentContainerStyle as object) }} >
               {props.children}
             </ScrollView>
           </View>
@@ -108,6 +114,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
   },
   contentInnerScrollView: {},
+  contentInnerScrollViewContainerStyle: {
+    alignItems: 'center',
+  },
 });
 
 export default Layout;

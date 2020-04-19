@@ -1,7 +1,9 @@
 import { StyleSheet, TextStyle, Platform } from 'react-native';
+import colors from './colors';
 
 type Style = {
-  title: TextStyle
+  title: TextStyle;
+  normal: TextStyle;
 }
 
 const palette = StyleSheet.create<Style>({
@@ -14,6 +16,13 @@ const palette = StyleSheet.create<Style>({
     }),
     fontWeight: 'bold',
     textTransform: 'uppercase',
+    color: colors.BLACK,
+  },
+  normal: {
+    fontSize: 14,
+    fontWeight: 'normal',
+    textTransform: 'none',
+    color: colors.BLACK,
   },
 });
 
