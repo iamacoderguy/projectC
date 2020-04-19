@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
     height: 45,
     borderRadius: 5,
     paddingHorizontal: paddingHorizontal,
-    marginBottom: 10,
     alignItems: 'center',
   },
   inputContainer: {

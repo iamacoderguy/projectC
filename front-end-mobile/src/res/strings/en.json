@@ -5,6 +5,7 @@
   "authentication_signUp_displayNamePlaceholder": "Display name",
   "authentication_signUp_passwordPlaceholder": "Password",
   "authentication_signUp_confirmPasswordPlaceholder": "Confirm password",
+  "authentication_signUp_signUpButton": "Sign up",
   "inAppTabs_activitiesLabel": "Activities",
   "inAppTabs_buzzLabel": "Buzz",
   "inAppTabs_profileLabel": "Profile"

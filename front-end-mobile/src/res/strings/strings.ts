@@ -32,6 +32,7 @@ export const strings = {
       displayNamePlaceholder: () => _localizer.t('authentication_signUp_displayNamePlaceholder'),
       passwordPlaceholder: () => _localizer.t('authentication_signUp_passwordPlaceholder'),
       confirmPasswordPlaceholder: () => _localizer.t('authentication_signUp_confirmPasswordPlaceholder'),
+      signUpButton: () => _localizer.t('authentication_signUp_signUpButton'),
     },
   },
   inAppTabs: {
