@@ -103,8 +103,8 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
 const circleDiameter = Dimensions.get('window').width * 0.7;
 const statusBarHeight = getStatusBarHeight();
 const contentMargin = 50;
-const contentContainerTop = contentMargin - statusBarHeight;
-const contentContainerHeight = (Dimensions.get('window').height - contentContainerTop - statusBarHeight);
+const contentContainerPaddingTop = contentMargin - statusBarHeight;
+const contentContainerHeight = (Dimensions.get('window').height - statusBarHeight);
 const logoHeight = 80;
 const titleHeight = Number(R.palette.title.height);
 const contentSpace = 20;
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: '100%',
     height: contentContainerHeight,
-    top: contentContainerTop,
+    top: 0,
   },
   contentImage: {
     height: logoHeight,
@@ -152,7 +152,6 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: R.colors.WHITE,
     borderRadius: 25,
-    elevation: 10,
     shadowOffset: {
       width: 0, // X
       height: 10, // Y
@@ -171,13 +170,15 @@ const styleSheetInsideScrolling = StyleSheet.create({
     ...styles.contentContainer,
     paddingHorizontal: 35,
     alignItems: 'center',
+    paddingTop: contentContainerPaddingTop,
   },
   contentInnerContainer: {
     ...styles.contentInnerContainer,
-    maxHeight: contentContainerHeight - (logoHeight + titleHeight + contentSpace * 2 + contentMargin),
+    maxHeight: contentContainerHeight - (contentContainerPaddingTop + logoHeight + titleHeight + contentSpace * 2 + contentMargin),
     paddingHorizontal: 25,
     paddingBottom: 20,
     paddingTop: 40,
+    elevation: 10,
   },
   scrollViewContainerStyle: {
     ...styles.scrollViewContainerStyle,
@@ -195,11 +196,13 @@ const styleSheetOutsideScrolling = StyleSheet.create({
     paddingHorizontal: 35,
     paddingBottom: 30,
     paddingTop: 50,
+    elevation: 8,
   },
   scrollViewContainerStyle: {
     ...styles.scrollViewContainerStyle,
     paddingHorizontal: 10,
     paddingBottom: contentMargin,
+    paddingTop: contentContainerPaddingTop,
   },
 });
 
