@@ -99,9 +99,9 @@ const styles = StyleSheet.create({
   contentInnerContainer: {
     maxHeight: contentContainerHeight - (logoHeight + titleHeight + contentSpace * 2 + contentMargin),
     width: '100%',
-    paddingHorizontal: 35,
-    paddingBottom: 25,
-    paddingTop: 50,
+    paddingHorizontal: 25,
+    paddingBottom: 20,
+    paddingTop: 40,
     backgroundColor: R.colors.WHITE,
     borderRadius: 25,
     elevation: 10,
