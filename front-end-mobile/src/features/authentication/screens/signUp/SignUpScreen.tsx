@@ -44,10 +44,20 @@ const SignUpScreen = () => {
             title={strings.signUpButton()}
             onPress={() => { }} />
         </View>
-        {/* OR component */}
+
         <SeparateLine style={styles.OR} />
+
         <View style={styles.socialSignUpContainer}>
-          <Button onPress={() => { }} title='something' />
+          <Button
+            style={styles.socialButton}
+            title='Sign up with GitHub'
+            imageSource={R.images.ic_github}
+            onPress={() => { }} />
+          <Button
+            style={styles.socialButton}
+            title='Sign up with Google'
+            imageSource={R.images.ic_google}
+            onPress={() => { }} />
         </View>
       </View>
     </Layout>
@@ -74,13 +84,17 @@ const styles = StyleSheet.create({
       ios: 250,
       android: 240,
     }),
-    marginTop: 20 - dimens.inputMargin,
-    marginBottom: 20,
+    marginTop: dimens.itemMargin - dimens.inputMargin,
+    marginBottom: dimens.itemMargin,
   },
   OR: {
-    marginVertical: 35,
+    marginTop: dimens.separateLineMargin,
+    marginBottom: dimens.separateLineMargin - dimens.itemMargin,
   },
   signUpButton: {},
+  socialButton: {
+    marginTop: dimens.itemMargin,
+  },
 });
 
 export default SignUpScreen;

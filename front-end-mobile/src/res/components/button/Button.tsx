@@ -5,33 +5,42 @@ import {
   TouchableOpacityProps,
   StyleSheet,
   Text,
+  ImageSourcePropType,
+  Image,
 } from 'react-native';
 import R from 'res/R';
 
 type ButtonProps = TouchableOpacityProps & {
   title: string;
+  imageSource?: ImageSourcePropType;
 }
 
 const Button: React.FC<ButtonProps> = (props: ButtonProps) => {
-  const { style, title, ...otherProps } = props;
+  const { style, title, imageSource, ...otherProps } = props;
   return (
     <TouchableOpacity
-      style={{ ...styles.container(props.disabled), ...(style as object) }}
+      style={{ ...styles.container(props.disabled, imageSource), ...(style as object) }}
       {...otherProps}>
+      {imageSource && (
+        <Image
+          source={imageSource}
+          style={styles.image} />
+      )}
       <Text style={styles.text}>{title}</Text>
     </TouchableOpacity>
   );
 };
 
-const styleSheet = (enabled?: boolean) => StyleSheet.create({
+const styleSheet = (enabled?: boolean, imageSource?: ImageSourcePropType) => StyleSheet.create({
   container: {
+    flexDirection: 'row',
     height: 45,
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
     ...(
       enabled && {
-        backgroundColor: R.colors.YELLOW,
+        backgroundColor: imageSource ? R.colors.WHITE : R.colors.YELLOW,
         elevation: 4,
         shadowOffset: {
           width: 0, // X
@@ -50,11 +59,15 @@ const styleSheet = (enabled?: boolean) => StyleSheet.create({
   text: {
     ...R.palette.normal,
   },
+  image: {
+    marginRight: 15,
+  },
 });
 
 const styles = {
-  container: (disabled?: boolean) => styleSheet(!disabled).container,
+  container: (disabled?: boolean, imageSource?: ImageSourcePropType) => styleSheet(!disabled, imageSource).container,
   text: styleSheet().text,
+  image: styleSheet().image,
 };
 
 export default Button;
