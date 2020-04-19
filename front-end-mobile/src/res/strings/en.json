@@ -6,6 +6,8 @@
   "authentication_signUp_passwordPlaceholder": "Password",
   "authentication_signUp_confirmPasswordPlaceholder": "Confirm password",
   "authentication_signUp_signUpButton": "Sign up",
+  "authentication_components_show": "Show",
+  "authentication_components_hide": "Hide",
   "inAppTabs_activitiesLabel": "Activities",
   "inAppTabs_buzzLabel": "Buzz",
   "inAppTabs_profileLabel": "Profile"

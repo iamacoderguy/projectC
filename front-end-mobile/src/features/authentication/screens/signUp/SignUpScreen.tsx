@@ -71,7 +71,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     textAlign: 'center',
     maxWidth: Platform.select({
-      ios: 0,
+      // it depends on action content and font size
+      ios: 250,
       android: 240,
     }),
     marginTop: 20 - dimens.inputMargin,

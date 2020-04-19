@@ -37,7 +37,7 @@ const styleSheet = (enabled?: boolean) => StyleSheet.create({
           width: 0, // X
           height: 2, // Y
         },
-        shadowRadius: 4, // Blur
+        shadowRadius: 2, // Blur
         shadowColor: R.colors.BLACK,
         shadowOpacity: 0.25,
       }),

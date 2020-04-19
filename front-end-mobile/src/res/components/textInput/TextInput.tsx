@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderColor: R.colors.GREY,
     borderWidth: 1,
-    height: 45,
+    height: R.dimens.inputHeight,
     borderRadius: 5,
     paddingHorizontal: paddingHorizontal,
     alignItems: 'center',
@@ -46,6 +46,8 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexShrink: 1,
     flexDirection: 'row',
+    height: '100%',
+    width: '100%',
   },
   actionContainer: {
     flexGrow: 1,

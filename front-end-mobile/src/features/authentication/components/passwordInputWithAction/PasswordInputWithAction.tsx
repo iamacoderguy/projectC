@@ -8,9 +8,12 @@ import {
   ViewStyle,
   TextStyle,
   StyleSheet,
+  Platform,
 } from 'react-native';
 import TextInput from 'res/components/textInput/TextInput';
 import R from 'res/R';
+
+const strings = R.strings.authentication.components;
 
 type PasswordInputWithActionProps = TextInputProps & {
   isShown?: boolean;
@@ -23,7 +26,9 @@ const PasswordInputWithAction: React.FC<PasswordInputWithActionProps> = (props: 
     <TextInput secureTextEntry={!isShown} {...otherProps} >
       <View style={styles.actionContainer}>
         <TouchableWithoutFeedback onPress={props.onPress} >
-          <Text style={styles.actionText}>{props.isShown ? 'Hide' : 'Show'}</Text>
+          <Text style={styles.actionText}>
+            {props.isShown ? strings.hide() : strings.show()}
+          </Text>
         </TouchableWithoutFeedback>
       </View>
     </TextInput>
@@ -37,12 +42,17 @@ type Style = {
 
 const styles = StyleSheet.create<Style>({
   actionContainer: {
-    minWidth: 40,
-    alignItems: 'center',
+    minWidth: Platform.select({
+      // it depends on action content and font size
+      ios: 42,
+      android: 40,
+    }),
+    alignItems: 'flex-end',
   },
   actionText: {
     ...R.palette.normal,
     textDecorationLine: 'underline',
+    lineHeight: R.dimens.inputHeight - 2,
   },
 });
 
