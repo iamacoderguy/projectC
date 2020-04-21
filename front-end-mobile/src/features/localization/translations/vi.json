@@ -1,6 +1,18 @@
 {
-  "authentication_signIn_signInButtonTitle": "Đăng Nhập",
-
+  "authentication_signIn_signInButtonTitle": "Đăng nhập",
+  "authentication_signUp_title": "Đăng ký",
+  "authentication_signUp_usernamePlaceholder": "Tên đăng nhập",
+  "authentication_signUp_displayNamePlaceholder": "Tên hiển thị",
+  "authentication_signUp_passwordPlaceholder": "Mật khẩu",
+  "authentication_signUp_confirmPasswordPlaceholder": "Xác nhận mật khẩu",
+  "authentication_signUp_signUpButton": "Đăng ký",
+  "authentication_signUp_signUpWithGithubButton": "Đăng ký bằng GitHub",
+  "authentication_signUp_signUpWithGoogleButton": "Đăng ký bằng Google",
+  "authentication_signUp_agreeWithTermsOfService": "Bằng việc nhấn vào bất kỳ nút Đăng ký nào dưới đây, tôi đồng ý với <_các điều khoản dịch vụ của ứng dụng_>.",
+  "authentication_signUp_termsOfServiceLink": "https://policies.google.com/terms?hl=vi-VN",
+  "authentication_components_show": "Hiện",
+  "authentication_components_hide": "Ẩn",
+  "authentication_components_or": "Hoặc",
   "inAppTabs_activitiesLabel": "Hoạt động",
   "inAppTabs_buzzLabel": "Buzz",
   "inAppTabs_profileLabel": "Hồ sơ"

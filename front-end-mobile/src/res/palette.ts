@@ -4,7 +4,17 @@ import colors from './colors';
 type Style = {
   title: TextStyle;
   normal: TextStyle;
+  hyperlink: TextStyle;
 }
+
+const shared = StyleSheet.create({
+  normal: {
+    fontSize: 14,
+    fontWeight: 'normal',
+    textTransform: 'none',
+    color: colors.BLACK,
+  },
+});
 
 const palette = StyleSheet.create<Style>({
   title: {
@@ -19,10 +29,11 @@ const palette = StyleSheet.create<Style>({
     color: colors.BLACK,
   },
   normal: {
-    fontSize: 14,
-    fontWeight: 'normal',
-    textTransform: 'none',
-    color: colors.BLACK,
+    ...shared.normal,
+  },
+  hyperlink: {
+    ...shared.normal,
+    textDecorationLine: 'underline',
   },
 });
 

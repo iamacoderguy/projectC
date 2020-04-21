@@ -35,12 +35,7 @@ const PasswordInputWithAction: React.FC<PasswordInputWithActionProps> = (props: 
   );
 };
 
-type Style = {
-  actionContainer: ViewStyle;
-  actionText: TextStyle;
-}
-
-const styles = StyleSheet.create<Style>({
+const styles = StyleSheet.create({
   actionContainer: {
     minWidth: Platform.select({
       // it depends on action content and font size
@@ -50,8 +45,7 @@ const styles = StyleSheet.create<Style>({
     alignItems: 'flex-end',
   },
   actionText: {
-    ...R.palette.normal,
-    textDecorationLine: 'underline',
+    ...R.palette.hyperlink,
     lineHeight: R.dimens.inputHeight - 2,
   },
 });
