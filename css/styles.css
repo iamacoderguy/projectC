@@ -54,6 +54,11 @@ main > .tagline {
 	font-weight: 100;
 }
 
+main > .taglineWithoutMargin {
+	font-size: 1.5rem;
+	font-weight: 100;
+}
+
 .icons-social i {
 	padding: 10px;
 }
@@ -67,4 +72,11 @@ main > .tagline {
 	margin-left: 0.675rem;;
 	width: 2.65rem;
 	height: 2.65rem;
+}
+
+img {
+	display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
 }
