@@ -1,5 +1,0 @@
-{
-  "dbConfig": {
-    "connectionString": "mongodb+srv://admin:<password>@cluster0-3r0bp.mongodb.net/dev?retryWrites=true"
-  }
-}
