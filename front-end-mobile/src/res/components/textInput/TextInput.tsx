@@ -1,4 +1,7 @@
-import React from 'react';
+import React, {
+  useImperativeHandle,
+  useRef,
+} from 'react';
 import {
   View,
   TextInput as TextInputRN,
@@ -7,16 +10,36 @@ import {
 } from 'react-native';
 import R from 'res/R';
 
-type TextInputProps = TextInputPropsRN & {
-  children?: React.ReactChild;
+export type TextInputRef = {
+  focus: () => void;
+  blur: () => void;
+  id: () => string | undefined;
 }
 
-const TextInput: React.FC<TextInputProps> = (props: TextInputProps) => {
-  const { style, children, ...otherProps } = props;
+export type TextInputProps = TextInputPropsRN & {
+  children?: React.ReactChild;
+  id?: string;
+};
+
+type PropsWithForwardedRef = TextInputProps & {
+  myForwardedRef: React.Ref<TextInputRef>;
+}
+
+const TextInput: React.FC<PropsWithForwardedRef> = (props: PropsWithForwardedRef) => {
+  const inputRef = useRef<TextInputRN>(null);
+  const { style, children, id, ...otherProps } = props;
+
+  useImperativeHandle(props.myForwardedRef, () => ({
+    focus: () => inputRef.current?.focus(),
+    blur: () => inputRef.current?.blur,
+    id: () => id,
+  }));
+
   return (
     <View style={{ ...styles.container, ...(style as object) }}>
       <View style={styles.inputContainer}>
         <TextInputRN
+          ref={inputRef}
           style={styles.textInput}
           placeholderTextColor={R.colors.GREY}
           {...otherProps} />
@@ -61,4 +84,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TextInput;
+// eslint-disable-next-line react/display-name
+export default React.forwardRef((props: TextInputProps, ref: React.Ref<TextInputRef>) => <TextInput {...props} myForwardedRef={ref} />);

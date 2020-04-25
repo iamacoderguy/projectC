@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
+import React, {
+  useState,
+  useRef,
+} from 'react';
 import {
   StyleSheet,
   View,
 } from 'react-native';
 import Layout from '../../components/layout/Layout';
 import R from 'res/R';
-import TextInput from 'res/components/textInput/TextInput';
+import TextInput, {
+  TextInputRef,
+} from 'res/components/textInput/TextInput';
 import Button from 'res/components/button/Button';
 import PasswordInputWithAction from 'features/authentication/components/passwordInputWithAction/PasswordInputWithAction';
 import SeparateLine from 'features/authentication/components/separateLine/SeparateLine';
@@ -16,25 +21,83 @@ const dimens = R.dimens.authentication;
 
 const SignUpScreen = () => {
   const [isPasswordShown, showPassword] = useState(false);
+  const inputRefs = useRef<Array<TextInputRef>>([]);
+
+  const _addInputRef = (ref: TextInputRef | null) => {
+    if (ref) {
+      inputRefs.current.push(ref);
+    }
+  };
+
+  const _clearInputRefs = () => {
+    inputRefs.current.splice(0, inputRefs.current.length);
+  };
+
+  const _goNext = (currentId: string) => {
+    const currentIndex = inputRefs.current.findIndex(
+      (txtInpt) => txtInpt.id() == currentId,
+    );
+
+    if (currentIndex == -1) {
+      return;
+    }
+
+    const nextIndex = currentIndex + 1;
+    if (nextIndex >= inputRefs.current.length) {
+      inputRefs.current[currentIndex].blur();
+    } else {
+      inputRefs.current[nextIndex].focus();
+    }
+  };
+
+  const _handleOnShowPressed = () => {
+    showPassword(!isPasswordShown);
+    _clearInputRefs();
+  };
 
   return (
     <Layout title={strings.title()}>
       <View style={styles.container}>
         <View style={styles.buzzSignUpContainer}>
           <TextInput
+            id={'usernameInput'}
+            ref={_addInputRef}
             style={styles.textInput}
-            placeholder={strings.usernamePlaceholder()} />
+            placeholder={strings.usernamePlaceholder()}
+            autoFocus
+            autoCapitalize='none'
+            returnKeyType='next'
+            onSubmitEditing={() => _goNext('usernameInput')}
+          />
           <TextInput
+            id={'displayNameInput'}
+            ref={_addInputRef}
             style={styles.textInput}
-            placeholder={strings.displayNamePlaceholder()} />
+            placeholder={strings.displayNamePlaceholder()}
+            autoCapitalize='words'
+            returnKeyType='next'
+            onSubmitEditing={() => _goNext('displayNameInput')}
+          />
           <PasswordInputWithAction
+            id={'passwordInput'}
+            ref={_addInputRef}
             style={styles.textInput}
             placeholder={strings.passwordPlaceholder()}
             isShown={isPasswordShown}
-            onPress={() => showPassword(!isPasswordShown)} />
-          <TextInput
-            style={styles.textInput}
-            placeholder={strings.confirmPasswordPlaceholder()} />
+            onPress={_handleOnShowPressed}
+            returnKeyType='next'
+            onSubmitEditing={() => _goNext('passwordInput')}
+          />
+          {!isPasswordShown &&
+            <TextInput
+              id={'confirmPasswordInput'}
+              ref={_addInputRef}
+              style={styles.textInput}
+              placeholder={strings.confirmPasswordPlaceholder()}
+              secureTextEntry
+              returnKeyType='next'
+              onSubmitEditing={() => _goNext('confirmPasswordInput')}
+            />}
           <Hyperlink
             style={styles.termsOfService}
             links={[strings.termsOfServiceLink()]}>
@@ -43,7 +106,8 @@ const SignUpScreen = () => {
           <Button
             style={styles.signUpButton}
             title={strings.signUpButton()}
-            onPress={() => { }} />
+            onPress={() => { }}
+          />
         </View>
 
         <SeparateLine style={styles.OR} />
@@ -53,12 +117,14 @@ const SignUpScreen = () => {
             style={styles.socialButton}
             title={strings.signUpWithGithubButton()}
             imageSource={R.images.ic_github}
-            onPress={() => { }} />
+            onPress={() => { }}
+          />
           <Button
             style={styles.socialButton}
             title={strings.signUpWithGoogleButton()}
             imageSource={R.images.ic_google}
-            onPress={() => { }} />
+            onPress={() => { }}
+          />
         </View>
       </View>
     </Layout>
