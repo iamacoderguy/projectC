@@ -67,6 +67,7 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
             <KeyboardAvoidingView
               style={styleSheetInsideScrolling.contentInnerContainer}
               behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+              keyboardVerticalOffset={Platform.OS == 'ios' ? keyboardVerticalOffset : 0}
             >
               <ScrollView
                 showsVerticalScrollIndicator={false}
@@ -109,6 +110,7 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
             <KeyboardAvoidingView
               style={styleSheetInsideScrollingWithMaxHeight.contentInnerContainer}
               behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+              keyboardVerticalOffset={Platform.OS == 'ios' ? keyboardVerticalOffset : 0}
             >
               <ScrollView
                 showsVerticalScrollIndicator={false}
