@@ -43,11 +43,15 @@ const SignUpScreen = () => {
 
   const _handleOnShowPressed = () => {
     showPassword(!isPasswordShown);
+    _handleOnStateChange();
+  };
+
+  const _handleOnStateChange = () => {
     _clearInputRefs();
   };
 
   return (
-    <Layout title={strings.title()}>
+    <Layout title={strings.title()} onStateChange={_handleOnStateChange}>
       <View style={styles.container}>
         <View style={styles.buzzSignUpContainer}>
           <TextInput
