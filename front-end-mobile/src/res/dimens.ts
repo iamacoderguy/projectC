@@ -5,6 +5,7 @@ const dimens = {
     separateLineMargin: 35,
   },
   inputHeight: 45,
+  inputPadding: 15,
 };
 
 export default dimens;

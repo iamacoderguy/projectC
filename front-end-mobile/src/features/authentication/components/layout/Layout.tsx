@@ -9,6 +9,8 @@ import {
   StyleProp,
   ViewStyle,
   TouchableWithoutFeedback,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import R from 'res/R';
 import StatusBar from 'res/components/statusBar/StatusBar';
@@ -54,7 +56,10 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
         return (
           <View style={styleSheetInsideScrolling.contentContainer}>
             {_renderLogoAndTitle(props)}
-            <View style={styleSheetInsideScrolling.contentInnerContainer} >
+            <KeyboardAvoidingView
+              style={styleSheetInsideScrolling.contentInnerContainer}
+              behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+            >
               <ScrollView
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{
@@ -63,13 +68,17 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
                 }}>
                 {props.children}
               </ScrollView>
-            </View>
+            </KeyboardAvoidingView>
           </View>
         );
 
       case Theme.OutsideScrolling:
         return (
-          <View style={styleSheetOutsideScrolling.contentContainer}>
+          <KeyboardAvoidingView
+            style={styleSheetOutsideScrolling.contentContainer}
+            behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={keyboardVerticalOffset}
+          >
             <ScrollView
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{
@@ -81,7 +90,7 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
                 {props.children}
               </View>
             </ScrollView>
-          </View>
+          </KeyboardAvoidingView>
         );
 
       case Theme.InsideScrollingWithMaxHeight:
@@ -89,7 +98,10 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
         return (
           <View style={styleSheetInsideScrolling.contentContainer}>
             {_renderLogoAndTitle(props)}
-            <View style={styleSheetInsideScrollingWithMaxHeight.contentInnerContainer} >
+            <KeyboardAvoidingView
+              style={styleSheetInsideScrollingWithMaxHeight.contentInnerContainer}
+              behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+            >
               <ScrollView
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{
@@ -98,7 +110,7 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
                 }}>
                 {props.children}
               </ScrollView>
-            </View>
+            </KeyboardAvoidingView>
           </View>
         );
     }
@@ -128,6 +140,7 @@ const titleHeight = Number(R.palette.title.height);
 const contentSpace = 20;
 const contentInnerContainerBorderRadius = 25;
 const scrollViewPadding = 10;
+const keyboardVerticalOffset = R.dimens.inputHeight - R.dimens.inputPadding;
 
 const styles = StyleSheet.create({
   container: {

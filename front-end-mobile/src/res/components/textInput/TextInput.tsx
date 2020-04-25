@@ -53,8 +53,6 @@ const TextInput: React.FC<PropsWithForwardedRef> = (props: PropsWithForwardedRef
   );
 };
 
-const paddingHorizontal = 15;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -63,7 +61,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     height: R.dimens.inputHeight,
     borderRadius: 5,
-    paddingHorizontal: paddingHorizontal,
+    paddingHorizontal: R.dimens.inputPadding,
     alignItems: 'center',
   },
   inputContainer: {
@@ -75,7 +73,7 @@ const styles = StyleSheet.create({
   actionContainer: {
     flexGrow: 1,
     flexDirection: 'row',
-    marginLeft: paddingHorizontal,
+    marginLeft: R.dimens.inputPadding,
   },
   textInput: {
     ...R.palette.normal,
