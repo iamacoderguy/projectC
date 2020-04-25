@@ -15,6 +15,7 @@ import Button from 'res/components/button/Button';
 import PasswordInputWithAction from 'features/authentication/components/passwordInputWithAction/PasswordInputWithAction';
 import SeparateLine from 'features/authentication/components/separateLine/SeparateLine';
 import Hyperlink from 'res/components/hyperlink';
+import { findNextIndex, clean } from 'lib/utils/array';
 
 const strings = R.strings.authentication.signUp;
 const dimens = R.dimens.authentication;
@@ -30,22 +31,12 @@ const SignUpScreen = () => {
   };
 
   const _clearInputRefs = () => {
-    inputRefs.current.splice(0, inputRefs.current.length);
+    clean(inputRefs.current);
   };
 
   const _goNext = (currentId: string) => {
-    const currentIndex = inputRefs.current.findIndex(
-      (txtInpt) => txtInpt.id() == currentId,
-    );
-
-    if (currentIndex == -1) {
-      return;
-    }
-
-    const nextIndex = currentIndex + 1;
-    if (nextIndex >= inputRefs.current.length) {
-      inputRefs.current[currentIndex].blur();
-    } else {
+    const nextIndex = findNextIndex(inputRefs.current, (txtInpt) => txtInpt.id() == currentId);
+    if (nextIndex != -1) {
       inputRefs.current[nextIndex].focus();
     }
   };
