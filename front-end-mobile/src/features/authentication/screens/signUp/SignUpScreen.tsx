@@ -15,7 +15,8 @@ import Button from 'res/components/button/Button';
 import PasswordInputWithAction from 'features/authentication/components/passwordInputWithAction/PasswordInputWithAction';
 import SeparateLine from 'features/authentication/components/separateLine/SeparateLine';
 import Hyperlink from 'res/components/hyperlink';
-import { findNextIndex, clean } from 'lib/utils/array';
+import { findNextIndex, clean, contain } from 'lib/utils/array';
+import { Formik } from 'formik';
 
 const strings = R.strings.authentication.signUp;
 const dimens = R.dimens.authentication;
@@ -23,9 +24,14 @@ const dimens = R.dimens.authentication;
 const SignUpScreen = () => {
   const [isPasswordShown, showPassword] = useState(false);
   const inputRefs = useRef<Array<TextInputRef>>([]);
+  const usernameId = 'username';
+  const displayNameId = 'displayName';
+  const passwordId = 'password';
+  const confirmPasswordId = 'confirmPassword';
+  const currentPredicate = (currentId: string | undefined) => (txtInpt: TextInputRef) => txtInpt.id() == currentId;
 
   const _addInputRef = (ref: TextInputRef | null) => {
-    if (ref) {
+    if (ref && !contain(inputRefs.current, currentPredicate(ref.id()))) {
       inputRefs.current.push(ref);
     }
   };
@@ -34,8 +40,8 @@ const SignUpScreen = () => {
     clean(inputRefs.current);
   };
 
-  const _goNext = (currentId: string) => {
-    const nextIndex = findNextIndex(inputRefs.current, (txtInpt) => txtInpt.id() == currentId);
+  const _goNext = (currentId: string) => () => {
+    const nextIndex = findNextIndex(inputRefs.current, currentPredicate(currentId));
     if (nextIndex != -1) {
       inputRefs.current[nextIndex].focus();
     }
@@ -43,67 +49,92 @@ const SignUpScreen = () => {
 
   const _handleOnShowPressed = () => {
     showPassword(!isPasswordShown);
-    _handleOnStateChange();
+    _handleOnLayoutChange();
   };
 
-  const _handleOnStateChange = () => {
+  const _handleOnLayoutChange = () => {
     _clearInputRefs();
   };
 
   return (
-    <Layout title={strings.title()} onStateChange={_handleOnStateChange}>
+    <Layout title={strings.title()} onLayoutChange={_handleOnLayoutChange}>
       <View style={styles.container}>
-        <View style={styles.buzzSignUpContainer}>
-          <TextInput
-            id={'usernameInput'}
-            ref={_addInputRef}
-            style={styles.textInput}
-            placeholder={strings.usernamePlaceholder()}
-            autoFocus
-            autoCapitalize='none'
-            returnKeyType='next'
-            onSubmitEditing={() => _goNext('usernameInput')}
-          />
-          <TextInput
-            id={'displayNameInput'}
-            ref={_addInputRef}
-            style={styles.textInput}
-            placeholder={strings.displayNamePlaceholder()}
-            autoCapitalize='words'
-            returnKeyType='next'
-            onSubmitEditing={() => _goNext('displayNameInput')}
-          />
-          <PasswordInputWithAction
-            id={'passwordInput'}
-            ref={_addInputRef}
-            style={styles.textInput}
-            placeholder={strings.passwordPlaceholder()}
-            isShown={isPasswordShown}
-            onPress={_handleOnShowPressed}
-            returnKeyType='next'
-            onSubmitEditing={() => _goNext('passwordInput')}
-          />
-          {!isPasswordShown &&
-            <TextInput
-              id={'confirmPasswordInput'}
-              ref={_addInputRef}
-              style={styles.textInput}
-              placeholder={strings.confirmPasswordPlaceholder()}
-              secureTextEntry
-              returnKeyType='next'
-              onSubmitEditing={() => _goNext('confirmPasswordInput')}
-            />}
-          <Hyperlink
-            style={styles.termsOfService}
-            links={[strings.termsOfServiceLink()]}>
-            {strings.agreeWithTermsOfService()}
-          </Hyperlink>
-          <Button
-            style={styles.signUpButton}
-            title={strings.signUpButton()}
-            onPress={() => { }}
-          />
-        </View>
+        <Formik
+          initialValues={{
+            [usernameId]: '',
+            [displayNameId]: '',
+            [passwordId]: '',
+            [confirmPasswordId]: '',
+          }}
+          onSubmit={values => console.warn(values)}
+        >
+          {
+            ({ handleChange, handleBlur, handleSubmit, values }) => (
+              <View style={styles.buzzSignUpContainer}>
+                <TextInput
+                  id={usernameId}
+                  ref={_addInputRef}
+                  style={styles.textInput}
+                  placeholder={strings.usernamePlaceholder()}
+                  autoFocus
+                  autoCapitalize='none'
+                  returnKeyType='next'
+                  onSubmitEditing={_goNext(usernameId)}
+                  onChangeText={handleChange(usernameId)}
+                  onBlur={handleBlur(usernameId)}
+                  value={values[usernameId]}
+                />
+                <TextInput
+                  id={displayNameId}
+                  ref={_addInputRef}
+                  style={styles.textInput}
+                  placeholder={strings.displayNamePlaceholder()}
+                  autoCapitalize='words'
+                  returnKeyType='next'
+                  onSubmitEditing={_goNext(displayNameId)}
+                  onChangeText={handleChange(displayNameId)}
+                  onBlur={handleBlur(displayNameId)}
+                  value={values[displayNameId]}
+                />
+                <PasswordInputWithAction
+                  id={passwordId}
+                  ref={_addInputRef}
+                  style={styles.textInput}
+                  placeholder={strings.passwordPlaceholder()}
+                  isShown={isPasswordShown}
+                  onPress={_handleOnShowPressed}
+                  returnKeyType='next'
+                  onSubmitEditing={_goNext(passwordId)}
+                  onChangeText={handleChange(passwordId)}
+                  onBlur={handleBlur(passwordId)}
+                  value={values[passwordId]}
+                />
+                {!isPasswordShown &&
+                  <TextInput
+                    id={confirmPasswordId}
+                    ref={_addInputRef}
+                    style={styles.textInput}
+                    placeholder={strings.confirmPasswordPlaceholder()}
+                    secureTextEntry
+                    returnKeyType='next'
+                    onSubmitEditing={_goNext(confirmPasswordId)}
+                    onChangeText={handleChange(confirmPasswordId)}
+                    onBlur={handleBlur(confirmPasswordId)}
+                    value={values[confirmPasswordId]}
+                  />}
+                <Hyperlink
+                  style={styles.termsOfService}
+                  links={[strings.termsOfServiceLink()]}>
+                  {strings.agreeWithTermsOfService()}
+                </Hyperlink>
+                <Button
+                  style={styles.signUpButton}
+                  title={strings.signUpButton()}
+                  onPress={handleSubmit}
+                />
+              </View>
+            )}
+        </Formik>
 
         <SeparateLine style={styles.OR} />
 

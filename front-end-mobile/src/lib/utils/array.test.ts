@@ -1,4 +1,4 @@
-import { findNextIndex, clean } from './array';
+import { findNextIndex, contain, clean } from './array';
 
 describe(`${findNextIndex.name}`, () => {
   it.each([
@@ -12,6 +12,24 @@ describe(`${findNextIndex.name}`, () => {
     
     // act
     const actual = findNextIndex(array, currentPredicate);
+
+    // assert
+    expect(actual).toEqual(expected);
+  });
+});
+
+describe(`${contain.name}`, () => {
+  it.each([
+    [['string1', 'string2', 'string3'], 'string1', true],
+    [['string1', 'string2', 'string3'], 'string2', true],
+    [['string1', 'string2', 'string3'], 'string3', true],
+    [['string1', 'string2', 'string3'], 'blah blah', false],
+  ])('array=%s, current=%s, expectedNext=%s', (array: string[], current: string, expected: boolean) => {
+    // arrange
+    const currentPredicate = (str: string) => str === current;
+    
+    // act
+    const actual = contain(array, currentPredicate);
 
     // assert
     expect(actual).toEqual(expected);

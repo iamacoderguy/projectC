@@ -26,7 +26,7 @@ type LayoutProps = {
   children: React.ReactNode;
   title: string;
   contentContainerStyle?: StyleProp<ViewStyle>;
-  onStateChange?: () => void;
+  onLayoutChange?: () => void;
 }
 
 const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
@@ -42,8 +42,8 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
 
   const _changeTheme = (nextTheme: number) => {
     changeTheme(nextTheme);
-    if (props.onStateChange) {
-      props.onStateChange();
+    if (props.onLayoutChange) {
+      props.onLayoutChange();
     }
   };
 

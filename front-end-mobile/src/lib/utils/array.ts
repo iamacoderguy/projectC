@@ -12,6 +12,10 @@ export function findNextIndex<T> (array: Array<T>, currentPredicate: (value: T, 
   return nextIndex;
 }
 
+export function contain<T> (array: Array<T>, predicate: (value: T, index: number, obj: T[]) => unknown) {
+  return array.findIndex(predicate) != -1;
+}
+
 export function clean<T> (array: Array<T>) {
   array.splice(0, array.length);
 }
