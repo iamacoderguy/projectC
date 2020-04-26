@@ -73,11 +73,12 @@ const SignUpScreen = () => {
           }}
           validationSchema={Yup.object({
             [usernameId]: Yup.string()
-              .max(15, 'Must be 15 characters or less')
-              .required('Required'),
+              .max(15, strings.validationMessageMaxLength(15))
+              .matches(/^[a-zA-Z@^$.!`\-#+'~_]+$/, strings.usernameValidationMessageCharactersAllowed('@^$.!`-#+\'~_'))
+              .required(strings.validationMessageRequired),
             [displayNameId]: Yup.string()
-              .max(15, 'Must be 15 characters or less')
-              .required('Required'),
+              .max(128, strings.validationMessageMaxLength(128))
+              .required(strings.validationMessageRequired),
             [passwordId]: Yup.string()
               .max(15, 'Must be 15 characters or less')
               .required('Required'),

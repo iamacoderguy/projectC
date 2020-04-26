@@ -1,4 +1,5 @@
 import * as oriStrings from './en.json';
+import { format } from 'lib/utils/string';
 
 export const oriTranslation = oriStrings;
 export type SKey = keyof typeof oriStrings;
@@ -37,6 +38,9 @@ export const strings = {
       signUpWithGoogleButton: () => _localizer.t('authentication_signUp_signUpWithGoogleButton'),
       agreeWithTermsOfService: () => _localizer.t('authentication_signUp_agreeWithTermsOfService'),
       termsOfServiceLink: () => _localizer.t('authentication_signUp_termsOfServiceLink'),
+      validationMessageRequired: () => _localizer.t('authentication_validationMessage_required'),
+      validationMessageMaxLength: (maxLength: number) => format(_localizer.t('authentication_validationMessage_maxLength'), maxLength),
+      usernameValidationMessageCharactersAllowed: (specialCharacters: string) => format(_localizer.t('authentication_username_validationMessage_charactersAllowed'), specialCharacters),
     },
     components: {
       show: () => _localizer.t('authentication_components_show'),

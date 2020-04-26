@@ -1,3 +1,10 @@
+export function isNullOrWhitespace(input: string | null | undefined) {
+  if (typeof input === 'undefined' || input == null) {
+    return true;
+  }
+  return input.replace(/\s/g, '').length < 1;
+}
+
 export const subString = (oriString: string, startWith: string, endWith: string) => {
   const subStrings = [];
   let iStart = oriString.indexOf(startWith);
@@ -13,4 +20,12 @@ export const subString = (oriString: string, startWith: string, endWith: string)
   }
 
   return subStrings;
+};
+
+export const format = (format: string, ...args: any[]) => {
+  if (isNullOrWhitespace(format)) {
+    return '';
+  }
+
+  return format.replace(/{(\d+)}/g, (match, index) => args[index] || '');
 };
