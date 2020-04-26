@@ -17,6 +17,7 @@ import SeparateLine from 'features/authentication/components/separateLine/Separa
 import Hyperlink from 'res/components/hyperlink';
 import { findNextIndex, clean, contain } from 'lib/utils/array';
 import { Formik } from 'formik';
+import * as Yup from 'yup';
 
 const strings = R.strings.authentication.signUp;
 const dimens = R.dimens.authentication;
@@ -57,7 +58,11 @@ const SignUpScreen = () => {
   };
 
   return (
-    <Layout title={strings.title()} onLayoutChange={_handleOnLayoutChange}>
+    <Layout
+      title={strings.title()}
+      onLayoutChange={_handleOnLayoutChange}
+      keyboardVerticalOffset={R.dimens.inputHeight - R.dimens.inputPadding}
+    >
       <View style={styles.container}>
         <Formik
           initialValues={{
@@ -66,10 +71,24 @@ const SignUpScreen = () => {
             [passwordId]: '',
             [confirmPasswordId]: '',
           }}
+          validationSchema={Yup.object({
+            [usernameId]: Yup.string()
+              .max(15, 'Must be 15 characters or less')
+              .required('Required'),
+            [displayNameId]: Yup.string()
+              .max(15, 'Must be 15 characters or less')
+              .required('Required'),
+            [passwordId]: Yup.string()
+              .max(15, 'Must be 15 characters or less')
+              .required('Required'),
+            [confirmPasswordId]: Yup.string()
+              .max(15, 'Must be 15 characters or less')
+              .required('Required'),
+          })}
           onSubmit={values => console.warn(values)}
         >
           {
-            ({ handleChange, handleBlur, handleSubmit, values }) => (
+            ({ handleChange, handleBlur, handleSubmit, values, touched, errors }) => (
               <View style={styles.buzzSignUpContainer}>
                 <TextInput
                   id={usernameId}
@@ -83,6 +102,10 @@ const SignUpScreen = () => {
                   onChangeText={handleChange(usernameId)}
                   onBlur={handleBlur(usernameId)}
                   value={values[usernameId]}
+                  error={{
+                    isError: !!(touched[usernameId] && errors[usernameId]),
+                    message: errors[usernameId],
+                  }}
                 />
                 <TextInput
                   id={displayNameId}
@@ -95,6 +118,10 @@ const SignUpScreen = () => {
                   onChangeText={handleChange(displayNameId)}
                   onBlur={handleBlur(displayNameId)}
                   value={values[displayNameId]}
+                  error={{
+                    isError: !!(touched[displayNameId] && errors[displayNameId]),
+                    message: errors[displayNameId],
+                  }}
                 />
                 <PasswordInputWithAction
                   id={passwordId}
@@ -108,6 +135,10 @@ const SignUpScreen = () => {
                   onChangeText={handleChange(passwordId)}
                   onBlur={handleBlur(passwordId)}
                   value={values[passwordId]}
+                  error={{
+                    isError: !!(touched[passwordId] && errors[passwordId]),
+                    message: errors[passwordId],
+                  }}
                 />
                 {!isPasswordShown &&
                   <TextInput
@@ -121,6 +152,10 @@ const SignUpScreen = () => {
                     onChangeText={handleChange(confirmPasswordId)}
                     onBlur={handleBlur(confirmPasswordId)}
                     value={values[confirmPasswordId]}
+                    error={{
+                      isError: !!(touched[confirmPasswordId] && errors[confirmPasswordId]),
+                      message: errors[confirmPasswordId],
+                    }}
                   />}
                 <Hyperlink
                   style={styles.termsOfService}

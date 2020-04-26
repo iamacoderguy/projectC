@@ -27,6 +27,7 @@ type LayoutProps = {
   title: string;
   contentContainerStyle?: StyleProp<ViewStyle>;
   onLayoutChange?: () => void;
+  keyboardVerticalOffset?: number;
 }
 
 const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
@@ -67,7 +68,11 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
             <KeyboardAvoidingView
               style={styleSheetInsideScrolling.contentInnerContainer}
               behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-              keyboardVerticalOffset={Platform.OS == 'ios' ? keyboardVerticalOffset : 0}
+              {...Platform.select({
+                ios: {
+                  keyboardVerticalOffset: props.keyboardVerticalOffset,
+                },
+              })}
             >
               <ScrollView
                 showsVerticalScrollIndicator={false}
@@ -86,7 +91,7 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
           <KeyboardAvoidingView
             style={styleSheetOutsideScrolling.contentContainer}
             behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-            keyboardVerticalOffset={keyboardVerticalOffset}
+            keyboardVerticalOffset={props.keyboardVerticalOffset}
           >
             <ScrollView
               showsVerticalScrollIndicator={false}
@@ -110,7 +115,11 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
             <KeyboardAvoidingView
               style={styleSheetInsideScrollingWithMaxHeight.contentInnerContainer}
               behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-              keyboardVerticalOffset={Platform.OS == 'ios' ? keyboardVerticalOffset : 0}
+              {...Platform.select({
+                ios: {
+                  keyboardVerticalOffset: props.keyboardVerticalOffset,
+                },
+              })}
             >
               <ScrollView
                 showsVerticalScrollIndicator={false}
@@ -150,7 +159,6 @@ const titleHeight = Number(R.palette.title.height);
 const contentSpace = 20;
 const contentInnerContainerBorderRadius = 25;
 const scrollViewPadding = 10;
-const keyboardVerticalOffset = R.dimens.inputHeight - R.dimens.inputPadding;
 
 const styles = StyleSheet.create({
   container: {

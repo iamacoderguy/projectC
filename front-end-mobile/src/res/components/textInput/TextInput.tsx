@@ -7,6 +7,7 @@ import {
   TextInput as TextInputRN,
   TextInputProps as TextInputPropsRN,
   StyleSheet,
+  Text,
 } from 'react-native';
 import R from 'res/R';
 
@@ -16,9 +17,15 @@ export type TextInputRef = {
   id: () => string | undefined;
 }
 
+type TextInputError = {
+  isError: boolean;
+  message?: string;
+}
+
 export type TextInputProps = TextInputPropsRN & {
   children?: React.ReactChild;
   id?: string;
+  error?: TextInputError;
 };
 
 type PropsWithForwardedRef = TextInputProps & {
@@ -27,7 +34,7 @@ type PropsWithForwardedRef = TextInputProps & {
 
 const TextInput: React.FC<PropsWithForwardedRef> = (props: PropsWithForwardedRef) => {
   const inputRef = useRef<TextInputRN>(null);
-  const { style, children, id, ...otherProps } = props;
+  const { style, children, id, error, ...otherProps } = props;
 
   useImperativeHandle(props.myForwardedRef, () => ({
     focus: () => inputRef.current?.focus(),
@@ -36,28 +43,33 @@ const TextInput: React.FC<PropsWithForwardedRef> = (props: PropsWithForwardedRef
   }));
 
   return (
-    <View style={{ ...styles.container, ...(style as object) }}>
-      <View style={styles.inputContainer}>
-        <TextInputRN
-          ref={inputRef}
-          style={styles.textInput}
-          placeholderTextColor={R.colors.GREY}
-          {...otherProps} />
-      </View>
-      {children && (
-        <View style={styles.actionContainer}>
-          {children}
+    <>
+      {(error && error.isError && error.message && <View>
+        <Text>{error.message}</Text>
+      </View>)}
+      <View style={{ ...styles.container(error), ...(style as object) }}>
+        <View style={styles.inputContainer}>
+          <TextInputRN
+            ref={inputRef}
+            style={styles.textInput}
+            placeholderTextColor={R.colors.GREY}
+            {...otherProps} />
         </View>
-      )}
-    </View>
+        {children && (
+          <View style={styles.actionContainer}>
+            {children}
+          </View>
+        )}
+      </View>
+    </>
   );
 };
 
-const styles = StyleSheet.create({
+const shared = (error?: TextInputError) => StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',
-    borderColor: R.colors.GREY,
+    borderColor: (error && error.isError) ? R.colors.SUNSET : R.colors.GREY,
     borderWidth: 1,
     height: R.dimens.inputHeight,
     borderRadius: 5,
@@ -81,6 +93,13 @@ const styles = StyleSheet.create({
     padding: 0,
   },
 });
+
+const styles = {
+  container: (error?: TextInputError) => shared(error).container,
+  inputContainer: shared().inputContainer,
+  actionContainer: shared().actionContainer,
+  textInput: shared().textInput,
+};
 
 // eslint-disable-next-line react/display-name
 export default React.forwardRef((props: TextInputProps, ref: React.Ref<TextInputRef>) => <TextInput {...props} myForwardedRef={ref} />);
