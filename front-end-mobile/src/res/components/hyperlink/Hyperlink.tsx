@@ -14,12 +14,13 @@ type HyperlinkProps = {
   linkStyle?: StyleProp<TextStyle>;
   links?: Array<string>;
   children: string;
+  disabled?: boolean;
 }
 
 const Hyperlink: React.FC<HyperlinkProps> = (props: HyperlinkProps) => {
   return (
     <HyperlinkRN
-      linkDefault={true}
+      linkDefault={!props.disabled}
       linkStyle={{ ...styles.linkStyle, ...(props.linkStyle as object) }}
       linkText={generateLinkTexts(props.children, props.links || [])}
     >

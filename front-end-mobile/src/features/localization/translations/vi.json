@@ -2,6 +2,7 @@
   "authentication_signIn_signInButtonTitle": "Đăng nhập",
   "authentication_signUp_title": "Đăng ký",
   "authentication_signUp_usernamePlaceholder": "Tên đăng nhập",
+  "authentication_signUp_emailPlaceholder": "Thư điện tử của bạn",
   "authentication_signUp_displayNamePlaceholder": "Tên hiển thị",
   "authentication_signUp_passwordPlaceholder": "Mật khẩu",
   "authentication_signUp_confirmPasswordPlaceholder": "Xác nhận mật khẩu",
@@ -14,6 +15,12 @@
   "authentication_components_hide": "Ẩn",
   "authentication_components_or": "Hoặc",
   "inAppTabs_activitiesLabel": "Hoạt động",
+  "authentication_validationMessage_required": "{0} là bắt buộc.",
+  "authentication_validationMessage_minLength": "{0} phải có ít nhất {1} ký tự.",
+  "authentication_validationMessage_maxLength": "{0} chỉ được tối đa {1} ký tự.",
+  "authentication_validationMessage_email": "{0} không hợp lệ.",
+  "authentication_validationMessage_charactersAllowed": "{0} chỉ được bao gồm các chữ cái hoặc {1}.",
+  "authentication_validationMessage_doesNotMatch": "{0} không khớp.",
   "inAppTabs_buzzLabel": "Buzz",
   "inAppTabs_profileLabel": "Hồ sơ"
 }

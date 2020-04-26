@@ -30,6 +30,7 @@ export const strings = {
     signUp: {
       title: () => _localizer.t('authentication_signUp_title'),
       usernamePlaceholder: () => _localizer.t('authentication_signUp_usernamePlaceholder'),
+      emailPlaceholder: () => _localizer.t('authentication_signUp_emailPlaceholder'),
       displayNamePlaceholder: () => _localizer.t('authentication_signUp_displayNamePlaceholder'),
       passwordPlaceholder: () => _localizer.t('authentication_signUp_passwordPlaceholder'),
       confirmPasswordPlaceholder: () => _localizer.t('authentication_signUp_confirmPasswordPlaceholder'),
@@ -38,9 +39,12 @@ export const strings = {
       signUpWithGoogleButton: () => _localizer.t('authentication_signUp_signUpWithGoogleButton'),
       agreeWithTermsOfService: () => _localizer.t('authentication_signUp_agreeWithTermsOfService'),
       termsOfServiceLink: () => _localizer.t('authentication_signUp_termsOfServiceLink'),
-      validationMessageRequired: () => _localizer.t('authentication_validationMessage_required'),
-      validationMessageMaxLength: (maxLength: number) => format(_localizer.t('authentication_validationMessage_maxLength'), maxLength),
-      usernameValidationMessageCharactersAllowed: (specialCharacters: string) => format(_localizer.t('authentication_username_validationMessage_charactersAllowed'), specialCharacters),
+      validationMessageRequired: (fieldName: string) => format(_localizer.t('authentication_validationMessage_required'), fieldName),
+      validationMessageMinLength: (fieldName: string, minLength: number) => format(_localizer.t('authentication_validationMessage_minLength'), fieldName, minLength),
+      validationMessageMaxLength: (fieldName: string, maxLength: number) => format(_localizer.t('authentication_validationMessage_maxLength'), fieldName, maxLength),
+      validationMessageEmail: (fieldName: string) => format(_localizer.t('authentication_validationMessage_email'), fieldName),
+      validationMessageCharactersAllowed: (fieldName: string, specialCharacters: string) => format(_localizer.t('authentication_validationMessage_charactersAllowed'), fieldName, specialCharacters),
+      validationMessageDoesNotMatch: (fieldName: string) => format(_localizer.t('authentication_validationMessage_doesNotMatch'), fieldName),
     },
     components: {
       show: () => _localizer.t('authentication_components_show'),

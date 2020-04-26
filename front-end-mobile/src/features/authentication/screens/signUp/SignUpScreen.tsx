@@ -18,14 +18,18 @@ import Hyperlink from 'res/components/hyperlink';
 import { findNextIndex, clean, contain } from 'lib/utils/array';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import Auth0 from 'react-native-auth0';
+import { User } from 'lib/types/user';
 
 const strings = R.strings.authentication.signUp;
 const dimens = R.dimens.authentication;
+const auth0 = new Auth0(R.config.AUTH0.credentials);
 
 const SignUpScreen = () => {
   const [isPasswordShown, showPassword] = useState(false);
   const inputRefs = useRef<Array<TextInputRef>>([]);
   const usernameId = 'username';
+  const emailId = 'email';
   const displayNameId = 'displayName';
   const passwordId = 'password';
   const confirmPasswordId = 'confirmPassword';
@@ -57,6 +61,24 @@ const SignUpScreen = () => {
     _clearInputRefs();
   };
 
+  const _createUser = async (user: User) => {
+    await auth0.auth
+      .createUser({
+        username: user.username,
+        email: user.email,
+        password: user.password,
+        connection: R.config.AUTH0.connections.database,
+        metadata: { displayName: user.displayName },
+      })
+      .then(success => {
+        console.log(success);
+        console.warn('Success' + 'New user created');
+      })
+      .catch(error => {
+        console.warn('Error' + error.json.description);
+      });
+  };
+
   return (
     <Layout
       title={strings.title()}
@@ -67,29 +89,49 @@ const SignUpScreen = () => {
         <Formik
           initialValues={{
             [usernameId]: '',
+            [emailId]: '',
             [displayNameId]: '',
             [passwordId]: '',
             [confirmPasswordId]: '',
           }}
           validationSchema={Yup.object({
             [usernameId]: Yup.string()
-              .max(15, strings.validationMessageMaxLength(15))
-              .matches(/^[a-zA-Z@^$.!`\-#+'~_]+$/, strings.usernameValidationMessageCharactersAllowed('@^$.!`-#+\'~_'))
-              .required(strings.validationMessageRequired),
+              .max(15, strings.validationMessageMaxLength(strings.usernamePlaceholder(), 15))
+              .matches(/^[a-zA-Z@^$.!`\-#+'~_]+$/, strings.validationMessageCharactersAllowed(strings.usernamePlaceholder(), '@^$.!`-#+\'~_'))
+              .required(strings.validationMessageRequired(strings.usernamePlaceholder())),
+            [emailId]: Yup.string()
+              .email(strings.validationMessageEmail(strings.emailPlaceholder()))
+              .required(strings.validationMessageRequired(strings.emailPlaceholder())),
             [displayNameId]: Yup.string()
-              .max(128, strings.validationMessageMaxLength(128))
-              .required(strings.validationMessageRequired),
+              .max(128, strings.validationMessageMaxLength(strings.displayNamePlaceholder(), 128)),
             [passwordId]: Yup.string()
-              .max(15, 'Must be 15 characters or less')
-              .required('Required'),
+              .min(8, strings.validationMessageMinLength(strings.passwordPlaceholder(), 8))
+              .required(strings.validationMessageRequired(strings.passwordPlaceholder())),
             [confirmPasswordId]: Yup.string()
-              .max(15, 'Must be 15 characters or less')
-              .required('Required'),
+              .min(8, strings.validationMessageMinLength(strings.confirmPasswordPlaceholder(), 8))
+              .required(strings.validationMessageRequired(strings.confirmPasswordPlaceholder())),
           })}
-          onSubmit={values => console.warn(values)}
+          onSubmit={async (values, { setErrors, setSubmitting }) => {
+            if (!isPasswordShown && values[passwordId] != values[confirmPasswordId]) {
+              setErrors({
+                confirmPassword: strings.validationMessageDoesNotMatch(strings.confirmPasswordPlaceholder()),
+              });
+
+              setSubmitting(false);
+              return;
+            }
+
+            await _createUser({
+              username: values[usernameId],
+              email: values[emailId],
+              displayName: values[displayNameId],
+              password: values[passwordId],
+            });
+            setSubmitting(false);
+          }}
         >
           {
-            ({ handleChange, handleBlur, handleSubmit, values, touched, errors }) => (
+            ({ handleChange, handleBlur, handleSubmit, values, touched, errors, isSubmitting, isValid }) => (
               <View style={styles.buzzSignUpContainer}>
                 <TextInput
                   id={usernameId}
@@ -106,6 +148,22 @@ const SignUpScreen = () => {
                   error={{
                     isError: !!(touched[usernameId] && errors[usernameId]),
                     message: errors[usernameId],
+                  }}
+                />
+                <TextInput
+                  id={emailId}
+                  ref={_addInputRef}
+                  style={styles.textInput}
+                  placeholder={strings.emailPlaceholder()}
+                  keyboardType='email-address'
+                  returnKeyType='next'
+                  onSubmitEditing={_goNext(emailId)}
+                  onChangeText={handleChange(emailId)}
+                  onBlur={handleBlur(emailId)}
+                  value={values[emailId]}
+                  error={{
+                    isError: !!(touched[emailId] && errors[emailId]),
+                    message: errors[emailId],
                   }}
                 />
                 <TextInput
@@ -160,13 +218,16 @@ const SignUpScreen = () => {
                   />}
                 <Hyperlink
                   style={styles.termsOfService}
-                  links={[strings.termsOfServiceLink()]}>
+                  links={[strings.termsOfServiceLink()]}
+                  disabled={isSubmitting}
+                >
                   {strings.agreeWithTermsOfService()}
                 </Hyperlink>
                 <Button
                   style={styles.signUpButton}
                   title={strings.signUpButton()}
                   onPress={handleSubmit}
+                  disabled={!isValid || isSubmitting}
                 />
               </View>
             )}
