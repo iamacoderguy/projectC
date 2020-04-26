@@ -44,9 +44,8 @@ const TextInput: React.FC<PropsWithForwardedRef> = (props: PropsWithForwardedRef
 
   return (
     <>
-      {(error && error.isError && error.message && <View>
-        <Text>{error.message}</Text>
-      </View>)}
+      {(error && error.isError && error.message &&
+        <Text style={styles.errorMessage}>{error.message}</Text>)}
       <View style={{ ...styles.container(error), ...(style as object) }}>
         <View style={styles.inputContainer}>
           <TextInputRN
@@ -92,6 +91,11 @@ const shared = (error?: TextInputError) => StyleSheet.create({
     flex: 1,
     padding: 0,
   },
+  errorMessage: {
+    ...R.palette.normal,
+    color: R.colors.SUNSET,
+    marginBottom: 5,
+  },
 });
 
 const styles = {
@@ -99,6 +103,7 @@ const styles = {
   inputContainer: shared().inputContainer,
   actionContainer: shared().actionContainer,
   textInput: shared().textInput,
+  errorMessage: shared().errorMessage,
 };
 
 // eslint-disable-next-line react/display-name
