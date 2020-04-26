@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Dimensions,
@@ -10,7 +10,7 @@ import {
   ViewStyle,
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
-  Platform,
+  Keyboard,
 } from 'react-native';
 import R from 'res/R';
 import StatusBar from 'res/components/statusBar/StatusBar';
@@ -32,6 +32,27 @@ type LayoutProps = {
 
 const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
   const [theme, changeTheme] = useState(Theme.InsideScrollingWithMaxHeight);
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardVisible(true);
+      },
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardVisible(false);
+      },
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, [theme]);
 
   const _handleOnLogoPress = () => {
     const themeCount = Object.keys(Theme).length / 2;
@@ -65,24 +86,21 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
         return (
           <View style={styleSheetInsideScrolling.contentContainer}>
             {_renderLogoAndTitle(props)}
-            <KeyboardAvoidingView
-              style={styleSheetInsideScrolling.contentInnerContainer}
-              behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-              {...Platform.select({
-                ios: {
-                  keyboardVerticalOffset: props.keyboardVerticalOffset,
-                },
-              })}
-            >
-              <ScrollView
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{
-                  ...styleSheetInsideScrolling.scrollViewContainerStyle,
-                  ...(props.contentContainerStyle as object),
-                }}>
-                {props.children}
-              </ScrollView>
-            </KeyboardAvoidingView>
+            <View style={styleSheetInsideScrolling.contentInnerContainer}>
+              <KeyboardAvoidingView
+                behavior={'padding'}
+                keyboardVerticalOffset={isKeyboardVisible ? 0 : 200}
+              >
+                <ScrollView
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={{
+                    ...styleSheetInsideScrolling.scrollViewContainerStyle,
+                    ...(props.contentContainerStyle as object),
+                  }}>
+                  {props.children}
+                </ScrollView>
+              </KeyboardAvoidingView>
+            </View>
           </View>
         );
 
@@ -90,8 +108,8 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
         return (
           <KeyboardAvoidingView
             style={styleSheetOutsideScrolling.contentContainer}
-            behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-            keyboardVerticalOffset={props.keyboardVerticalOffset}
+            behavior={'padding'}
+            keyboardVerticalOffset={isKeyboardVisible ? 0 : props.keyboardVerticalOffset}
           >
             <ScrollView
               showsVerticalScrollIndicator={false}
@@ -112,24 +130,21 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
         return (
           <View style={styleSheetInsideScrolling.contentContainer}>
             {_renderLogoAndTitle(props)}
-            <KeyboardAvoidingView
-              style={styleSheetInsideScrollingWithMaxHeight.contentInnerContainer}
-              behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-              {...Platform.select({
-                ios: {
-                  keyboardVerticalOffset: props.keyboardVerticalOffset,
-                },
-              })}
-            >
-              <ScrollView
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{
-                  ...styleSheetInsideScrollingWithMaxHeight.scrollViewContainerStyle,
-                  ...(props.contentContainerStyle as object),
-                }}>
-                {props.children}
-              </ScrollView>
-            </KeyboardAvoidingView>
+            <View style={styleSheetInsideScrollingWithMaxHeight.contentInnerContainer}>
+              <KeyboardAvoidingView
+                behavior={'padding'}
+                keyboardVerticalOffset={isKeyboardVisible ? 0 : 200}
+              >
+                <ScrollView
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={{
+                    ...styleSheetInsideScrollingWithMaxHeight.scrollViewContainerStyle,
+                    ...(props.contentContainerStyle as object),
+                  }}>
+                  {props.children}
+                </ScrollView>
+              </KeyboardAvoidingView>
+            </View>
           </View>
         );
     }
