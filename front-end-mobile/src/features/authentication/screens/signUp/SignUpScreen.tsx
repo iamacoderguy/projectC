@@ -71,12 +71,28 @@ const SignUpScreen = () => {
         metadata: { displayName: user.displayName },
       })
       .then(success => {
-        console.log(success);
-        console.warn('Success' + 'New user created');
+        console.warn(success);
       })
       .catch(error => {
-        console.warn('Error' + error.json.description);
+        console.warn(error.json.description);
       });
+  };
+
+  const _webAuth = async (connection: string, setSubmitting: (isSubmitting: boolean) => void) => {
+    setSubmitting(true);
+    await auth0.webAuth
+      .authorize({
+        scope: 'openid profile email',
+        connection: connection,
+        audience: 'https://' + R.config.AUTH0.credentials.domain + '/userinfo',
+      })
+      .then(credentials => {
+        console.warn(credentials);
+      })
+      .catch(error => {
+        console.warn(error.error_description);
+      });
+    setSubmitting(false);
   };
 
   return (
@@ -85,171 +101,185 @@ const SignUpScreen = () => {
       onLayoutChange={_handleOnLayoutChange}
       keyboardVerticalOffset={R.dimens.inputHeight - R.dimens.inputPadding}
     >
-      <View style={styles.container}>
-        <Formik
-          initialValues={{
-            [usernameId]: '',
-            [emailId]: '',
-            [displayNameId]: '',
-            [passwordId]: '',
-            [confirmPasswordId]: '',
-          }}
-          validationSchema={Yup.object({
-            [usernameId]: Yup.string()
-              .max(15, strings.validationMessageMaxLength(strings.usernamePlaceholder(), 15))
-              .matches(/^[a-zA-Z@^$.!`\-#+'~_]+$/, strings.validationMessageCharactersAllowed(strings.usernamePlaceholder(), '@^$.!`-#+\'~_'))
-              .required(strings.validationMessageRequired(strings.usernamePlaceholder())),
-            [emailId]: Yup.string()
-              .email(strings.validationMessageEmail(strings.emailPlaceholder()))
-              .required(strings.validationMessageRequired(strings.emailPlaceholder())),
-            [displayNameId]: Yup.string()
-              .max(128, strings.validationMessageMaxLength(strings.displayNamePlaceholder(), 128)),
-            [passwordId]: Yup.string()
-              .min(8, strings.validationMessageMinLength(strings.passwordPlaceholder(), 8))
-              .required(strings.validationMessageRequired(strings.passwordPlaceholder())),
-            [confirmPasswordId]: Yup.string()
-              .min(8, strings.validationMessageMinLength(strings.confirmPasswordPlaceholder(), 8))
-              .required(strings.validationMessageRequired(strings.confirmPasswordPlaceholder())),
-          })}
-          onSubmit={async (values, { setErrors, setSubmitting }) => {
-            if (!isPasswordShown && values[passwordId] != values[confirmPasswordId]) {
-              setErrors({
-                confirmPassword: strings.validationMessageDoesNotMatch(strings.confirmPasswordPlaceholder()),
-              });
-
-              setSubmitting(false);
-              return;
-            }
-
-            await _createUser({
-              username: values[usernameId],
-              email: values[emailId],
-              displayName: values[displayNameId],
-              password: values[passwordId],
+      <Formik
+        initialValues={{
+          [usernameId]: '',
+          [emailId]: '',
+          [displayNameId]: '',
+          [passwordId]: '',
+          [confirmPasswordId]: '',
+        }}
+        validationSchema={Yup.object({
+          [usernameId]: Yup.string()
+            .max(15, strings.validationMessageMaxLength(strings.usernamePlaceholder(), 15))
+            .matches(/^[a-zA-Z@^$.!`\-#+'~_]+$/, strings.validationMessageCharactersAllowed(strings.usernamePlaceholder(), '@^$.!`-#+\'~_'))
+            .required(strings.validationMessageRequired(strings.usernamePlaceholder())),
+          [emailId]: Yup.string()
+            .email(strings.validationMessageEmail(strings.emailPlaceholder()))
+            .required(strings.validationMessageRequired(strings.emailPlaceholder())),
+          [displayNameId]: Yup.string()
+            .max(128, strings.validationMessageMaxLength(strings.displayNamePlaceholder(), 128)),
+          [passwordId]: Yup.string()
+            .min(8, strings.validationMessageMinLength(strings.passwordPlaceholder(), 8))
+            .required(strings.validationMessageRequired(strings.passwordPlaceholder())),
+          [confirmPasswordId]: Yup.string()
+            .min(8, strings.validationMessageMinLength(strings.confirmPasswordPlaceholder(), 8))
+            .required(strings.validationMessageRequired(strings.confirmPasswordPlaceholder())),
+        })}
+        onSubmit={async (values, { setErrors, setSubmitting }) => {
+          if (!isPasswordShown && values[passwordId] != values[confirmPasswordId]) {
+            setErrors({
+              confirmPassword: strings.validationMessageDoesNotMatch(strings.confirmPasswordPlaceholder()),
             });
+
             setSubmitting(false);
-          }}
-        >
-          {
-            ({ handleChange, handleBlur, handleSubmit, values, touched, errors, isSubmitting, isValid }) => (
-              <View style={styles.buzzSignUpContainer}>
-                <TextInput
-                  id={usernameId}
-                  ref={_addInputRef}
-                  style={styles.textInput}
-                  placeholder={strings.usernamePlaceholder()}
-                  autoFocus
-                  autoCapitalize='none'
-                  returnKeyType='next'
-                  onSubmitEditing={_goNext(usernameId)}
-                  onChangeText={handleChange(usernameId)}
-                  onBlur={handleBlur(usernameId)}
-                  value={values[usernameId]}
-                  error={{
-                    isError: !!(touched[usernameId] && errors[usernameId]),
-                    message: errors[usernameId],
-                  }}
-                />
-                <TextInput
-                  id={emailId}
-                  ref={_addInputRef}
-                  style={styles.textInput}
-                  placeholder={strings.emailPlaceholder()}
-                  keyboardType='email-address'
-                  returnKeyType='next'
-                  onSubmitEditing={_goNext(emailId)}
-                  onChangeText={handleChange(emailId)}
-                  onBlur={handleBlur(emailId)}
-                  value={values[emailId]}
-                  error={{
-                    isError: !!(touched[emailId] && errors[emailId]),
-                    message: errors[emailId],
-                  }}
-                />
-                <TextInput
-                  id={displayNameId}
-                  ref={_addInputRef}
-                  style={styles.textInput}
-                  placeholder={strings.displayNamePlaceholder()}
-                  autoCapitalize='words'
-                  returnKeyType='next'
-                  onSubmitEditing={_goNext(displayNameId)}
-                  onChangeText={handleChange(displayNameId)}
-                  onBlur={handleBlur(displayNameId)}
-                  value={values[displayNameId]}
-                  error={{
-                    isError: !!(touched[displayNameId] && errors[displayNameId]),
-                    message: errors[displayNameId],
-                  }}
-                />
-                <PasswordInputWithAction
-                  id={passwordId}
-                  ref={_addInputRef}
-                  style={styles.textInput}
-                  placeholder={strings.passwordPlaceholder()}
-                  isShown={isPasswordShown}
-                  onPress={_handleOnShowPressed}
-                  returnKeyType='next'
-                  onSubmitEditing={_goNext(passwordId)}
-                  onChangeText={handleChange(passwordId)}
-                  onBlur={handleBlur(passwordId)}
-                  value={values[passwordId]}
-                  error={{
-                    isError: !!(touched[passwordId] && errors[passwordId]),
-                    message: errors[passwordId],
-                  }}
-                />
-                {!isPasswordShown &&
+            return;
+          }
+
+          await _createUser({
+            username: values[usernameId],
+            email: values[emailId],
+            displayName: values[displayNameId],
+            password: values[passwordId],
+          });
+          setSubmitting(false);
+        }}
+      >
+        {
+          ({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            touched,
+            errors,
+            isSubmitting,
+            isValid,
+            setSubmitting,
+          }) =>
+            (
+              <View style={styles.container}>
+                <View style={styles.buzzSignUpContainer}>
                   <TextInput
-                    id={confirmPasswordId}
+                    id={usernameId}
                     ref={_addInputRef}
                     style={styles.textInput}
-                    placeholder={strings.confirmPasswordPlaceholder()}
-                    secureTextEntry
+                    placeholder={strings.usernamePlaceholder()}
+                    autoFocus
+                    autoCapitalize='none'
                     returnKeyType='next'
-                    onSubmitEditing={_goNext(confirmPasswordId)}
-                    onChangeText={handleChange(confirmPasswordId)}
-                    onBlur={handleBlur(confirmPasswordId)}
-                    value={values[confirmPasswordId]}
+                    onSubmitEditing={_goNext(usernameId)}
+                    onChangeText={handleChange(usernameId)}
+                    onBlur={handleBlur(usernameId)}
+                    value={values[usernameId]}
                     error={{
-                      isError: !!(touched[confirmPasswordId] && errors[confirmPasswordId]),
-                      message: errors[confirmPasswordId],
+                      isError: !!(touched[usernameId] && errors[usernameId]),
+                      message: errors[usernameId],
                     }}
-                  />}
-                <Hyperlink
-                  style={styles.termsOfService}
-                  links={[strings.termsOfServiceLink()]}
-                  disabled={isSubmitting}
-                >
-                  {strings.agreeWithTermsOfService()}
-                </Hyperlink>
-                <Button
-                  style={styles.signUpButton}
-                  title={strings.signUpButton()}
-                  onPress={handleSubmit}
-                  disabled={!isValid || isSubmitting}
-                />
+                  />
+                  <TextInput
+                    id={emailId}
+                    ref={_addInputRef}
+                    style={styles.textInput}
+                    placeholder={strings.emailPlaceholder()}
+                    keyboardType='email-address'
+                    returnKeyType='next'
+                    onSubmitEditing={_goNext(emailId)}
+                    onChangeText={handleChange(emailId)}
+                    onBlur={handleBlur(emailId)}
+                    value={values[emailId]}
+                    error={{
+                      isError: !!(touched[emailId] && errors[emailId]),
+                      message: errors[emailId],
+                    }}
+                  />
+                  <TextInput
+                    id={displayNameId}
+                    ref={_addInputRef}
+                    style={styles.textInput}
+                    placeholder={strings.displayNamePlaceholder()}
+                    autoCapitalize='words'
+                    returnKeyType='next'
+                    onSubmitEditing={_goNext(displayNameId)}
+                    onChangeText={handleChange(displayNameId)}
+                    onBlur={handleBlur(displayNameId)}
+                    value={values[displayNameId]}
+                    error={{
+                      isError: !!(touched[displayNameId] && errors[displayNameId]),
+                      message: errors[displayNameId],
+                    }}
+                  />
+                  <PasswordInputWithAction
+                    id={passwordId}
+                    ref={_addInputRef}
+                    style={styles.textInput}
+                    placeholder={strings.passwordPlaceholder()}
+                    isShown={isPasswordShown}
+                    onPress={_handleOnShowPressed}
+                    returnKeyType='next'
+                    onSubmitEditing={_goNext(passwordId)}
+                    onChangeText={handleChange(passwordId)}
+                    onBlur={handleBlur(passwordId)}
+                    value={values[passwordId]}
+                    error={{
+                      isError: !!(touched[passwordId] && errors[passwordId]),
+                      message: errors[passwordId],
+                    }}
+                  />
+                  {!isPasswordShown &&
+                    <TextInput
+                      id={confirmPasswordId}
+                      ref={_addInputRef}
+                      style={styles.textInput}
+                      placeholder={strings.confirmPasswordPlaceholder()}
+                      secureTextEntry
+                      returnKeyType='next'
+                      onSubmitEditing={_goNext(confirmPasswordId)}
+                      onChangeText={handleChange(confirmPasswordId)}
+                      onBlur={handleBlur(confirmPasswordId)}
+                      value={values[confirmPasswordId]}
+                      error={{
+                        isError: !!(touched[confirmPasswordId] && errors[confirmPasswordId]),
+                        message: errors[confirmPasswordId],
+                      }}
+                    />}
+                  <Hyperlink
+                    style={styles.termsOfService}
+                    links={[strings.termsOfServiceLink()]}
+                    disabled={isSubmitting}
+                  >
+                    {strings.agreeWithTermsOfService()}
+                  </Hyperlink>
+                  <Button
+                    style={styles.signUpButton}
+                    title={strings.signUpButton()}
+                    onPress={handleSubmit}
+                    disabled={!isValid || isSubmitting}
+                  />
+                </View>
+
+                <SeparateLine style={styles.OR} />
+
+                <View style={styles.socialSignUpContainer}>
+                  <Button
+                    style={styles.socialButton}
+                    title={strings.signUpWithGithubButton()}
+                    imageSource={R.images.ic_github}
+                    onPress={() => _webAuth('github', setSubmitting)}
+                    disabled={isSubmitting}
+                  />
+                  <Button
+                    style={styles.socialButton}
+                    title={strings.signUpWithGoogleButton()}
+                    imageSource={R.images.ic_google}
+                    onPress={() => _webAuth('google-oauth2', setSubmitting)}
+                    disabled={isSubmitting}
+                  />
+                </View>
               </View>
-            )}
-        </Formik>
-
-        <SeparateLine style={styles.OR} />
-
-        <View style={styles.socialSignUpContainer}>
-          <Button
-            style={styles.socialButton}
-            title={strings.signUpWithGithubButton()}
-            imageSource={R.images.ic_github}
-            onPress={() => { }}
-          />
-          <Button
-            style={styles.socialButton}
-            title={strings.signUpWithGoogleButton()}
-            imageSource={R.images.ic_google}
-            onPress={() => { }}
-          />
-        </View>
-      </View>
+            )
+        }
+      </Formik>
     </Layout>
   );
 };
