@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { SignInScreen } from './signIn';
-import { SignUpScreen } from './signUp';
-import { ForgotPasswordScreen } from './forgotPassword';
 import { connect } from 'react-redux';
 import { mapStateToProps, mapDispatchToProps } from './AuthenticationStack.container';
+import SignInScreen from './screens/signIn/SignInScreen';
+import SignUpScreen from './screens/signUp/SignUpScreen';
+import ForgotPasswordScreen from './screens/forgotPassword/ForgotPasswordScreen';
 
 const Stack = createStackNavigator();
 
@@ -42,11 +42,11 @@ const AuthenticationStack: React.FC<AuthenticationStackProps> = (props: Authenti
   };
 
   return (
-    <Stack.Navigator initialRouteName={navigationMap.SignIn}>
+    <Stack.Navigator initialRouteName={navigationMap.SignUp}>
       <Stack.Screen name={navigationMap.SignIn} >
         {() => <SignInScreen onSignIn={_handleOnSignIn} />}
       </Stack.Screen>
-      <Stack.Screen name={navigationMap.SignUp} component={SignUpScreen} />
+      <Stack.Screen name={navigationMap.SignUp} component={SignUpScreen} options={{ headerShown: false }} />
       <Stack.Screen name={navigationMap.ForgotPassword} component={ForgotPasswordScreen} />
     </Stack.Navigator>
   );

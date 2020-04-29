@@ -11,7 +11,6 @@
 import 'react-native-gesture-handler'; // this line should be on the top
 
 import React, { useEffect, useRef } from 'react';
-import { StatusBar } from 'react-native';
 
 import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
@@ -42,7 +41,6 @@ const App = () => {
   return (
     <Provider store={store}>
       <NavigationContainer ref={rootNavigationRef}>
-        <StatusBar barStyle='dark-content' />
         <RootStack ref={rootStackRef} />
       </NavigationContainer>
     </Provider>
