@@ -293,22 +293,22 @@ const styles = StyleSheet.create({
   socialSignUpContainer: {
   },
   textInput: {
-    marginBottom: dimens.inputMargin,
+    marginBottom: dimens.spacingBetweenInputs,
   },
   termsOfService: {
     ...R.palette.normal,
     alignSelf: 'center',
     textAlign: 'center',
-    marginTop: dimens.itemMargin - dimens.inputMargin,
-    marginBottom: dimens.itemMargin,
+    marginTop: dimens.spacingBetweenFormItems - dimens.spacingBetweenInputs,
+    marginBottom: dimens.spacingBetweenFormItems,
   },
   OR: {
-    marginTop: dimens.separateLineMargin,
-    marginBottom: dimens.separateLineMargin - dimens.itemMargin,
+    marginTop: dimens.spacingBetweenForms,
+    marginBottom: dimens.spacingBetweenForms - dimens.spacingBetweenFormItems,
   },
   signUpButton: {},
   socialButton: {
-    marginTop: dimens.itemMargin,
+    marginTop: dimens.spacingBetweenFormItems,
   },
 });
 

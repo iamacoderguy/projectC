@@ -72,7 +72,7 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
   const _renderLogoAndTitle = (props: LayoutProps) => {
     return (
       <>
-        <TouchableWithoutFeedback onPress={_handleOnLogoPress}>
+        <TouchableWithoutFeedback onLongPress={_handleOnLogoPress}>
           <Image source={R.images.ic_black_yellow} style={styles.contentImage} />
         </TouchableWithoutFeedback>
         <Text style={styles.contentTitle} >{props.title}</Text>
@@ -86,7 +86,7 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
         return (
           <View style={styleSheetInsideScrolling.contentContainer}>
             {_renderLogoAndTitle(props)}
-            <View style={styleSheetInsideScrolling.contentInnerContainer}>
+            <View style={styleSheetInsideScrolling.formContainer}>
               <KeyboardAvoidingView
                 behavior={'padding'}
                 keyboardVerticalOffset={isKeyboardVisible ? 0 : 200}
@@ -118,7 +118,7 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
                 ...(props.contentContainerStyle as object),
               }}>
               {_renderLogoAndTitle(props)}
-              <View style={styleSheetOutsideScrolling.contentInnerContainer} >
+              <View style={styleSheetOutsideScrolling.formContainer} >
                 {props.children}
               </View>
             </ScrollView>
@@ -130,7 +130,7 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
         return (
           <View style={styleSheetInsideScrolling.contentContainer}>
             {_renderLogoAndTitle(props)}
-            <View style={styleSheetInsideScrollingWithMaxHeight.contentInnerContainer}>
+            <View style={styleSheetInsideScrollingWithMaxHeight.formContainer}>
               <KeyboardAvoidingView
                 behavior={'padding'}
                 keyboardVerticalOffset={isKeyboardVisible ? 0 : 200}
@@ -166,14 +166,20 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
 
 const circleDiameter = Dimensions.get('window').width * 0.7;
 const statusBarHeight = getStatusBarHeight();
-const contentMargin = 50;
-const contentContainerPaddingTop = contentMargin - statusBarHeight;
+
 const contentContainerHeight = (Dimensions.get('window').height - statusBarHeight);
+const contentContainerHorizontalPadding = 30;
+const contentContainerVerticalPadding = 60;
+const contentContainerPaddingTop = contentContainerVerticalPadding - statusBarHeight;
+const contentContainerSpacingBetweenItems = 25;
+const scrollViewSafeAreaHorizontalPadding = 10;
+
+const formContainerHorizontalPadding = 30;
+const formContainerVerticalPadding = 50;
+
 const logoHeight = 80;
 const titleHeight = Number(R.palette.title.height);
-const contentSpace = 20;
 const contentInnerContainerBorderRadius = 25;
-const scrollViewPadding = 10;
 
 const styles = StyleSheet.create({
   container: {
@@ -212,9 +218,9 @@ const styles = StyleSheet.create({
   },
   contentTitle: {
     ...R.palette.title,
-    marginVertical: contentSpace,
+    marginVertical: contentContainerSpacingBetweenItems,
   },
-  contentInnerContainer: {
+  formContainer: {
     width: '100%',
     backgroundColor: R.colors.WHITE,
     borderRadius: contentInnerContainerBorderRadius,
@@ -234,53 +240,52 @@ const styles = StyleSheet.create({
 const styleSheetOutsideScrolling = StyleSheet.create({
   contentContainer: {
     ...styles.contentContainer,
-    paddingHorizontal: 25,
+    paddingHorizontal: contentContainerHorizontalPadding - scrollViewSafeAreaHorizontalPadding,
   },
-  contentInnerContainer: {
-    ...styles.contentInnerContainer,
-    paddingHorizontal: 35,
-    paddingBottom: 35,
-    paddingTop: 35,
+  formContainer: {
+    ...styles.formContainer,
+    paddingHorizontal: formContainerHorizontalPadding,
+    paddingVertical: formContainerVerticalPadding,
     elevation: 8,
   },
   scrollViewContainerStyle: {
     ...styles.scrollViewContainerStyle,
-    paddingHorizontal: 10,
-    paddingBottom: contentMargin,
+    paddingHorizontal: scrollViewSafeAreaHorizontalPadding,
+    paddingBottom: contentContainerVerticalPadding,
     paddingTop: contentContainerPaddingTop,
   },
 });
 
+const formContainerVerticalPaddingForInsideScrolling = formContainerVerticalPadding - scrollViewSafeAreaHorizontalPadding;
 const styleSheetInsideScrolling = StyleSheet.create({
   contentContainer: {
     ...styles.contentContainer,
-    paddingHorizontal: 35,
+    paddingHorizontal: contentContainerHorizontalPadding,
     alignItems: 'center',
     paddingTop: contentContainerPaddingTop,
   },
-  contentInnerContainer: {
-    ...styles.contentInnerContainer,
-    maxHeight: contentContainerHeight - (contentContainerPaddingTop + logoHeight + titleHeight + contentSpace * 2 + contentMargin),
-    paddingHorizontal: 25,
-    paddingBottom: 35,
-    paddingTop: 35,
+  formContainer: {
+    ...styles.formContainer,
+    maxHeight: contentContainerHeight - (contentContainerPaddingTop + logoHeight + titleHeight + contentContainerSpacingBetweenItems * 2 + contentContainerVerticalPadding),
+    paddingHorizontal: formContainerHorizontalPadding - scrollViewSafeAreaHorizontalPadding,
+    paddingVertical: formContainerVerticalPaddingForInsideScrolling,
     elevation: 10,
   },
   scrollViewContainerStyle: {
     ...styles.scrollViewContainerStyle,
-    padding: scrollViewPadding,
-    paddingTop: 0,
+    padding: scrollViewSafeAreaHorizontalPadding,
   },
 });
 
+const hiddenHeight = contentInnerContainerBorderRadius + formContainerVerticalPaddingForInsideScrolling;
 const styleSheetInsideScrollingWithMaxHeight = StyleSheet.create({
-  contentInnerContainer: {
-    ...styleSheetInsideScrolling.contentInnerContainer,
-    maxHeight: contentContainerHeight - (contentContainerPaddingTop + logoHeight + titleHeight + contentSpace * 2) + contentInnerContainerBorderRadius + scrollViewPadding,
+  formContainer: {
+    ...styleSheetInsideScrolling.formContainer,
+    maxHeight: contentContainerHeight - (contentContainerPaddingTop + logoHeight + titleHeight + contentContainerSpacingBetweenItems * 2) + hiddenHeight,
   },
   scrollViewContainerStyle: {
     ...styleSheetInsideScrolling.scrollViewContainerStyle,
-    paddingBottom: contentMargin,
+    paddingBottom: hiddenHeight + scrollViewSafeAreaHorizontalPadding,
   },
 });
 
