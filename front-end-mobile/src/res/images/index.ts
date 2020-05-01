@@ -1,4 +1,5 @@
 const images = {
+  avatar_default: require('./avatar_default.png'),
   dot: require('./dot.png'),
   ic_black_yellow: require('./ic_black_yellow.png'),
   ic_github: require('./ic_github.png'),

@@ -5,7 +5,11 @@ import { navigateToSignUpScreen } from './SignInScreen.container';
 import TextInput, { TextInputRef } from 'res/components/textInput/TextInput';
 import { clean, contain, findNextIndex } from 'lib/utils/array';
 import { Formik } from 'formik';
-import { View, StyleSheet } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Image,
+} from 'react-native';
 import SeparateLine from '../../components/separateLine/SeparateLine';
 import Button from 'res/components/button/Button';
 import PasswordInputWithAction from '../../components/passwordInputWithAction/PasswordInputWithAction';
@@ -87,6 +91,10 @@ const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => 
         {
           ({ isSubmitting, isValid, handleChange, handleBlur, handleSubmit, values, touched, errors }) => (
             <View style={styles.container}>
+              <Image
+                source={R.images.avatar_default}
+                style={styles.avatar} />
+
               <View style={styles.socialSignUpContainer}>
                 <Button
                   style={styles.socialButton}
@@ -164,6 +172,10 @@ const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => 
 const styles = StyleSheet.create({
   container: {
     width: '100%',
+  },
+  avatar: {
+    alignSelf: 'center',
+    marginBottom: dimens.spacingBetweenForms,
   },
   buzzSignUpContainer: {
   },
