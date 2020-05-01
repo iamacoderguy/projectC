@@ -7,6 +7,7 @@
   "authentication_signUp_passwordPlaceholder": "Mật khẩu",
   "authentication_signUp_confirmPasswordPlaceholder": "Xác nhận mật khẩu",
   "authentication_signUp_signUpButton": "Đăng ký",
+  "authentication_signUp_alreadyHaveAnAccount": "Bạn đã có sẵn tài khoản? <_Đăng nhập_>.",
   "authentication_signUp_signUpWithGithubButton": "Đăng ký bằng GitHub",
   "authentication_signUp_signUpWithGoogleButton": "Đăng ký bằng Google",
   "authentication_signUp_agreeWithTermsOfService": "Bằng việc nhấn vào bất kỳ nút Đăng ký nào dưới đây, tôi đồng ý với <_các điều khoản dịch vụ của ứng dụng_>.",

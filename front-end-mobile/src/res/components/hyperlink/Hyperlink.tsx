@@ -9,20 +9,22 @@ import {
 import R from 'res/R';
 import { convertToReactNativeHyperlink, generateLinkTexts } from './Hyperlink.container';
 
-type HyperlinkProps = {
+export type HyperlinkProps = {
   style?: StyleProp<TextStyle>;
   linkStyle?: StyleProp<TextStyle>;
-  links?: Array<string>;
+  links: Array<string>;
   children: string;
   disabled?: boolean;
+  onPress?: (url: string, text: string) => void;
 }
 
 const Hyperlink: React.FC<HyperlinkProps> = (props: HyperlinkProps) => {
   return (
     <HyperlinkRN
-      linkDefault={!props.disabled}
+      linkDefault={!props.disabled && !props.onPress}
       linkStyle={{ ...styles.linkStyle, ...(props.linkStyle as object) }}
       linkText={generateLinkTexts(props.children, props.links || [])}
+      onPress={props.onPress}
     >
       <Text style={props.style}>
         {convertToReactNativeHyperlink(props.children, props.links || [])}

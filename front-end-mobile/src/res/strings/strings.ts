@@ -35,6 +35,7 @@ export const strings = {
       passwordPlaceholder: () => _localizer.t('authentication_signUp_passwordPlaceholder'),
       confirmPasswordPlaceholder: () => _localizer.t('authentication_signUp_confirmPasswordPlaceholder'),
       signUpButton: () => _localizer.t('authentication_signUp_signUpButton'),
+      alreadyHaveAnAccount: () => _localizer.t('authentication_signUp_alreadyHaveAnAccount'),
       signUpWithGithubButton: () => _localizer.t('authentication_signUp_signUpWithGithubButton'),
       signUpWithGoogleButton: () => _localizer.t('authentication_signUp_signUpWithGoogleButton'),
       agreeWithTermsOfService: () => _localizer.t('authentication_signUp_agreeWithTermsOfService'),

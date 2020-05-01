@@ -7,6 +7,7 @@
   "authentication_signUp_passwordPlaceholder": "Password",
   "authentication_signUp_confirmPasswordPlaceholder": "Confirm password",
   "authentication_signUp_signUpButton": "Sign up",
+  "authentication_signUp_alreadyHaveAnAccount": "Already have an account? <_Sign in_>.",
   "authentication_signUp_signUpWithGithubButton": "Sign up with GitHub",
   "authentication_signUp_signUpWithGoogleButton": "Sign up with Google",
   "authentication_signUp_agreeWithTermsOfService": "By clicking any of the Sign up buttons, I agree to the <_terms of service_>.",

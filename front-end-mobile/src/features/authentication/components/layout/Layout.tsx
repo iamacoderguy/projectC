@@ -15,6 +15,7 @@ import {
 import R from 'res/R';
 import StatusBar from 'res/components/statusBar/StatusBar';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
+import Hyperlink, { HyperlinkProps } from 'res/components/hyperlink/Hyperlink';
 
 enum Theme {
   OutsideScrolling = 0,
@@ -25,6 +26,7 @@ enum Theme {
 type LayoutProps = {
   children: React.ReactNode;
   title: string;
+  subtitleProps?: HyperlinkProps;
   contentContainerStyle?: StyleProp<ViewStyle>;
   onLayoutChange?: () => void;
   keyboardVerticalOffset?: number;
@@ -69,13 +71,18 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
     }
   };
 
-  const _renderLogoAndTitle = (props: LayoutProps) => {
+  const _renderAboveItems = (props: LayoutProps) => {
     return (
       <>
         <TouchableWithoutFeedback onLongPress={_handleOnLogoPress}>
-          <Image source={R.images.ic_black_yellow} style={styles.contentImage} />
+          <Image source={R.images.ic_black_yellow} style={styles.image} />
         </TouchableWithoutFeedback>
-        <Text style={styles.contentTitle} >{props.title}</Text>
+        <Text style={styles.title} >{props.title}</Text>
+        {
+          (props.subtitleProps &&
+            <Hyperlink {...props.subtitleProps}
+              style={{ ...styles.subtitle, ...(props.subtitleProps.style as object) }} />)
+        }
       </>
     );
   };
@@ -85,7 +92,7 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
       case Theme.InsideScrolling:
         return (
           <View style={styleSheetInsideScrolling.contentContainer}>
-            {_renderLogoAndTitle(props)}
+            {_renderAboveItems(props)}
             <View style={styleSheetInsideScrolling.formContainer}>
               <KeyboardAvoidingView
                 behavior={'padding'}
@@ -117,7 +124,7 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
                 ...styleSheetOutsideScrolling.scrollViewContainerStyle,
                 ...(props.contentContainerStyle as object),
               }}>
-              {_renderLogoAndTitle(props)}
+              {_renderAboveItems(props)}
               <View style={styleSheetOutsideScrolling.formContainer} >
                 {props.children}
               </View>
@@ -129,7 +136,7 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
       default:
         return (
           <View style={styleSheetInsideScrolling.contentContainer}>
-            {_renderLogoAndTitle(props)}
+            {_renderAboveItems(props)}
             <View style={styleSheetInsideScrollingWithMaxHeight.formContainer}>
               <KeyboardAvoidingView
                 behavior={'padding'}
@@ -212,13 +219,17 @@ const styles = StyleSheet.create({
     height: contentContainerHeight,
     top: 0,
   },
-  contentImage: {
+  image: {
     height: logoHeight,
     width: logoHeight,
   },
-  contentTitle: {
+  title: {
     ...R.palette.title,
     marginVertical: contentContainerSpacingBetweenItems,
+  },
+  subtitle: {
+    ...R.palette.normal,
+    marginBottom: contentContainerSpacingBetweenItems,
   },
   formContainer: {
     width: '100%',

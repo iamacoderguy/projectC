@@ -14,7 +14,7 @@ import TextInput, {
 import Button from 'res/components/button/Button';
 import PasswordInputWithAction from 'features/authentication/components/passwordInputWithAction/PasswordInputWithAction';
 import SeparateLine from 'features/authentication/components/separateLine/SeparateLine';
-import Hyperlink from 'res/components/hyperlink';
+import Hyperlink from 'res/components/hyperlink/Hyperlink';
 import { findNextIndex, clean, contain } from 'lib/utils/array';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -98,6 +98,17 @@ const SignUpScreen = () => {
   return (
     <Layout
       title={strings.title()}
+      subtitleProps={{
+        children: strings.alreadyHaveAnAccount(),
+        links: ['https://gotoLoginScreen'],
+        onPress: (url, _text) => {
+          if (url == 'https://gotoLoginScreen') {
+            console.warn('navigate to Login Screen');
+          } else {
+            console.warn('nani');
+          }
+        },
+      }}
       onLayoutChange={_handleOnLayoutChange}
       keyboardVerticalOffset={R.dimens.inputHeight - R.dimens.inputPadding}
     >
