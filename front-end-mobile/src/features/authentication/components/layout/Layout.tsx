@@ -288,7 +288,7 @@ const styleSheetInsideScrolling = StyleSheet.create({
   },
 });
 
-const hiddenHeight = contentInnerContainerBorderRadius + formContainerVerticalPaddingForInsideScrolling;
+const hiddenHeight = contentInnerContainerBorderRadius;
 const styleSheetInsideScrollingWithMaxHeight = StyleSheet.create({
   formContainer: {
     ...styleSheetInsideScrolling.formContainer,
@@ -296,7 +296,7 @@ const styleSheetInsideScrollingWithMaxHeight = StyleSheet.create({
   },
   scrollViewContainerStyle: {
     ...styleSheetInsideScrolling.scrollViewContainerStyle,
-    paddingBottom: hiddenHeight + scrollViewSafeAreaHorizontalPadding,
+    paddingBottom: hiddenHeight + scrollViewSafeAreaHorizontalPadding + formContainerVerticalPaddingForInsideScrolling,
   },
 });
 

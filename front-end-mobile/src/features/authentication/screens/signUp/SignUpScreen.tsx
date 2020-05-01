@@ -177,7 +177,6 @@ const SignUpScreen = () => {
                     ref={_addInputRef}
                     style={styles.textInput}
                     placeholder={strings.usernamePlaceholder()}
-                    autoFocus
                     autoCapitalize='none'
                     returnKeyType='next'
                     onSubmitEditing={_goNext(usernameId)}
