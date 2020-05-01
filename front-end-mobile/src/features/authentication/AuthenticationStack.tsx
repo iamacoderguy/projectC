@@ -38,7 +38,7 @@ const AuthenticationStack: React.FC<AuthenticationStackProps> = (props: Authenti
 
   return (
     <Stack.Navigator
-      initialRouteName={navigationMap.SignUp}
+      initialRouteName={navigationMap.SignIn}
       screenOptions={{ headerShown: false }} // Note: Even the header is not shown, we can get back by the physical back button
     >
       <Stack.Screen name={navigationMap.SignIn} >

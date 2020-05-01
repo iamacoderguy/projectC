@@ -21,8 +21,12 @@ import * as Yup from 'yup';
 import Auth0 from 'react-native-auth0';
 import { User } from 'lib/types/user';
 import { navigateToSignInScreen } from './SignUpScreen.container';
+import { usernameValidation, passwordValidation } from '../../yupValidation';
 
-const strings = R.strings.authentication.signUp;
+const strings = {
+  signUp: R.strings.authentication.signUp,
+  shared: R.strings.authentication.shared,
+};
 const dimens = R.dimens.authentication;
 const auth0 = new Auth0(R.config.AUTH0.credentials);
 
@@ -98,16 +102,17 @@ const SignUpScreen = () => {
 
   return (
     <Layout
-      title={strings.title()}
+      title={strings.signUp.title()}
       subtitleProps={{
-        children: strings.alreadyHaveAnAccount(),
+        children: strings.signUp.alreadyHaveAnAccount(),
         links: ['https://gotoLoginScreen'],
         onPress: (url, _text) => {
           if (url == 'https://gotoLoginScreen') {
             navigateToSignInScreen();
-          } else {
-            console.warn('Nani?!?');
+            return;
           }
+
+          console.warn('Nani?!?');
         },
       }}
       onLayoutChange={_handleOnLayoutChange}
@@ -122,26 +127,19 @@ const SignUpScreen = () => {
           [confirmPasswordId]: '',
         }}
         validationSchema={Yup.object({
-          [usernameId]: Yup.string()
-            .max(15, strings.validationMessageMaxLength(strings.usernamePlaceholder(), 15))
-            .matches(/^[a-zA-Z@^$.!`\-#+'~_]+$/, strings.validationMessageCharactersAllowed(strings.usernamePlaceholder(), '@^$.!`-#+\'~_'))
-            .required(strings.validationMessageRequired(strings.usernamePlaceholder())),
+          [usernameId]: usernameValidation(strings.shared.usernamePlaceholder()),
           [emailId]: Yup.string()
-            .email(strings.validationMessageEmail(strings.emailPlaceholder()))
-            .required(strings.validationMessageRequired(strings.emailPlaceholder())),
+            .email(strings.shared.validationMessageEmail(strings.shared.emailPlaceholder()))
+            .required(strings.shared.validationMessageRequired(strings.shared.emailPlaceholder())),
           [displayNameId]: Yup.string()
-            .max(128, strings.validationMessageMaxLength(strings.displayNamePlaceholder(), 128)),
-          [passwordId]: Yup.string()
-            .min(8, strings.validationMessageMinLength(strings.passwordPlaceholder(), 8))
-            .required(strings.validationMessageRequired(strings.passwordPlaceholder())),
-          [confirmPasswordId]: Yup.string()
-            .min(8, strings.validationMessageMinLength(strings.confirmPasswordPlaceholder(), 8))
-            .required(strings.validationMessageRequired(strings.confirmPasswordPlaceholder())),
+            .max(128, strings.shared.validationMessageMaxLength(strings.shared.displayNamePlaceholder(), 128)),
+          [passwordId]: passwordValidation(strings.shared.passwordPlaceholder()),
+          [confirmPasswordId]: passwordValidation(strings.shared.confirmPasswordPlaceholder()),
         })}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
           if (!isPasswordShown && values[passwordId] != values[confirmPasswordId]) {
             setErrors({
-              confirmPassword: strings.validationMessageDoesNotMatch(strings.confirmPasswordPlaceholder()),
+              confirmPassword: strings.shared.validationMessageDoesNotMatch(strings.shared.confirmPasswordPlaceholder()),
             });
 
             setSubmitting(false);
@@ -176,7 +174,7 @@ const SignUpScreen = () => {
                     id={usernameId}
                     ref={_addInputRef}
                     style={styles.textInput}
-                    placeholder={strings.usernamePlaceholder()}
+                    placeholder={strings.shared.usernamePlaceholder()}
                     autoCapitalize='none'
                     returnKeyType='next'
                     onSubmitEditing={_goNext(usernameId)}
@@ -192,7 +190,7 @@ const SignUpScreen = () => {
                     id={emailId}
                     ref={_addInputRef}
                     style={styles.textInput}
-                    placeholder={strings.emailPlaceholder()}
+                    placeholder={strings.shared.emailPlaceholder()}
                     keyboardType='email-address'
                     returnKeyType='next'
                     onSubmitEditing={_goNext(emailId)}
@@ -208,7 +206,7 @@ const SignUpScreen = () => {
                     id={displayNameId}
                     ref={_addInputRef}
                     style={styles.textInput}
-                    placeholder={strings.displayNamePlaceholder()}
+                    placeholder={strings.shared.displayNamePlaceholder()}
                     autoCapitalize='words'
                     returnKeyType='next'
                     onSubmitEditing={_goNext(displayNameId)}
@@ -224,7 +222,7 @@ const SignUpScreen = () => {
                     id={passwordId}
                     ref={_addInputRef}
                     style={styles.textInput}
-                    placeholder={strings.passwordPlaceholder()}
+                    placeholder={strings.shared.passwordPlaceholder()}
                     isShown={isPasswordShown}
                     onPress={_handleOnShowPressed}
                     returnKeyType='next'
@@ -242,7 +240,7 @@ const SignUpScreen = () => {
                       id={confirmPasswordId}
                       ref={_addInputRef}
                       style={styles.textInput}
-                      placeholder={strings.confirmPasswordPlaceholder()}
+                      placeholder={strings.shared.confirmPasswordPlaceholder()}
                       secureTextEntry
                       returnKeyType='next'
                       onSubmitEditing={_goNext(confirmPasswordId)}
@@ -256,14 +254,14 @@ const SignUpScreen = () => {
                     />}
                   <Hyperlink
                     style={styles.termsOfService}
-                    links={[strings.termsOfServiceLink()]}
+                    links={[strings.signUp.termsOfServiceLink()]}
                     disabled={isSubmitting}
                   >
-                    {strings.agreeWithTermsOfService()}
+                    {strings.signUp.agreeWithTermsOfService()}
                   </Hyperlink>
                   <Button
                     style={styles.signUpButton}
-                    title={strings.signUpButton()}
+                    title={strings.signUp.signUpButton()}
                     onPress={handleSubmit}
                     disabled={!isValid || isSubmitting}
                   />
@@ -274,14 +272,14 @@ const SignUpScreen = () => {
                 <View style={styles.socialSignUpContainer}>
                   <Button
                     style={styles.socialButton}
-                    title={strings.signUpWithGithubButton()}
+                    title={strings.signUp.signUpWithGithubButton()}
                     imageSource={R.images.ic_github}
                     onPress={() => _webAuth('github', setSubmitting)}
                     disabled={isSubmitting}
                   />
                   <Button
                     style={styles.socialButton}
-                    title={strings.signUpWithGoogleButton()}
+                    title={strings.signUp.signUpWithGoogleButton()}
                     imageSource={R.images.ic_google}
                     onPress={() => _webAuth('google-oauth2', setSubmitting)}
                     disabled={isSubmitting}
