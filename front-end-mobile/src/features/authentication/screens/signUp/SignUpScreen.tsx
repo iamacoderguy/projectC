@@ -116,7 +116,6 @@ const SignUpScreen = () => {
         },
       }}
       onLayoutChange={_handleOnLayoutChange}
-      keyboardVerticalOffset={R.dimens.inputHeight - R.dimens.inputPadding}
     >
       <Formik
         initialValues={{

@@ -72,7 +72,6 @@ const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => 
         },
       }}
       onLayoutChange={_handleOnLayoutChange}
-      keyboardVerticalOffset={R.dimens.inputHeight - R.dimens.inputPadding}
     >
       <Formik
         initialValues={{
