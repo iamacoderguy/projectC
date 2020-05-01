@@ -17,18 +17,17 @@ import SeparateLine from '../../components/separateLine/SeparateLine';
 import Hyperlink from 'res/components/hyperlink/Hyperlink';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import Auth0 from 'react-native-auth0';
-import { User } from 'lib/types/user';
-import { navigateToSignInScreen } from './SignUpScreen.container';
 import { usernameValidation, passwordValidation } from '../../utils/yupValidation';
 import { clearInputRefs, addInputRef, goNext } from '../../utils/inputRefs';
+import { SocialConnection, signUpOrSignInWithSocialConnection, signUpManual } from '../../utils/auth0';
+import { navigate } from 'lib/utils/navigation';
+import navigationMap from '../../navigationMap';
 
 const strings = {
   signUp: R.strings.authentication.signUp,
   shared: R.strings.authentication.shared,
 };
 const dimens = R.dimens.authentication;
-const auth0 = new Auth0(R.config.AUTH0.credentials);
 
 const SignUpScreen = () => {
   const [isPasswordShown, showPassword] = useState(false);
@@ -38,8 +37,9 @@ const SignUpScreen = () => {
   const displayNameId = 'displayName';
   const passwordId = 'password';
   const confirmPasswordId = 'confirmPassword';
+  const signInScreenId = 'https://gotoLoginScreen';
 
-  const _handleOnShowPressed = () => {
+  const _handleOnShowPress = () => {
     showPassword(!isPasswordShown);
     _handleOnLayoutChange();
   };
@@ -48,38 +48,27 @@ const SignUpScreen = () => {
     clearInputRefs(inputRefs);
   };
 
-  const _createUser = async (user: User) => {
-    await auth0.auth
-      .createUser({
-        username: user.username,
-        email: user.email,
-        password: user.password,
-        connection: R.config.AUTH0.connections.database,
-        metadata: { displayName: user.displayName },
-      })
-      .then(success => {
-        console.warn(success);
-      })
-      .catch(error => {
-        console.warn(error.json.description);
-      });
-  };
-
-  const _webAuth = async (connection: string, setSubmitting: (isSubmitting: boolean) => void) => {
+  const _handleOnSocialButtonPress = async (connection: SocialConnection, setSubmitting: (isSubmitting: boolean) => void) => {
     setSubmitting(true);
-    await auth0.webAuth
-      .authorize({
-        scope: 'openid profile email',
-        connection: connection,
-        audience: 'https://' + R.config.AUTH0.credentials.domain + '/userinfo',
-      })
+
+    await signUpOrSignInWithSocialConnection(connection)
       .then(credentials => {
         console.warn(credentials);
       })
       .catch(error => {
         console.warn(error.error_description);
       });
+
     setSubmitting(false);
+  };
+
+  const _handleOnSignInScreenLinkPress = (url: string, _text: string) => {
+    if (url == signInScreenId) {
+      navigate(navigationMap.SignIn);
+      return;
+    }
+
+    console.warn('Nani?!?');
   };
 
   return (
@@ -87,15 +76,8 @@ const SignUpScreen = () => {
       title={strings.signUp.title()}
       subtitleProps={{
         children: strings.signUp.alreadyHaveAnAccount(),
-        links: ['https://gotoLoginScreen'],
-        onPress: (url, _text) => {
-          if (url == 'https://gotoLoginScreen') {
-            navigateToSignInScreen();
-            return;
-          }
-
-          console.warn('Nani?!?');
-        },
+        links: [signInScreenId],
+        onPress: _handleOnSignInScreenLinkPress,
       }}
       onLayoutChange={_handleOnLayoutChange}
     >
@@ -127,12 +109,14 @@ const SignUpScreen = () => {
             return;
           }
 
-          await _createUser({
-            username: values[usernameId],
-            email: values[emailId],
-            displayName: values[displayNameId],
-            password: values[passwordId],
-          });
+          await signUpManual(values)
+            .then(success => {
+              console.warn(success);
+            })
+            .catch(error => {
+              console.warn(error.json.description);
+            });
+
           setSubmitting(false);
         }}
       >
@@ -205,7 +189,7 @@ const SignUpScreen = () => {
                     style={styles.textInput}
                     placeholder={strings.shared.passwordPlaceholder()}
                     isShown={isPasswordShown}
-                    onPress={_handleOnShowPressed}
+                    onPress={_handleOnShowPress}
                     returnKeyType='next'
                     onSubmitEditing={goNext(inputRefs, passwordId)}
                     onChangeText={handleChange(passwordId)}
@@ -255,14 +239,14 @@ const SignUpScreen = () => {
                     style={styles.socialButton}
                     title={strings.signUp.signUpWithGithubButton()}
                     imageSource={R.images.ic_github}
-                    onPress={() => _webAuth('github', setSubmitting)}
+                    onPress={() => _handleOnSocialButtonPress('github', setSubmitting)}
                     disabled={isSubmitting}
                   />
                   <Button
                     style={styles.socialButton}
                     title={strings.signUp.signUpWithGoogleButton()}
                     imageSource={R.images.ic_google}
-                    onPress={() => _webAuth('google-oauth2', setSubmitting)}
+                    onPress={() => _handleOnSocialButtonPress('google-oauth2', setSubmitting)}
                     disabled={isSubmitting}
                   />
                 </View>
