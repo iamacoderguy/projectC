@@ -15,13 +15,13 @@ import Button from 'res/components/button/Button';
 import PasswordInputWithAction from '../../components/passwordInputWithAction/PasswordInputWithAction';
 import SeparateLine from '../../components/separateLine/SeparateLine';
 import Hyperlink from 'res/components/hyperlink/Hyperlink';
-import { findNextIndex, clean, contain } from 'lib/utils/array';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Auth0 from 'react-native-auth0';
 import { User } from 'lib/types/user';
 import { navigateToSignInScreen } from './SignUpScreen.container';
-import { usernameValidation, passwordValidation } from '../../yupValidation';
+import { usernameValidation, passwordValidation } from '../../utils/yupValidation';
+import { clearInputRefs, addInputRef, goNext } from '../../utils/inputRefs';
 
 const strings = {
   signUp: R.strings.authentication.signUp,
@@ -38,24 +38,6 @@ const SignUpScreen = () => {
   const displayNameId = 'displayName';
   const passwordId = 'password';
   const confirmPasswordId = 'confirmPassword';
-  const currentPredicate = (currentId: string | undefined) => (txtInpt: TextInputRef) => txtInpt.id() == currentId;
-
-  const _addInputRef = (ref: TextInputRef | null) => {
-    if (ref && !contain(inputRefs.current, currentPredicate(ref.id()))) {
-      inputRefs.current.push(ref);
-    }
-  };
-
-  const _clearInputRefs = () => {
-    clean(inputRefs.current);
-  };
-
-  const _goNext = (currentId: string) => () => {
-    const nextIndex = findNextIndex(inputRefs.current, currentPredicate(currentId));
-    if (nextIndex != -1) {
-      inputRefs.current[nextIndex].focus();
-    }
-  };
 
   const _handleOnShowPressed = () => {
     showPassword(!isPasswordShown);
@@ -63,7 +45,7 @@ const SignUpScreen = () => {
   };
 
   const _handleOnLayoutChange = () => {
-    _clearInputRefs();
+    clearInputRefs(inputRefs);
   };
 
   const _createUser = async (user: User) => {
@@ -171,12 +153,12 @@ const SignUpScreen = () => {
                 <View style={styles.buzzSignUpContainer}>
                   <TextInput
                     id={usernameId}
-                    ref={_addInputRef}
+                    ref={addInputRef(inputRefs)}
                     style={styles.textInput}
                     placeholder={strings.shared.usernamePlaceholder()}
                     autoCapitalize='none'
                     returnKeyType='next'
-                    onSubmitEditing={_goNext(usernameId)}
+                    onSubmitEditing={goNext(inputRefs, usernameId)}
                     onChangeText={handleChange(usernameId)}
                     onBlur={handleBlur(usernameId)}
                     value={values[usernameId]}
@@ -187,12 +169,12 @@ const SignUpScreen = () => {
                   />
                   <TextInput
                     id={emailId}
-                    ref={_addInputRef}
+                    ref={addInputRef(inputRefs)}
                     style={styles.textInput}
                     placeholder={strings.shared.emailPlaceholder()}
                     keyboardType='email-address'
                     returnKeyType='next'
-                    onSubmitEditing={_goNext(emailId)}
+                    onSubmitEditing={goNext(inputRefs, emailId)}
                     onChangeText={handleChange(emailId)}
                     onBlur={handleBlur(emailId)}
                     value={values[emailId]}
@@ -203,12 +185,12 @@ const SignUpScreen = () => {
                   />
                   <TextInput
                     id={displayNameId}
-                    ref={_addInputRef}
+                    ref={addInputRef(inputRefs)}
                     style={styles.textInput}
                     placeholder={strings.shared.displayNamePlaceholder()}
                     autoCapitalize='words'
                     returnKeyType='next'
-                    onSubmitEditing={_goNext(displayNameId)}
+                    onSubmitEditing={goNext(inputRefs, displayNameId)}
                     onChangeText={handleChange(displayNameId)}
                     onBlur={handleBlur(displayNameId)}
                     value={values[displayNameId]}
@@ -219,13 +201,13 @@ const SignUpScreen = () => {
                   />
                   <PasswordInputWithAction
                     id={passwordId}
-                    ref={_addInputRef}
+                    ref={addInputRef(inputRefs)}
                     style={styles.textInput}
                     placeholder={strings.shared.passwordPlaceholder()}
                     isShown={isPasswordShown}
                     onPress={_handleOnShowPressed}
                     returnKeyType='next'
-                    onSubmitEditing={_goNext(passwordId)}
+                    onSubmitEditing={goNext(inputRefs, passwordId)}
                     onChangeText={handleChange(passwordId)}
                     onBlur={handleBlur(passwordId)}
                     value={values[passwordId]}
@@ -237,12 +219,12 @@ const SignUpScreen = () => {
                   {!isPasswordShown &&
                     <TextInput
                       id={confirmPasswordId}
-                      ref={_addInputRef}
+                      ref={addInputRef(inputRefs)}
                       style={styles.textInput}
                       placeholder={strings.shared.confirmPasswordPlaceholder()}
                       secureTextEntry
                       returnKeyType='next'
-                      onSubmitEditing={_goNext(confirmPasswordId)}
+                      onSubmitEditing={goNext(inputRefs, confirmPasswordId)}
                       onChangeText={handleChange(confirmPasswordId)}
                       onBlur={handleBlur(confirmPasswordId)}
                       value={values[confirmPasswordId]}

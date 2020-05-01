@@ -3,7 +3,6 @@ import R from 'res/R';
 import Layout from '../../components/layout/Layout';
 import { navigateToSignUpScreen } from './SignInScreen.container';
 import TextInput, { TextInputRef } from 'res/components/textInput/TextInput';
-import { clean, contain, findNextIndex } from 'lib/utils/array';
 import { Formik } from 'formik';
 import {
   View,
@@ -15,7 +14,8 @@ import Button from 'res/components/button/Button';
 import PasswordInputWithAction from '../../components/passwordInputWithAction/PasswordInputWithAction';
 import Hyperlink from 'res/components/hyperlink/Hyperlink';
 import * as Yup from 'yup';
-import { usernameValidation, passwordValidation } from '../../yupValidation';
+import { usernameValidation, passwordValidation } from '../../utils/yupValidation';
+import { clearInputRefs, addInputRef, goNext } from '../../utils/inputRefs';
 
 const strings = {
   signIn: R.strings.authentication.signIn,
@@ -32,24 +32,6 @@ const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => 
   const inputRefs = useRef<Array<TextInputRef>>([]);
   const usernameId = 'username';
   const passwordId = 'password';
-  const currentPredicate = (currentId: string | undefined) => (txtInpt: TextInputRef) => txtInpt.id() == currentId;
-
-  const _addInputRef = (ref: TextInputRef | null) => {
-    if (ref && !contain(inputRefs.current, currentPredicate(ref.id()))) {
-      inputRefs.current.push(ref);
-    }
-  };
-
-  const _clearInputRefs = () => {
-    clean(inputRefs.current);
-  };
-
-  const _goNext = (currentId: string) => () => {
-    const nextIndex = findNextIndex(inputRefs.current, currentPredicate(currentId));
-    if (nextIndex != -1) {
-      inputRefs.current[nextIndex].focus();
-    }
-  };
 
   const _handleOnShowPressed = () => {
     showPassword(!isPasswordShown);
@@ -57,7 +39,7 @@ const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => 
   };
 
   const _handleOnLayoutChange = () => {
-    _clearInputRefs();
+    clearInputRefs(inputRefs);
   };
 
   return (
@@ -66,7 +48,7 @@ const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => 
       subtitleProps={{
         children: strings.signIn.dontHaveAnAccount(),
         links: ['https://gotoSignUpScreen'],
-        onPress: (url, text) => {
+        onPress: (url, _text) => {
           if (url == 'https://gotoSignUpScreen') {
             navigateToSignUpScreen();
             return;
@@ -115,12 +97,12 @@ const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => 
               <View style={styles.buzzSignUpContainer}>
                 <TextInput
                   id={usernameId}
-                  ref={_addInputRef}
+                  ref={addInputRef(inputRefs)}
                   style={styles.textInput}
                   placeholder={strings.shared.usernamePlaceholder()}
                   autoCapitalize='none'
                   returnKeyType='next'
-                  onSubmitEditing={_goNext(usernameId)}
+                  onSubmitEditing={goNext(inputRefs, usernameId)}
                   onChangeText={handleChange(usernameId)}
                   onBlur={handleBlur(usernameId)}
                   value={values[usernameId]}
@@ -131,13 +113,13 @@ const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => 
                 />
                 <PasswordInputWithAction
                   id={passwordId}
-                  ref={_addInputRef}
+                  ref={addInputRef(inputRefs)}
                   style={styles.textInput}
                   placeholder={strings.shared.passwordPlaceholder()}
                   isShown={isPasswordShown}
                   onPress={_handleOnShowPressed}
                   returnKeyType='next'
-                  onSubmitEditing={_goNext(passwordId)}
+                  onSubmitEditing={goNext(inputRefs, passwordId)}
                   onChangeText={handleChange(passwordId)}
                   onBlur={handleBlur(passwordId)}
                   value={values[passwordId]}
