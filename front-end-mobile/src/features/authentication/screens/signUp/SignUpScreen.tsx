@@ -12,14 +12,15 @@ import TextInput, {
   TextInputRef,
 } from 'res/components/textInput/TextInput';
 import Button from 'res/components/button/Button';
-import PasswordInputWithAction from 'features/authentication/components/passwordInputWithAction/PasswordInputWithAction';
-import SeparateLine from 'features/authentication/components/separateLine/SeparateLine';
+import PasswordInputWithAction from '../../components/passwordInputWithAction/PasswordInputWithAction';
+import SeparateLine from '../../components/separateLine/SeparateLine';
 import Hyperlink from 'res/components/hyperlink/Hyperlink';
 import { findNextIndex, clean, contain } from 'lib/utils/array';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Auth0 from 'react-native-auth0';
 import { User } from 'lib/types/user';
+import { navigateToSignInScreen } from './SignUpScreen.container';
 
 const strings = R.strings.authentication.signUp;
 const dimens = R.dimens.authentication;
@@ -103,9 +104,9 @@ const SignUpScreen = () => {
         links: ['https://gotoLoginScreen'],
         onPress: (url, _text) => {
           if (url == 'https://gotoLoginScreen') {
-            console.warn('navigate to Login Screen');
+            navigateToSignInScreen();
           } else {
-            console.warn('nani');
+            console.warn('Nani?!?');
           }
         },
       }}

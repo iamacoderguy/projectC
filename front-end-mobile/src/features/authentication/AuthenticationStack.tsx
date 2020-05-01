@@ -5,14 +5,9 @@ import { mapStateToProps, mapDispatchToProps } from './AuthenticationStack.conta
 import SignInScreen from './screens/signIn/SignInScreen';
 import SignUpScreen from './screens/signUp/SignUpScreen';
 import ForgotPasswordScreen from './screens/forgotPassword/ForgotPasswordScreen';
+import navigationMap from './navigationMap';
 
 const Stack = createStackNavigator();
-
-const navigationMap = {
-  SignIn: 'SignIn',
-  SignUp: 'SignUp',
-  ForgotPassword: 'ForgotPassword',
-};
 
 export type AuthenticationStackPropsForMapState = {
   token?: string;
@@ -42,11 +37,14 @@ const AuthenticationStack: React.FC<AuthenticationStackProps> = (props: Authenti
   };
 
   return (
-    <Stack.Navigator initialRouteName={navigationMap.SignUp}>
+    <Stack.Navigator
+      initialRouteName={navigationMap.SignUp}
+      screenOptions={{ headerShown: false }} // Note: Even the header is not shown, we can get back by the physical back button
+    >
       <Stack.Screen name={navigationMap.SignIn} >
         {() => <SignInScreen onSignIn={_handleOnSignIn} />}
       </Stack.Screen>
-      <Stack.Screen name={navigationMap.SignUp} component={SignUpScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={navigationMap.SignUp} component={SignUpScreen} />
       <Stack.Screen name={navigationMap.ForgotPassword} component={ForgotPasswordScreen} />
     </Stack.Navigator>
   );
