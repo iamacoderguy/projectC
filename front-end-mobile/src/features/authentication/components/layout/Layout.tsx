@@ -33,7 +33,7 @@ type LayoutProps = {
 }
 
 const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
-  const [theme, changeTheme] = useState(Theme.InsideScrollingWithMaxHeight);
+  const [theme, changeTheme] = useState(Theme.OutsideScrolling);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   useEffect(() => {
