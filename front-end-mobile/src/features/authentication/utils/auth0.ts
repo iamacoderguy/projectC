@@ -7,11 +7,16 @@ const config = R.config.AUTH0;
 const auth0 = new Auth0(config.credentials);
 
 export type SocialConnection = 'github' | 'google-oauth2';
+const scopes = {
+  // used by an application during authentication to authorize access to a user's details, like name and picture
+  // https://auth0.com/docs/scopes/current/oidc-scopes
+  OIDC: 'openid profile email',
+};
 
 export const signUpOrSignInWithSocialConnection = (socialConnection: SocialConnection) => {
   return auth0.webAuth
     .authorize({
-      scope: 'openid profile email',
+      scope: scopes.OIDC,
       connection: socialConnection,
     });
 };
@@ -33,6 +38,6 @@ export const signInManual = (user: Credential) => {
       username: user.username,
       password: user.password,
       realm: config.connections.database,
-      scope: 'openid profile email',
+      scope: scopes.OIDC,
     });
 };
