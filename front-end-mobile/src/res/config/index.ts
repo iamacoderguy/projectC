@@ -17,6 +17,9 @@ const config = {
     connections: {
       database: env.AUTH0_CONNECTION_DATABASE,
     },
+    api: {
+      id: env.AUTH0_BUZZ_API_ID,
+    },
   },
 };
 
@@ -25,9 +28,9 @@ const ENV = config.env.name;
 const IS_PRODUCTION = config.env.isProduction;
 const AUTH0 = config.auth0;
 
-export default { 
-  ENV, 
+export default {
+  ENV,
   API_HOST,
-  IS_PRODUCTION, 
-  AUTH0, 
+  IS_PRODUCTION,
+  AUTH0,
 };

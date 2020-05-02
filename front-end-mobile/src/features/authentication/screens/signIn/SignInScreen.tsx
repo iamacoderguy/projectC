@@ -18,6 +18,7 @@ import { clearInputRefs, addInputRef, goNext } from '../../utils/inputRefs';
 import { signUpOrSignInWithSocialConnection, SocialConnection, signInManual } from '../../utils/auth0';
 import { navigate } from 'lib/utils/navigation';
 import navigationMap from '../../navigationMap';
+import { setToken, fetchToJson } from 'lib/utils/apiFetcher';
 
 const strings = {
   signIn: R.strings.authentication.signIn,
@@ -58,8 +59,11 @@ const SignInScreen: React.FC<SignInScreenProps> = (_props: SignInScreenProps) =>
     setSubmitting(true);
 
     await signUpOrSignInWithSocialConnection(connection)
-      .then(credentials => {
+      .then(async credentials => {
         console.warn(credentials);
+        setToken(credentials.accessToken);
+        const result = await fetchToJson('GET', '/api/helloWorld/private', undefined, true);
+        console.warn(result);
       })
       .catch(error => {
         console.warn(error);

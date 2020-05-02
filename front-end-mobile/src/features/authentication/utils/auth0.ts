@@ -18,6 +18,7 @@ export const signUpOrSignInWithSocialConnection = (socialConnection: SocialConne
     .authorize({
       scope: scopes.OIDC,
       connection: socialConnection,
+      audience: config.api.id,
     });
 };
 
@@ -39,5 +40,6 @@ export const signInManual = (user: Credential) => {
       password: user.password,
       realm: config.connections.database,
       scope: scopes.OIDC,
+      audience: config.api.id,
     });
 };

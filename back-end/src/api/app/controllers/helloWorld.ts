@@ -13,24 +13,21 @@ function nonAuthenticatedRequests(_req: Request, res: Response): void {
   res
     .json({
       message: 'Hello from a public endpoint! You don\'t need to be authenticated to see this.',
-    })
-    .send();
+    });
 }
 
 function authenticatedRequests(_req: Request, res: Response): void {
   res
     .json({
       message: 'Hello from a private endpoint! You need to be authenticated to see this.',
-    })
-    .send();
+    });
 }
 
 function authorizedRequests(_req: Request, res: Response): void {
   res
     .json({
       message: 'Hello from a private endpoint! You need to be authenticated and have a scope of read:helloWorld to see this.',
-    })
-    .send();
+    });
 }
 
 export default router;

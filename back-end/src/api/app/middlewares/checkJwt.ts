@@ -14,12 +14,14 @@ const checkJwt = jwt({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    jwksUri: (new URL('.well-known/jwks.json', config.auth0.domain)).toString(),
+    jwksUri: (new URL('.well-known/jwks.json', config.auth0.domain)).href,
   }),
 
   // Validate the audience and the issuer.
   audience: config.auth0.buzzApiId,
-  issuer: config.auth0.domain,
+
+  // The issuer url need to end by an '/'
+  issuer: (new URL('/', config.auth0.domain)).href,
   algorithms: ['RS256'],
 });
 
