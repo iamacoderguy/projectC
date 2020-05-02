@@ -31,7 +31,7 @@ export const fetchToJson = async (
     body: data ? JSON.stringify(data) : null,
   });
 
-  const res = await fetchTask;
-  const apiResponse = await (res as Response).json();
+  const res = (await fetchTask) as Response;
+  const apiResponse = (res.status == 200) ? (await res.json()) : (await res.text());
   return apiResponse;
 };

@@ -1,12 +1,23 @@
 import Auth0 from 'react-native-auth0';
 import R from 'res/R';
 import { User } from 'lib/types/user';
-import { Credential } from '../types/credential';
 
 const config = R.config.AUTH0;
 const auth0 = new Auth0(config.credentials);
 
 export type SocialConnection = 'github' | 'google-oauth2';
+export type PasswordRealm = {
+  username: string;
+  password: string;
+}
+export type Credential = {
+  accessToken: string;
+  expiresIn: number;
+  idToken: string;
+  scope: string;
+  tokenType: string;
+}
+
 const scopes = {
   // used by an application during authentication to authorize access to a user's details, like name and picture
   // https://auth0.com/docs/scopes/current/oidc-scopes
@@ -33,7 +44,7 @@ export const signUpManual = (user: User) => {
     });
 };
 
-export const signInManual = (user: Credential) => {
+export const signInManual = (user: PasswordRealm) => {
   return auth0.auth
     .passwordRealm({
       username: user.username,

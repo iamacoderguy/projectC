@@ -15,7 +15,12 @@ import Hyperlink from 'res/components/hyperlink/Hyperlink';
 import * as Yup from 'yup';
 import { usernameValidation, passwordValidation } from '../../utils/yupValidation';
 import { clearInputRefs, addInputRef, goNext } from '../../utils/inputRefs';
-import { signUpOrSignInWithSocialConnection, SocialConnection, signInManual } from '../../utils/auth0';
+import {
+  signUpOrSignInWithSocialConnection,
+  SocialConnection,
+  signInManual,
+  Credential,
+} from '../../utils/auth0';
 import { navigate } from 'lib/utils/navigation';
 import navigationMap from '../../navigationMap';
 import { setToken, fetchToJson } from 'lib/utils/apiFetcher';
@@ -59,10 +64,10 @@ const SignInScreen: React.FC<SignInScreenProps> = (_props: SignInScreenProps) =>
     setSubmitting(true);
 
     await signUpOrSignInWithSocialConnection(connection)
-      .then(async credentials => {
+      .then(async (credentials: Credential) => {
         console.warn(credentials);
         setToken(credentials.accessToken);
-        const result = await fetchToJson('GET', '/api/helloWorld/private', undefined, true);
+        const result = await fetchToJson('GET', '/api/helloWorld/private-scoped', undefined, true);
         console.warn(result);
       })
       .catch(error => {
