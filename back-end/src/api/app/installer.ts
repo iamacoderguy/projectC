@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import express from 'express';
 import { installer as dataInstaller } from '../../data/installer';
 
-import aboutController from './controllers/about';
+import helloWorldController from './controllers/helloWorld';
 import { container } from 'tsyringe';
 import { DbContext } from '../../data/dbContext';
 
@@ -11,7 +11,7 @@ dataInstaller.install(container);
 
 const app = express();
 
-app.use('/api/about', aboutController);
+app.use('/api/helloWorld', helloWorldController);
 
 export async function connectToDb(): Promise<void> {
   console.info('Connecting to Mongo Atlas...');
