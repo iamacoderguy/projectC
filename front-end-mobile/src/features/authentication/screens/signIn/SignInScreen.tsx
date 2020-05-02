@@ -62,7 +62,7 @@ const SignInScreen: React.FC<SignInScreenProps> = (_props: SignInScreenProps) =>
         console.warn(credentials);
       })
       .catch(error => {
-        console.warn(error.error_description);
+        console.warn(error);
       });
 
     setSubmitting(false);

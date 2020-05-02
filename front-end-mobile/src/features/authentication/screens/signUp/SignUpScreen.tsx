@@ -56,7 +56,7 @@ const SignUpScreen = () => {
         console.warn(credentials);
       })
       .catch(error => {
-        console.warn(error.error_description);
+        console.warn(error);
       });
 
     setSubmitting(false);
@@ -114,7 +114,7 @@ const SignUpScreen = () => {
               console.warn(success);
             })
             .catch(error => {
-              console.warn(error.json.description);
+              console.warn(error);
             });
 
           setSubmitting(false);
