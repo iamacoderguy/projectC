@@ -1,4 +1,4 @@
-import { SagaOrchestrator } from 'lib/utils/sagaOrchestrator';
+import { SagaOrchestrator } from 'shared/utils/sagaOrchestrator';
 import { getType } from 'typesafe-actions';
 import {
   finishAuthenticationRequest,
@@ -7,8 +7,8 @@ import {
   uninstallLocalizationRequest,
   installLocalizationSuccess,
   uninstallLocalizationSuccess,
-} from '../actions';
-import { Action } from 'lib/types/action';
+} from './actions';
+import { Action } from 'shared/types/action';
 import { put, select } from 'redux-saga/effects';
 import { localizer } from 'features/localization';
 import { RootState } from '../types/rootState';

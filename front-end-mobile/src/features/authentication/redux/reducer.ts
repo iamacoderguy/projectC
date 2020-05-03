@@ -1,4 +1,4 @@
-import { Action } from 'lib/types/action';
+import { Action } from 'shared/types/action';
 import {
   authenticated,
   initialize,

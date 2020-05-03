@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import R from 'res/R';
+import R from 'shared/res/R';
 
 const tabBarHeight = 75;
 const tabBarColor = R.colors.BLACK;

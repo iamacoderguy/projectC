@@ -1,5 +1,5 @@
 import { takeLatest, all, spawn, call, takeEvery } from 'redux-saga/effects';
-import { Action } from 'lib/types/action';
+import { Action } from 'shared/types/action';
 
 export class SagaOrchestrator {
   private _sagas: Function[] = [];

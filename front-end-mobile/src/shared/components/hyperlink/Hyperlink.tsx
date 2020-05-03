@@ -6,7 +6,7 @@ import {
   Text,
   StyleSheet,
 } from 'react-native';
-import R from 'res/R';
+import R from 'shared/res/R';
 import { convertToReactNativeHyperlink, generateLinkTexts } from './Hyperlink.container';
 
 export type HyperlinkProps = {

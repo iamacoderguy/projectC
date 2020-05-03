@@ -7,14 +7,14 @@ import {
   View,
 } from 'react-native';
 import Layout from '../../components/layout/Layout';
-import R from 'res/R';
+import R from 'shared/res/R';
 import TextInput, {
   TextInputRef,
-} from 'lib/components/textInput/TextInput';
-import Button from 'lib/components/button/Button';
+} from 'shared/components/textInput/TextInput';
+import Button from 'shared/components/button/Button';
 import PasswordInputWithAction from '../../components/passwordInputWithAction/PasswordInputWithAction';
 import SeparateLine from '../../components/separateLine/SeparateLine';
-import Hyperlink from 'lib/components/hyperlink/Hyperlink';
+import Hyperlink from 'shared/components/hyperlink/Hyperlink';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { usernameValidation, passwordValidation } from '../../utils/yupValidation';
@@ -25,7 +25,7 @@ import {
   signUpManual,
   signInManual,
 } from '../../utils/auth0';
-import { navigate } from 'lib/utils/navigation';
+import { navigate } from 'shared/utils/navigation';
 import navigationMap from '../../constants/navigationMap';
 import { SignUpScreenPropsForMapDispatch, mapDispatchToProps } from './SignUpScreen.container';
 import { connect } from 'react-redux';

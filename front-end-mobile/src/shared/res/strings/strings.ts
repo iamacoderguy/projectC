@@ -1,5 +1,5 @@
 import * as oriStrings from './en.json';
-import { format } from 'lib/utils/string';
+import { format } from 'shared/utils/string';
 
 export const oriTranslation = oriStrings;
 export type SKey = keyof typeof oriStrings;

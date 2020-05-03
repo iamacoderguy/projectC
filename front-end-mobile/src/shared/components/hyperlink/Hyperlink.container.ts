@@ -1,4 +1,4 @@
-import { subString } from 'lib/utils/string';
+import { subString } from 'shared/utils/string';
 
 export const PREFIX = '<_';
 export const POSTFIX = '_>';

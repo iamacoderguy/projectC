@@ -12,8 +12,8 @@ import {
 } from 'react-native';
 import TextInput, {
   TextInputProps, TextInputRef,
-} from 'lib/components/textInput/TextInput';
-import R from 'res/R';
+} from 'shared/components/textInput/TextInput';
+import R from 'shared/res/R';
 
 const strings = R.strings.authentication.components;
 

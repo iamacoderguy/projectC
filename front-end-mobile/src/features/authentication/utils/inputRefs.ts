@@ -1,5 +1,5 @@
-import { TextInputRef } from 'lib/components/textInput/TextInput';
-import { contain, clean, findNextIndex } from 'lib/utils/array';
+import { TextInputRef } from 'shared/components/textInput/TextInput';
+import { contain, clean, findNextIndex } from 'shared/utils/array';
 
 const currentPredicate = (currentId: string | undefined) => (txtInpt: TextInputRef) => txtInpt.id() == currentId;
 

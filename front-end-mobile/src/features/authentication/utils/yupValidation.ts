@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import R from 'res/R';
+import R from 'shared/res/R';
 
 const strings = R.strings.authentication.shared;
 

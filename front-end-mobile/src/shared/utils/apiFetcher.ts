@@ -1,4 +1,4 @@
-import R from 'res/R';
+import R from 'shared/res/R';
 import { URL } from 'whatwg-url';
 
 let _token: string;

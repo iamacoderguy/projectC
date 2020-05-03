@@ -1,6 +1,6 @@
 import { createAction } from 'typesafe-actions';
-import { Credentials } from 'lib/types/credentials';
-import tag from './constants/tag';
+import { Credentials } from 'shared/types/credentials';
+import tag from '../constants/tag';
 
 const makeType = (type: string) => {
   return `${tag}_${type}`;

@@ -1,6 +1,6 @@
 import Auth0 from 'react-native-auth0';
-import R from 'res/R';
-import { User } from 'lib/types/user';
+import R from 'shared/res/R';
+import { User } from 'shared/types/user';
 
 const config = R.config.AUTH0;
 const auth0 = new Auth0(config.credentials);

@@ -18,12 +18,9 @@
       "features/*": [
         "src/features/*"
       ],
-      "lib/*": [
-        "src/lib/*"
+      "shared/*": [
+        "src/shared/*"
       ],
-      "res/*": [
-        "src/res/*"
-      ]
     },
     /* Source Map Options */
     /* Experimental Options */

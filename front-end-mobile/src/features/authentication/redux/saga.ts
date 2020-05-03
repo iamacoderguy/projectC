@@ -1,9 +1,9 @@
-import { SagaOrchestrator } from 'lib/utils/sagaOrchestrator';
+import { SagaOrchestrator } from 'shared/utils/sagaOrchestrator';
 import { getType } from 'typesafe-actions';
 import { initialize, renewToken, authenticated } from './actions';
-import { Action } from 'lib/types/action';
+import { Action } from 'shared/types/action';
 import { call, put, select } from 'redux-saga/effects';
-import { navigate } from 'lib/utils/navigation';
+import { navigate } from 'shared/utils/navigation';
 import navigationMap from '../constants/navigationMap';
 import * as auth0 from '../utils/auth0';
 import { RootState } from '../types/rootState';

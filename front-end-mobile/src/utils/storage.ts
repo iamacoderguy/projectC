@@ -1,5 +1,5 @@
 import * as Keychain from 'react-native-keychain';
-import { isNullOrWhitespace } from '../string';
+import { isNullOrWhitespace } from '../shared/utils/string';
 
 type Key = 'refreshToken' | 'accessToken';
 

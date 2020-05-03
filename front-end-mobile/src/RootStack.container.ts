@@ -5,7 +5,7 @@ import {
   finishAuthenticationRequest,
   installLocalizationRequest,
   uninstallLocalizationRequest,
-} from './actions';
+} from './redux/actions';
 
 export enum Stage {
   'Loading',

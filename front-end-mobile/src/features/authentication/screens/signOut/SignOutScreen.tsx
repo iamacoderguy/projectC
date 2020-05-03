@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { } from 'react';
-import R from 'res/R';
+import R from 'shared/res/R';
 import Layout from '../../components/layout/Layout';
 import {
   View,
@@ -8,7 +8,7 @@ import {
   Image,
   Text,
 } from 'react-native';
-import Button from 'lib/components/button/Button';
+import Button from 'shared/components/button/Button';
 import {
   SignOutScreenPropsForMapState,
   mapStateToProps,

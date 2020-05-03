@@ -1,4 +1,4 @@
-import { Action } from 'lib/types/action';
+import { Action } from 'shared/types/action';
 import { getType } from 'typesafe-actions';
 import { 
   finishLoadingRequest,
@@ -6,7 +6,7 @@ import {
   changeLanguageSuccess,
   installLocalizationSuccess,
   uninstallLocalizationSuccess,
-} from '../actions';
+} from './actions';
 import { RootState } from '../types/rootState';
 import appTag from '../constants/tag';
 

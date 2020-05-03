@@ -10,7 +10,7 @@ import SignUpScreen from './screens/signUp/SignUpScreen';
 import SignOutScreen from './screens/signOut/SignOutScreen';
 import ForgotPasswordScreen from './screens/forgotPassword/ForgotPasswordScreen';
 import { AuthProps } from './types/authProps';
-import LoadingScreen from 'lib/components/loading/LoadingScreen';
+import LoadingScreen from 'shared/components/loading/LoadingScreen';
 
 const Stack = createStackNavigator();
 

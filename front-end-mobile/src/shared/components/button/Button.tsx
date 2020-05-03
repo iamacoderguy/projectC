@@ -8,7 +8,7 @@ import {
   ImageSourcePropType,
   Image,
 } from 'react-native';
-import R from 'res/R';
+import R from 'shared/res/R';
 
 type ButtonProps = TouchableOpacityProps & {
   title: string;

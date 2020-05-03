@@ -1,6 +1,6 @@
 import i18n from 'i18next';
 import languageDetector from './languageDetector';
-import { extension, SKey } from 'res/strings';
+import { extension, SKey } from 'shared/res/strings';
 
 import * as vietnameseTranslation from './translations/vi.json';
 

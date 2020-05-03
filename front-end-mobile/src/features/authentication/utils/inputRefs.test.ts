@@ -1,5 +1,5 @@
 import { clearInputRefs, addInputRef, goNext } from './inputRefs';
-import { TextInputRef } from 'lib/components/textInput/TextInput';
+import { TextInputRef } from 'shared/components/textInput/TextInput';
 
 describe(`${clearInputRefs.name}`, () => {
   it('should clean all refs', () => {

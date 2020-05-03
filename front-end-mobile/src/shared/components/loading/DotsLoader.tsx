@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Animated, View, ViewStyle, StyleProp } from 'react-native';
-import R from 'res/R';
+import R from 'shared/res/R';
 
 type DotsLoaderProps = {
   width: number;

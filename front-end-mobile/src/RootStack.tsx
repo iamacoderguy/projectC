@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { Ref, forwardRef, useImperativeHandle } from 'react';
-import LoadingScreen from 'lib/components/loading/LoadingScreen';
+import LoadingScreen from 'shared/components/loading/LoadingScreen';
 import { Authentication } from 'features/authentication';
 import { connect } from 'react-redux';
 import {
