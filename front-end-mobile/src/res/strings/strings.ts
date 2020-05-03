@@ -41,6 +41,10 @@ export const strings = {
       agreeWithTermsOfService: () => _localizer.t('authentication_signUp_agreeWithTermsOfService'),
       termsOfServiceLink: () => _localizer.t('authentication_signUp_termsOfServiceLink'),
     },
+    signOut: {
+      title: () => _localizer.t('authentication_signOut_title'),
+      signOutButton: () => _localizer.t('authentication_signOut_signOutButton'),
+    },
     shared: {
       usernamePlaceholder: () => _localizer.t('authentication_usernamePlaceholder'),
       passwordPlaceholder: () => _localizer.t('authentication_passwordPlaceholder'),

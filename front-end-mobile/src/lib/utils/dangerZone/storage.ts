@@ -1,7 +1,9 @@
 import * as Keychain from 'react-native-keychain';
 import { isNullOrWhitespace } from '../string';
 
-export const saveCredentials = async (key: string, value: string) => {
+type Key = 'refreshToken' | 'accessToken';
+
+export const saveCredentials = async (key: Key, value: string) => {
   const credentialsAsMap = await getCredentialsAsMap();
   credentialsAsMap.set(key, value);
 
@@ -9,7 +11,7 @@ export const saveCredentials = async (key: string, value: string) => {
   await Keychain.setGenericPassword('buzzCredentials', credentialsAsString);
 };
 
-export const loadCredentials = async (key: string) => {
+export const loadCredentials = async (key: Key) => {
   const credentialsAsMap = await getCredentialsAsMap();
   return credentialsAsMap.get(key);
 };

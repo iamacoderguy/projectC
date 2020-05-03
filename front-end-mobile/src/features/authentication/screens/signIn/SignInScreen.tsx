@@ -1,4 +1,7 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, {
+  useRef,
+  useState,
+} from 'react';
 import R from 'res/R';
 import Layout from '../../components/layout/Layout';
 import TextInput, { TextInputRef } from 'res/components/textInput/TextInput';
@@ -19,12 +22,11 @@ import {
   signUpOrSignInWithSocialConnection,
   SocialConnection,
   signInManual,
-  Credentials,
 } from '../../utils/auth0';
 import { navigate } from 'lib/utils/navigation';
-import navigationMap from '../../navigationMap';
-import { setToken, fetchToJson } from 'lib/utils/apiFetcher';
-import { loadCredentials } from 'lib/utils/dangerZone/storage';
+import navigationMap from '../../constants/navigationMap';
+import { SignInScreenPropsForMapDispatch, mapDispatchToProps } from './SignInScreen.container';
+import { connect } from 'react-redux';
 
 const strings = {
   signIn: R.strings.authentication.signIn,
@@ -32,11 +34,9 @@ const strings = {
 };
 const dimens = R.dimens.authentication;
 
-type SignInScreenProps = {
-  onSignIn: (username: string, password: string) => void;
-};
+type SignInScreenProps = SignInScreenPropsForMapDispatch;
 
-const SignInScreen: React.FC<SignInScreenProps> = (_props: SignInScreenProps) => {
+const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => {
   const [isPasswordShown, showPassword] = useState(false);
   const inputRefs = useRef<Array<TextInputRef>>([]);
   const usernameId = 'username';
@@ -65,11 +65,13 @@ const SignInScreen: React.FC<SignInScreenProps> = (_props: SignInScreenProps) =>
     setSubmitting(true);
 
     await signUpOrSignInWithSocialConnection(connection)
-      .then(async (credentials: Credentials) => {
+      .then(credentials => {
+        if (props.onAuthenticated) {
+          props.onAuthenticated(credentials.accessToken, credentials.refreshToken);
+          return;
+        }
+
         console.warn(credentials);
-        setToken(credentials.accessToken);
-        const result = await fetchToJson('GET', '/api/helloWorld/private-scoped', undefined, true);
-        console.warn(result);
       })
       .catch(error => {
         console.warn(error);
@@ -77,15 +79,6 @@ const SignInScreen: React.FC<SignInScreenProps> = (_props: SignInScreenProps) =>
 
     setSubmitting(false);
   };
-
-  useEffect(() => {
-    async function showCredentials() {
-      const refreshToken = await loadCredentials('refreshToken');
-      console.warn(refreshToken);
-    }
-
-    showCredentials();
-  });
 
   return (
     <Layout
@@ -108,8 +101,13 @@ const SignInScreen: React.FC<SignInScreenProps> = (_props: SignInScreenProps) =>
         })}
         onSubmit={async (values, { setSubmitting }) => {
           await signInManual(values)
-            .then(success => {
-              console.warn(success);
+            .then(credentials => {
+              if (props.onAuthenticated) {
+                props.onAuthenticated(credentials.accessToken, credentials.refreshToken);
+                return;
+              }
+
+              console.warn(credentials);
             })
             .catch(error => {
               console.warn(error);
@@ -197,7 +195,7 @@ const SignInScreen: React.FC<SignInScreenProps> = (_props: SignInScreenProps) =>
                     {strings.signIn.dontRememberPassword()}
                   </Hyperlink>
                   <Button
-                    style={styles.signUpButton}
+                    style={styles.signInButton}
                     title={strings.signIn.signInButton()}
                     onPress={handleSubmit}
                     disabled={!isValid || isSubmitting}
@@ -237,10 +235,10 @@ const styles = StyleSheet.create({
     marginTop: dimens.spacingBetweenForms - dimens.spacingBetweenFormItems,
     marginBottom: dimens.spacingBetweenForms,
   },
-  signUpButton: {},
+  signInButton: {},
   socialButton: {
     marginBottom: dimens.spacingBetweenFormItems,
   },
 });
 
-export default SignInScreen;
+export default connect(null, mapDispatchToProps)(SignInScreen);

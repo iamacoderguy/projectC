@@ -34,7 +34,7 @@ const setRefreshToken = async (newValue?: string) => {
 
 export const renewToken = async () => {
   try {
-    const credentials = await auth0.auth
+    const credentials: Credentials = await auth0.auth
       .refreshToken({
         refreshToken: _refreshToken || '',
       });
@@ -56,7 +56,7 @@ export const signUpOrSignInWithSocialConnection = async (socialConnection: Socia
     return await renewToken();
   }
 
-  const credentials = await auth0.webAuth
+  const credentials: Credentials = await auth0.webAuth
     .authorize({
       scope: scopes.OIDC,
       connection: socialConnection,

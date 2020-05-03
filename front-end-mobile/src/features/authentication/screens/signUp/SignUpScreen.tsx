@@ -26,7 +26,9 @@ import {
   signInManual,
 } from '../../utils/auth0';
 import { navigate } from 'lib/utils/navigation';
-import navigationMap from '../../navigationMap';
+import navigationMap from '../../constants/navigationMap';
+import { SignUpScreenPropsForMapDispatch, mapDispatchToProps } from './SignUpScreen.container';
+import { connect } from 'react-redux';
 
 const strings = {
   signUp: R.strings.authentication.signUp,
@@ -34,7 +36,9 @@ const strings = {
 };
 const dimens = R.dimens.authentication;
 
-const SignUpScreen = () => {
+type SignUpScreenProps = SignUpScreenPropsForMapDispatch;
+
+const SignUpScreen: React.FC<SignUpScreenProps> = (props: SignUpScreenProps) => {
   const [isPasswordShown, showPassword] = useState(false);
   const inputRefs = useRef<Array<TextInputRef>>([]);
   const usernameId = 'username';
@@ -58,6 +62,11 @@ const SignUpScreen = () => {
 
     await signUpOrSignInWithSocialConnection(connection)
       .then(credentials => {
+        if (props.onAuthenticated) {
+          props.onAuthenticated(credentials.accessToken, credentials.refreshToken);
+          return;
+        }
+
         console.warn(credentials);
       })
       .catch(error => {
@@ -119,8 +128,13 @@ const SignUpScreen = () => {
               username: values[usernameId],
               password: values[passwordId],
             }))
-            .then(success => {
-              console.warn(success);
+            .then(credentials => {
+              if (props.onAuthenticated) {
+                props.onAuthenticated(credentials.accessToken, credentials.refreshToken);
+                return;
+              }
+
+              console.warn(credentials);
             })
             .catch(error => {
               console.warn(error);
@@ -295,4 +309,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignUpScreen;
+export default connect(null, mapDispatchToProps)(SignUpScreen);

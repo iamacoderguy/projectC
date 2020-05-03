@@ -32,7 +32,7 @@ const RootStack = (props: RootStackProps & { myForwardedRef: Ref<IRootStack> }) 
   const _render = () => {
     switch (props.stage) {
       case Stage.Authenticating:
-        return <Authentication onAuthenticated={props.onAuthenticationFinished} />;
+        return <Authentication onAuthenticated={props.onAuthenticationFinished} testMode />;
 
       case Stage.InApp:
         return <InAppTabs />;
