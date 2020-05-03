@@ -1,8 +1,8 @@
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import R from 'res/R';
-import DotsLoader from './components/DotsLoader';
-import StatusBar from 'lib/components/statusBar/StatusBar';
+import DotsLoader from './DotsLoader';
+import StatusBar from '../statusBar/StatusBar';
 
 const LoadingScreen = () => {
   return (
