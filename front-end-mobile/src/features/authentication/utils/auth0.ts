@@ -4,6 +4,7 @@ import { User } from 'lib/types/user';
 
 const config = R.config.AUTH0;
 const auth0 = new Auth0(config.credentials);
+let _refreshToken: string | undefined;
 
 export type SocialConnection = 'github' | 'google-oauth2';
 export type PasswordRealm = {
@@ -15,22 +16,34 @@ export type Credential = {
   expiresIn: number;
   idToken: string;
   scope: string;
-  tokenType: string;
+  tokenType: 'Bearer';
+  refreshToken?: string;
 }
 
 const scopes = {
   // used by an application during authentication to authorize access to a user's details, like name and picture
   // https://auth0.com/docs/scopes/current/oidc-scopes
-  OIDC: 'openid profile email',
+  OIDC: 'openid profile email offline_access',
 };
 
-export const signUpOrSignInWithSocialConnection = (socialConnection: SocialConnection) => {
-  return auth0.webAuth
+export const renewToken = () => {
+  return auth0.auth
+    .refreshToken({
+      refreshToken: _refreshToken || '',
+    });
+};
+
+export const signUpOrSignInWithSocialConnection = async (socialConnection: SocialConnection) => {
+  const credentials = await auth0.webAuth
     .authorize({
       scope: scopes.OIDC,
       connection: socialConnection,
       audience: config.api.id,
     });
+
+  _refreshToken = credentials.refreshToken;
+
+  return credentials;
 };
 
 export const signUpManual = (user: User) => {
@@ -44,8 +57,8 @@ export const signUpManual = (user: User) => {
     });
 };
 
-export const signInManual = (user: PasswordRealm) => {
-  return auth0.auth
+export const signInManual = async (user: PasswordRealm) => {
+  const credentials = await auth0.auth
     .passwordRealm({
       username: user.username,
       password: user.password,
@@ -53,4 +66,8 @@ export const signInManual = (user: PasswordRealm) => {
       scope: scopes.OIDC,
       audience: config.api.id,
     });
+
+  _refreshToken = credentials.refreshToken;
+
+  return credentials;
 };

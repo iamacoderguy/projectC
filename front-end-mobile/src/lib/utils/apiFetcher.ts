@@ -2,13 +2,13 @@ import R from 'res/R';
 import { URL } from 'whatwg-url';
 
 let _token: string;
-export function setToken(token: string) {
+export const setToken = (token: string) => {
   _token = token;
-}
+};
 
-export function removeToken() {
+export const removeToken = () => {
   _token = '';
-}
+};
 
 export const fetchToJson = async (
   method: 'POST' | 'GET' | 'DELETE' | 'PUT',

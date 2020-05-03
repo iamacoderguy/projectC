@@ -19,9 +19,7 @@ const checkJwt = jwt({
 
   // Validate the audience and the issuer.
   audience: config.auth0.buzzApiId,
-
-  // The issuer url need to end by an '/'
-  issuer: (new URL('/', config.auth0.domain)).href,
+  issuer: (new URL('/', config.auth0.domain)).href, // The issuer url need to end by an '/'
   algorithms: ['RS256'],
 });
 
