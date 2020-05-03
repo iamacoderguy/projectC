@@ -6,8 +6,8 @@ export const setToken = (token: string) => {
   _token = token;
 };
 
-export const removeToken = () => {
-  _token = '';
+export const getToken = () => {
+  return _token;
 };
 
 export const fetchToJson = async (

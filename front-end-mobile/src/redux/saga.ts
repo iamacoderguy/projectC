@@ -9,10 +9,16 @@ import {
   uninstallLocalizationSuccess,
 } from './actions';
 import { Action } from 'shared/types/action';
-import { put, select } from 'redux-saga/effects';
+import { 
+  put,
+  select,
+  call,
+} from 'redux-saga/effects';
 import { localizer } from 'features/localization';
 import { RootState } from '../types/rootState';
 import appTag from '../constants/tag';
+import * as storage from '../utils/storage';
+import * as apiFetcher from 'shared/utils/apiFetcher';
 
 const tag = 'SAGA';
 const orchestrator = new SagaOrchestrator();
@@ -25,11 +31,10 @@ orchestrator
   .takeEvery(getType(finishAuthenticationRequest), function* (action: Action) {
     console.log(`${appTag} - ${tag} - ${getType(finishAuthenticationRequest)}`);
     const credentials = (action as ReturnType<typeof finishAuthenticationRequest>).payload;
-    console.warn(credentials);
 
-    // TODO
-    // yield call(saveCredentials, token);
-    // yield put(finishAuthenticationSuccess());
+    yield call(storage.saveCredentials, 'refreshToken', credentials.refreshToken || '');
+    yield call(apiFetcher.setToken, credentials.accessToken);
+    yield put(finishAuthenticationSuccess());
   })
 
   .takeEvery(getType(installLocalizationRequest), function* () {

@@ -6,6 +6,8 @@ import {
   installLocalizationRequest,
   uninstallLocalizationRequest,
 } from './redux/actions';
+import * as apiFetcher from 'shared/utils/apiFetcher';
+import { isNullOrWhitespace } from 'shared/utils/string';
 
 export enum Stage {
   'Loading',
@@ -40,7 +42,8 @@ const isAuthStageReady = (state: RootState) => {
 };
 
 const isInAppStageReady = (state: RootState) => {
-  return state.inApp !== undefined && false;  // TODO && loadCredentials() !== '';
+  return state.inApp !== undefined && 
+    !isNullOrWhitespace(apiFetcher.getToken());
 };
 
 // === mapDispatchToProps ===
