@@ -4,7 +4,7 @@ import React, {
 } from 'react';
 import R from 'res/R';
 import Layout from '../../components/layout/Layout';
-import TextInput, { TextInputRef } from 'res/components/textInput/TextInput';
+import TextInput, { TextInputRef } from 'lib/components/textInput/TextInput';
 import { Formik } from 'formik';
 import {
   View,
@@ -12,9 +12,9 @@ import {
   Image,
 } from 'react-native';
 import SeparateLine from '../../components/separateLine/SeparateLine';
-import Button from 'res/components/button/Button';
+import Button from 'lib/components/button/Button';
 import PasswordInputWithAction from '../../components/passwordInputWithAction/PasswordInputWithAction';
-import Hyperlink from 'res/components/hyperlink/Hyperlink';
+import Hyperlink from 'lib/components/hyperlink/Hyperlink';
 import * as Yup from 'yup';
 import { usernameValidation, passwordValidation } from '../../utils/yupValidation';
 import { clearInputRefs, addInputRef, goNext } from '../../utils/inputRefs';

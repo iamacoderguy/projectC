@@ -10,11 +10,11 @@ import Layout from '../../components/layout/Layout';
 import R from 'res/R';
 import TextInput, {
   TextInputRef,
-} from 'res/components/textInput/TextInput';
-import Button from 'res/components/button/Button';
+} from 'lib/components/textInput/TextInput';
+import Button from 'lib/components/button/Button';
 import PasswordInputWithAction from '../../components/passwordInputWithAction/PasswordInputWithAction';
 import SeparateLine from '../../components/separateLine/SeparateLine';
-import Hyperlink from 'res/components/hyperlink/Hyperlink';
+import Hyperlink from 'lib/components/hyperlink/Hyperlink';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { usernameValidation, passwordValidation } from '../../utils/yupValidation';

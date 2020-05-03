@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Image,
 } from 'react-native';
-import Button from 'res/components/button/Button';
+import Button from 'lib/components/button/Button';
 import {
   SignOutScreenPropsForMapState,
   mapStateToProps,

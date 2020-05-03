@@ -14,9 +14,9 @@ import {
   Platform,
 } from 'react-native';
 import R from 'res/R';
-import StatusBar from 'res/components/statusBar/StatusBar';
+import StatusBar from 'lib/components/statusBar/StatusBar';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
-import Hyperlink, { HyperlinkProps } from 'res/components/hyperlink/Hyperlink';
+import Hyperlink, { HyperlinkProps } from 'lib/components/hyperlink/Hyperlink';
 
 enum Theme {
   OutsideScrolling = 0,
