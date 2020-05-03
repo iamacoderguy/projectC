@@ -1,12 +1,14 @@
 import { createAction } from 'typesafe-actions';
+import { Credentials } from 'lib/types/credentials';
+import tag from './constants/tag';
 
 const makeType = (type: string) => {
-  return 'APP_' + type;
+  return `${tag}_${type}`;
 };
 
 export const finishLoadingRequest = createAction(makeType('FINISH_LOADING_REQUEST'))();
 
-export const finishAuthenticationRequest = createAction(makeType('FINISH_AUTHENTICATING_REQUEST'))<{ token: string }>();
+export const finishAuthenticationRequest = createAction(makeType('FINISH_AUTHENTICATING_REQUEST'))<Credentials>();
 export const finishAuthenticationSuccess = createAction(makeType('FINISH_AUTHENTICATING_SUCCESS'))();
 
 export const changeLanguageSuccess = createAction(makeType('CHANGE_LANGUAGE_SUCCESS'))<{lng: string}>();

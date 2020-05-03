@@ -3,18 +3,14 @@ import React, { Ref, forwardRef, useImperativeHandle } from 'react';
 import LoadingScreen from 'lib/components/loading/LoadingScreen';
 import { Authentication } from 'features/authentication';
 import { connect } from 'react-redux';
-import { mapDispatchToProps, mapStateToProps, Stage } from './RootStack.container';
+import {
+  mapDispatchToProps,
+  mapStateToProps,
+  Stage,
+  RootStackPropsForMapState,
+  RootStackPropsForMapDispatch,
+} from './RootStack.container';
 import InAppTabs from './InAppTabs';
-
-export type RootStackPropsForMapState = {
-  stage: Stage;
-}
-
-export type RootStackPropsForMapDispatch = {
-  onAppStarted: (stage: Stage) => void;
-  onAppFinished: () => void;
-  onAuthenticationFinished: (token: string) => void;
-}
 
 export interface IRootStack {
   start: () => void;

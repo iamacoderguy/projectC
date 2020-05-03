@@ -1,12 +1,11 @@
 import { Dispatch } from 'redux';
-import { RootState } from './reducer';
+import { RootState } from './types/rootState';
 import {
   finishLoadingRequest,
   finishAuthenticationRequest,
   installLocalizationRequest,
   uninstallLocalizationRequest,
 } from './actions';
-import { RootStackPropsForMapState, RootStackPropsForMapDispatch } from './RootStack';
 
 export enum Stage {
   'Loading',
@@ -15,6 +14,9 @@ export enum Stage {
 }
 
 // === mapStateToProps ===
+export type RootStackPropsForMapState = {
+  stage: Stage;
+}
 export function mapStateToProps(state: RootState): RootStackPropsForMapState {
   return {
     stage: getActivatedStage(state),
@@ -42,11 +44,16 @@ const isInAppStageReady = (state: RootState) => {
 };
 
 // === mapDispatchToProps ===
+export type RootStackPropsForMapDispatch = {
+  onAppStarted: (stage: Stage) => void;
+  onAppFinished: () => void;
+  onAuthenticationFinished: (accessToken: string, refreshToken?: string) => void;
+}
 export function mapDispatchToProps(dispatch: Dispatch): RootStackPropsForMapDispatch {
   return {
     onAppStarted: (stage: Stage) => handleAppStarted(dispatch, stage),
     onAppFinished: () => handleAppFinished(dispatch),
-    onAuthenticationFinished: (token: string) => dispatch(finishAuthenticationRequest({ token })),
+    onAuthenticationFinished: (accessToken: string, refreshToken?: string) => dispatch(finishAuthenticationRequest({ accessToken, refreshToken })),
   };
 }
 

@@ -17,7 +17,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import SplashScreen from 'react-native-splash-screen';
 import RootStack, { IRootStack } from './RootStack';
 import { rootNavigationRef } from 'lib/utils/navigation';
-import store from './store';
+import store from './redux/store';
 
 const App = () => {
   const rootStackRef = useRef<IRootStack>(null);

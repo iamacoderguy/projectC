@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { } from 'react';
 import R from 'res/R';
 import Layout from '../../components/layout/Layout';
@@ -5,6 +6,7 @@ import {
   View,
   StyleSheet,
   Image,
+  Text,
 } from 'react-native';
 import Button from 'lib/components/button/Button';
 import {
@@ -24,6 +26,8 @@ const SignOutScreen: React.FC<SignOutScreenProps> = (props: SignOutScreenProps) 
   const _renderInfo = () => {
     return (
       <>
+        <Text style={styles.info}>{`accessToken: ${props.accessToken}`}</Text>
+        <Text style={styles.info}>{`refreshToken: ${props.refreshToken}`}</Text>
       </>
     );
   };
@@ -58,7 +62,11 @@ const styles = StyleSheet.create({
     marginBottom: dimens.spacingBetweenForms,
   },
   infoContainer: {
-    marginBottom: dimens.spacingBetweenForms,
+    marginBottom: dimens.spacingBetweenForms - dimens.spacingBetweenInputs,
+  },
+  info: {
+    ...R.palette.normal,
+    marginBottom: dimens.spacingBetweenInputs,
   },
   signOutButton: {},
 });

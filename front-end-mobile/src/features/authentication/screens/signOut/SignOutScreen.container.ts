@@ -1,4 +1,4 @@
-import { RootState } from '../../redux/reducer';
+import { RootState } from '../../types/rootState';
 
 export type SignOutScreenPropsForMapState = {
   accessToken?: string;
