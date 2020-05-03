@@ -18,8 +18,8 @@ export const fetchToJson = async (
 ) => {
   const apiHost = R.config.API_HOST;
   const url = new URL(path, apiHost);
-  console.warn(apiHost);
-  console.warn(url.href);
+
+  console.log(`${method} at ${url}`);
 
   const fetchTask = fetch(url.href, {
     method,

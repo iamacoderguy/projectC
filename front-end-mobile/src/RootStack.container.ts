@@ -1,12 +1,11 @@
 import { Dispatch } from 'redux';
 import { RootState } from './reducer';
-import { 
+import {
   finishLoadingRequest,
   finishAuthenticationRequest,
   installLocalizationRequest,
   uninstallLocalizationRequest,
 } from './actions';
-import { loadCredentials } from 'lib/utils/storage';
 import { RootStackPropsForMapState, RootStackPropsForMapDispatch } from './RootStack';
 
 export enum Stage {
@@ -39,7 +38,7 @@ const isAuthStageReady = (state: RootState) => {
 };
 
 const isInAppStageReady = (state: RootState) => {
-  return state.inApp !== undefined && loadCredentials() !== '';
+  return state.inApp !== undefined && false;  // TODO && loadCredentials() !== '';
 };
 
 // === mapDispatchToProps ===

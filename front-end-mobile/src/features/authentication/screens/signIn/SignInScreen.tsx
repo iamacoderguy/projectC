@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import R from 'res/R';
 import Layout from '../../components/layout/Layout';
 import TextInput, { TextInputRef } from 'res/components/textInput/TextInput';
@@ -19,11 +19,12 @@ import {
   signUpOrSignInWithSocialConnection,
   SocialConnection,
   signInManual,
-  Credential,
+  Credentials,
 } from '../../utils/auth0';
 import { navigate } from 'lib/utils/navigation';
 import navigationMap from '../../navigationMap';
 import { setToken, fetchToJson } from 'lib/utils/apiFetcher';
+import { loadCredentials } from 'lib/utils/dangerZone/storage';
 
 const strings = {
   signIn: R.strings.authentication.signIn,
@@ -64,7 +65,7 @@ const SignInScreen: React.FC<SignInScreenProps> = (_props: SignInScreenProps) =>
     setSubmitting(true);
 
     await signUpOrSignInWithSocialConnection(connection)
-      .then(async (credentials: Credential) => {
+      .then(async (credentials: Credentials) => {
         console.warn(credentials);
         setToken(credentials.accessToken);
         const result = await fetchToJson('GET', '/api/helloWorld/private-scoped', undefined, true);
@@ -76,6 +77,15 @@ const SignInScreen: React.FC<SignInScreenProps> = (_props: SignInScreenProps) =>
 
     setSubmitting(false);
   };
+
+  useEffect(() => {
+    async function showCredentials() {
+      const refreshToken = await loadCredentials('refreshToken');
+      console.warn(refreshToken);
+    }
+
+    showCredentials();
+  });
 
   return (
     <Layout

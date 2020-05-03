@@ -1,6 +1,7 @@
 import Auth0 from 'react-native-auth0';
 import R from 'res/R';
 import { User } from 'lib/types/user';
+import { saveCredentials } from 'lib/utils/dangerZone/storage';
 
 const config = R.config.AUTH0;
 const auth0 = new Auth0(config.credentials);
@@ -11,7 +12,7 @@ export type PasswordRealm = {
   username: string;
   password: string;
 }
-export type Credential = {
+export type Credentials = {
   accessToken: string;
   expiresIn: number;
   idToken: string;
@@ -26,14 +27,35 @@ const scopes = {
   OIDC: 'openid profile email offline_access',
 };
 
-export const renewToken = () => {
-  return auth0.auth
-    .refreshToken({
-      refreshToken: _refreshToken || '',
-    });
+const setRefreshToken = async (newValue?: string) => {
+  _refreshToken = newValue;
+  await saveCredentials('refreshToken', _refreshToken || '');
+};
+
+export const renewToken = async () => {
+  try {
+    const credentials = await auth0.auth
+      .refreshToken({
+        refreshToken: _refreshToken || '',
+      });
+
+    if (credentials.refreshToken) {
+      await setRefreshToken(credentials.refreshToken);
+    }
+
+    return credentials;
+  }
+  catch (error) {
+    await setRefreshToken(undefined);
+    throw error;
+  }
 };
 
 export const signUpOrSignInWithSocialConnection = async (socialConnection: SocialConnection) => {
+  if (_refreshToken) {
+    return await renewToken();
+  }
+
   const credentials = await auth0.webAuth
     .authorize({
       scope: scopes.OIDC,
@@ -41,7 +63,7 @@ export const signUpOrSignInWithSocialConnection = async (socialConnection: Socia
       audience: config.api.id,
     });
 
-  _refreshToken = credentials.refreshToken;
+  await setRefreshToken(credentials.refreshToken);
 
   return credentials;
 };
@@ -67,7 +89,7 @@ export const signInManual = async (user: PasswordRealm) => {
       audience: config.api.id,
     });
 
-  _refreshToken = credentials.refreshToken;
+  await setRefreshToken(credentials.refreshToken);
 
   return credentials;
 };

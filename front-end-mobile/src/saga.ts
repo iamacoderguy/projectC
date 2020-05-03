@@ -9,8 +9,7 @@ import {
   uninstallLocalizationSuccess,
 } from './actions';
 import { Action } from 'lib/types/action';
-import { saveCredentials } from 'lib/utils/storage';
-import { call, put, select } from 'redux-saga/effects';
+import { put, select } from 'redux-saga/effects';
 import { localizer } from 'features/localization';
 import { RootState } from './reducer';
 
@@ -22,11 +21,12 @@ orchestrator.onError((error: Error) => {
 
 orchestrator
   .takeEvery(getType(finishAuthenticationRequest), function* (action: Action) {
-    const token = (action as ReturnType<typeof finishAuthenticationRequest>).payload.token;
-    yield call(saveCredentials, token);
+    // TODO
+    // const token = (action as ReturnType<typeof finishAuthenticationRequest>).payload.token;
+    // yield call(saveCredentials, token);
     yield put(finishAuthenticationSuccess());
   })
-  
+
   .takeEvery(getType(installLocalizationRequest), function* () {
     let isLocalizationInstalled: boolean | undefined = yield select((state: RootState) => state.isLocalizationInstalled);
 
@@ -43,7 +43,6 @@ orchestrator
       localizer.uninstall();
       yield put(uninstallLocalizationSuccess());
     }
-  })
-;
+  });
 
 export default orchestrator;
