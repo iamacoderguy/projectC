@@ -19,7 +19,12 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { usernameValidation, passwordValidation } from '../../utils/yupValidation';
 import { clearInputRefs, addInputRef, goNext } from '../../utils/inputRefs';
-import { SocialConnection, signUpOrSignInWithSocialConnection, signUpManual } from '../../utils/auth0';
+import {
+  SocialConnection,
+  signUpOrSignInWithSocialConnection,
+  signUpManual,
+  signInManual,
+} from '../../utils/auth0';
 import { navigate } from 'lib/utils/navigation';
 import navigationMap from '../../navigationMap';
 
@@ -110,6 +115,10 @@ const SignUpScreen = () => {
           }
 
           await signUpManual(values)
+            .then(_success => signInManual({
+              username: values[usernameId],
+              password: values[passwordId],
+            }))
             .then(success => {
               console.warn(success);
             })
