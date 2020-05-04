@@ -12,3 +12,6 @@ export const authenticated = createAction(makeType('AUTHENTICATED'))<{
   accessToken: string;
   refreshToken?: string;
 }>();
+
+export const signOutRequest = createAction(makeType('SIGN_OUT_REQUEST'))<string>();
+export const signOutSuccess = createAction(makeType('SIGN_OUT_SUCCESS'))();

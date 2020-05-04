@@ -15,21 +15,21 @@ import Button from 'shared/components/button/Button';
 import {
   SignOutScreenPropsForMapState,
   mapStateToProps,
+  SignOutScreenPropsForMapDispatch,
+  mapDispatchToProps,
 } from './SignOutScreen.container';
 import { connect } from 'react-redux';
 import {
   getProfile,
   UserInfo,
 } from '../../utils/auth0';
-import { navigate } from 'shared/utils/navigation';
-import navigationMap from 'features/authentication/constants/navigationMap';
 
 const strings = {
   signOut: R.strings.authentication.signOut,
 };
 const dimens = R.dimens.authentication;
 
-type SignOutScreenProps = SignOutScreenPropsForMapState;
+type SignOutScreenProps = SignOutScreenPropsForMapState & SignOutScreenPropsForMapDispatch;
 
 const SignOutScreen: React.FC<SignOutScreenProps> = (props: SignOutScreenProps) => {
   const [profile, setProfile] = useState<UserInfo>();
@@ -78,7 +78,7 @@ const SignOutScreen: React.FC<SignOutScreenProps> = (props: SignOutScreenProps) 
         <Button
           style={styles.signOutButton}
           title={strings.signOut.signOutButton()}
-          onPress={() => navigate(navigationMap.SignIn)}
+          onPress={() => props.signOut(profile?.sub || '')}
         />
       </View>
     </Layout>
@@ -106,4 +106,4 @@ const styles = StyleSheet.create({
   signOutButton: {},
 });
 
-export default connect(mapStateToProps, null)(SignOutScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(SignOutScreen);

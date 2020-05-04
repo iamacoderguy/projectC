@@ -1,6 +1,12 @@
 import { SagaOrchestrator } from 'shared/utils/sagaOrchestrator';
 import { getType } from 'typesafe-actions';
-import { initialize, renewToken, authenticated } from './actions';
+import { 
+  initialize,
+  renewToken,
+  authenticated, 
+  signOutRequest,
+  signOutSuccess,
+} from './actions';
 import { Action } from 'shared/types/action';
 import { call, put, select } from 'redux-saga/effects';
 import { navigate } from 'shared/utils/navigation';
@@ -57,6 +63,26 @@ orchestrator
     }
 
     console.warn(`${tag} - It isn't in test mode, neither is onAuthenticated provided`);
+  })
+
+  .takeLatest(getType(signOutRequest), function* (action: Action) {
+    console.log(`${moduleTag} - ${tag} - ${getType(signOutRequest)}`);
+    const sub = (action as ReturnType<typeof signOutRequest>).payload;
+    const state: RootState = yield select();
+    yield call(auth0.signOut, state.refreshToken, sub);
+    yield put(signOutSuccess());
+
+    if (state.testMode) {
+      yield call(navigate, navigationMap.SignIn);
+      return;
+    }
+
+    if (state.onSignedOut) {
+      state.onSignedOut();
+      return;
+    }
+
+    console.warn(`${tag} - It isn't in test mode, neither is onSignedOut provided`);
   })
 ;
 

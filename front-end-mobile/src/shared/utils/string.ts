@@ -29,3 +29,7 @@ export const format = (format: string, ...args: any[]) => {
 
   return format.replace(/{(\d+)}/g, (match, index) => args[index] || '');
 };
+
+export const contain = (str: string, ...args: string[]) => {
+  return args.some(subStr => str.indexOf(subStr) != -1);
+};

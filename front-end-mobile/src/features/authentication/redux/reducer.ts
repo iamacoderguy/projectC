@@ -2,6 +2,7 @@ import { Action } from 'shared/types/action';
 import {
   authenticated,
   initialize,
+  signOutSuccess,
 } from './actions';
 import { getType } from 'typesafe-actions';
 import { RootState } from '../types/rootState';
@@ -21,6 +22,7 @@ function rootReducer(previousState: RootState = initialState, action: Action): R
         refreshToken: (action as ReturnType<typeof initialize>).payload.refreshToken,
         testMode: !!(action as ReturnType<typeof initialize>).payload.testMode,
         onAuthenticated: (action as ReturnType<typeof initialize>).payload.onAuthenticated,
+        onSignedOut: (action as ReturnType<typeof initialize>).payload.onSignedOut,
       };
 
     case getType(authenticated):
@@ -29,6 +31,14 @@ function rootReducer(previousState: RootState = initialState, action: Action): R
         ...previousState,
         accessToken: (action as ReturnType<typeof authenticated>).payload.accessToken,
         refreshToken: (action as ReturnType<typeof authenticated>).payload.refreshToken,
+      };
+
+    case getType(signOutSuccess):
+      console.log(`${moduleTag} - ${tag} - ${getType(signOutSuccess)}`);
+      return {
+        ...previousState,
+        accessToken: undefined,
+        refreshToken: undefined,
       };
 
     default:

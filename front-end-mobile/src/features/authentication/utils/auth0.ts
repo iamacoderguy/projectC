@@ -3,6 +3,7 @@ import Auth0, {
 } from 'react-native-auth0';
 import R from 'shared/res/R';
 import { User } from 'shared/types/user';
+import { contain } from 'shared/utils/string';
 
 const config = R.config.AUTH0;
 const auth0 = new Auth0(config.credentials);
@@ -84,4 +85,16 @@ export const getProfile = (accessToken: string) => {
     .userInfo<UserInfo>({
       token: accessToken,
     });
+};
+
+export const signOut = async (refreshToken?: string, sub?: string) => {
+  if (sub && contain(sub, 'github', 'google-oauth2')) {
+    await auth0.webAuth.clearSession(); 
+  }
+
+  if (refreshToken) {
+    await auth0.auth.revoke({
+      refreshToken,
+    });
+  }
 };
