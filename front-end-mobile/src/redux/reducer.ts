@@ -1,11 +1,12 @@
 import { Action } from 'shared/types/action';
 import { getType } from 'typesafe-actions';
 import { 
-  finishAuthenticationSuccess,
+  handleOnAuthenticatedSuccess,
   changeLanguageSuccess,
   installLocalizationSuccess,
   uninstallLocalizationSuccess,
   installAuthenticationSuccess,
+  handleOnSignedOutSuccess,
 } from './actions';
 import { RootState } from '../types/rootState';
 import appTag from '../constants/tag';
@@ -22,13 +23,20 @@ function rootReducer (
       console.log(`${appTag} - ${tag} - ${getType(installAuthenticationSuccess)}`);
       return {
         ...previousState,
+        auth: (action as ReturnType<typeof installAuthenticationSuccess>).payload,
+      };
+
+    case getType(handleOnSignedOutSuccess):
+      console.log(`${appTag} - ${tag} - ${getType(handleOnSignedOutSuccess)}`);
+      return {
+        ...previousState,
         auth: {
-          refreshToken: (action as ReturnType<typeof installAuthenticationSuccess>).payload,
+          refreshToken: undefined,
         },
       };
     
-    case getType(finishAuthenticationSuccess):
-      console.log(`${appTag} - ${tag} - ${getType(finishAuthenticationSuccess)}`);
+    case getType(handleOnAuthenticatedSuccess):
+      console.log(`${appTag} - ${tag} - ${getType(handleOnAuthenticatedSuccess)}`);
       return { ...previousState, auth: undefined, inApp: {} };
 
     case getType(changeLanguageSuccess):

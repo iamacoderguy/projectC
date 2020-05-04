@@ -38,11 +38,17 @@ orchestrator
   .takeLatest(getType(renewToken), function* (action: Action) {
     console.log(`${moduleTag} - ${tag} - ${getType(renewToken)}`);
     const refreshToken = (action as ReturnType<typeof renewToken>).payload;
+    const state: RootState = yield select();
     try {
       const credentials: auth0.Credentials = yield call(auth0.renewToken, refreshToken); 
       yield put(authenticated(credentials));
     } catch (error) {
       yield call(navigate, navigationMap.SignIn);
+
+      if (state.onSignedOut) {
+        state.onSignedOut();
+      }
+
       throw error;
     }
   })
@@ -58,7 +64,7 @@ orchestrator
     }
 
     if (state.onAuthenticated) {
-      yield call(state.onAuthenticated, credentials.accessToken, credentials.refreshToken);
+      yield call(state.onAuthenticated, credentials);
       return;
     }
 

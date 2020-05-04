@@ -1,14 +1,16 @@
 import { SagaOrchestrator } from 'shared/utils/sagaOrchestrator';
 import { getType } from 'typesafe-actions';
 import {
-  finishAuthenticationRequest,
-  finishAuthenticationSuccess,
+  handleOnAuthenticatedRequest,
+  handleOnAuthenticatedSuccess,
   installLocalizationRequest,
   uninstallLocalizationRequest,
   installLocalizationSuccess,
   uninstallLocalizationSuccess,
   installAuthenticationRequest,
   installAuthenticationSuccess,
+  handleOnSignedOutRequest,
+  handleOnSignedOutSuccess,
 } from './actions';
 import { Action } from 'shared/types/action';
 import { 
@@ -32,17 +34,27 @@ orchestrator.onError((error: Error) => {
 orchestrator
   .takeLatest(getType(installAuthenticationRequest), function* (action: Action) {
     console.log(`${appTag} - ${tag} - ${getType(installAuthenticationRequest)}`);
-    const refreshToken = yield call(storage.loadCredentials, 'refreshToken');
-    yield put(installAuthenticationSuccess(refreshToken));
+    const refreshToken: string | undefined = yield call(storage.loadCredentials, 'refreshToken');
+    const idToken: string | undefined = yield call(storage.loadCredentials, 'idToken');
+    yield put(installAuthenticationSuccess({ refreshToken, idToken }));
   })
 
-  .takeLatest(getType(finishAuthenticationRequest), function* (action: Action) {
-    console.log(`${appTag} - ${tag} - ${getType(finishAuthenticationRequest)}`);
-    const credentials = (action as ReturnType<typeof finishAuthenticationRequest>).payload;
+  .takeLatest(getType(handleOnAuthenticatedRequest), function* (action: Action) {
+    console.log(`${appTag} - ${tag} - ${getType(handleOnAuthenticatedRequest)}`);
+    const credentials = (action as ReturnType<typeof handleOnAuthenticatedRequest>).payload;
 
     yield call(storage.saveCredentials, 'refreshToken', credentials.refreshToken || '');
+    yield call(storage.saveCredentials, 'idToken', credentials.idToken);
     yield call(apiFetcher.setToken, credentials.accessToken);
-    yield put(finishAuthenticationSuccess());
+    yield put(handleOnAuthenticatedSuccess());
+  })
+
+  .takeLatest(getType(handleOnSignedOutRequest), function* (action: Action) {
+    console.log(`${appTag} - ${tag} - ${getType(handleOnSignedOutRequest)}`);
+
+    yield call(storage.saveCredentials, 'refreshToken', '');
+    yield call(apiFetcher.setToken, '');
+    yield put(handleOnSignedOutSuccess());
   })
 
   .takeLatest(getType(installLocalizationRequest), function* () {

@@ -1,7 +1,7 @@
 import * as Keychain from 'react-native-keychain';
 import { isNullOrWhitespace } from '../shared/utils/string';
 
-type Key = 'refreshToken' | 'accessToken';
+type Key = 'refreshToken' | 'accessToken' | 'idToken';
 
 export const saveCredentials = async (key: Key, value: string) => {
   const credentialsAsMap = await getCredentialsAsMap();

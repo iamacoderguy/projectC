@@ -1,8 +1,5 @@
-export type RootState = {
-  onAuthenticated?: (accessToken: string, refreshToken?: string) => void;
-  onSignedOut?: () => void;
+import { AuthProps } from './authProps';
+
+export type RootState = AuthProps & {
   accessToken?: string;
-  idToken?: string;
-  refreshToken?: string;
-  testMode: boolean;
 }

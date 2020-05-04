@@ -1,13 +1,15 @@
 import { Dispatch } from 'redux';
 import { RootState } from './types/rootState';
 import {
-  finishAuthenticationRequest,
+  handleOnAuthenticatedRequest,
   installLocalizationRequest,
   uninstallLocalizationRequest,
   installAuthenticationRequest,
+  handleOnSignedOutRequest,
 } from './redux/actions';
 import * as apiFetcher from 'shared/utils/apiFetcher';
 import { isNullOrWhitespace } from 'shared/utils/string';
+import { Credentials } from 'shared/types/credentials';
 
 export enum Stage {
   'Loading',
@@ -19,11 +21,13 @@ export enum Stage {
 export type RootStackPropsForMapState = {
   stage: Stage;
   refreshToken?: string;
+  idToken?: string;
 }
 export function mapStateToProps(state: RootState): RootStackPropsForMapState {
   return {
     stage: getActivatedStage(state),
     refreshToken: state.auth?.refreshToken,
+    idToken: state.auth?.idToken,
   };
 }
 
@@ -52,13 +56,15 @@ const isInAppStageReady = (state: RootState) => {
 export type RootStackPropsForMapDispatch = {
   onAppStarted: (stage: Stage) => void;
   onAppFinished: () => void;
-  onAuthenticationFinished: (accessToken: string, refreshToken?: string) => void;
+  onAuthenticated: (credentials: Credentials) => void;
+  onSignedOut: () => void;
 }
 export function mapDispatchToProps(dispatch: Dispatch): RootStackPropsForMapDispatch {
   return {
     onAppStarted: (stage: Stage) => handleAppStarted(dispatch, stage),
     onAppFinished: () => handleAppFinished(dispatch),
-    onAuthenticationFinished: (accessToken: string, refreshToken?: string) => dispatch(finishAuthenticationRequest({ accessToken, refreshToken })),
+    onAuthenticated: (credentials: Credentials) => dispatch(handleOnAuthenticatedRequest(credentials)),
+    onSignedOut: () => dispatch(handleOnSignedOutRequest()),
   };
 }
 

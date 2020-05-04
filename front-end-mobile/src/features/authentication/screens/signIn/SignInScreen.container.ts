@@ -1,6 +1,7 @@
 import { Dispatch } from 'redux';
 import { authenticated } from '../../redux/actions';
 import { RootState } from '../../types/rootState';
+import { Credentials } from 'shared/types/credentials';
 
 export type SignInScreenPropsForMapState = {
   idToken?: string;
@@ -13,11 +14,11 @@ export function mapStateToProps(state: RootState): SignInScreenPropsForMapState 
 }
 
 export type SignInScreenPropsForMapDispatch = {
-  onAuthenticated?: (accessToken: string, idToken: string, refreshToken?: string) => void;
+  onAuthenticated?: (credentials: Credentials) => void;
 }
 
 export function mapDispatchToProps(dispatch: Dispatch): SignInScreenPropsForMapDispatch {
   return {
-    onAuthenticated: (accessToken: string, idToken: string, refreshToken?: string) => dispatch(authenticated({ accessToken, idToken, refreshToken })),
+    onAuthenticated: (credentials: Credentials) => dispatch(authenticated(credentials)),
   };
 }

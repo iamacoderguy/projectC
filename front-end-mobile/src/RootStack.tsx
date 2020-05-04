@@ -29,9 +29,10 @@ const RootStack = (props: RootStackProps & { myForwardedRef: Ref<IRootStack> }) 
     switch (props.stage) {
       case Stage.Authenticating:
         return <Authentication
-          // onAuthenticated={props.onAuthenticationFinished}
-          // refreshToken={props.refreshToken}
-          testMode
+          refreshToken={props.refreshToken}
+          idToken={props.idToken}
+          onAuthenticated={props.onAuthenticated}
+          onSignedOut={props.onSignedOut}
         />;
 
       case Stage.InApp:

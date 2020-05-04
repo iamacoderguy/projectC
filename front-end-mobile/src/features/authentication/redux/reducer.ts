@@ -19,10 +19,7 @@ function rootReducer(previousState: RootState = initialState, action: Action): R
       console.log(`${moduleTag} - ${tag} - ${getType(initialize)}`);
       return {
         ...previousState,
-        refreshToken: (action as ReturnType<typeof initialize>).payload.refreshToken,
-        testMode: !!(action as ReturnType<typeof initialize>).payload.testMode,
-        onAuthenticated: (action as ReturnType<typeof initialize>).payload.onAuthenticated,
-        onSignedOut: (action as ReturnType<typeof initialize>).payload.onSignedOut,
+        ...(action as ReturnType<typeof initialize>).payload,
       };
 
     case getType(authenticated):

@@ -85,7 +85,7 @@ const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => 
     await signUpOrSignInWithSocialConnection(connection)
       .then(credentials => {
         if (props.onAuthenticated) {
-          props.onAuthenticated(credentials.accessToken, credentials.idToken, credentials.refreshToken);
+          props.onAuthenticated(credentials);
           return;
         }
 
@@ -121,7 +121,7 @@ const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => 
           await signInManual(values)
             .then(credentials => {
               if (props.onAuthenticated) {
-                props.onAuthenticated(credentials.accessToken, credentials.idToken, credentials.refreshToken);
+                props.onAuthenticated(credentials);
                 return;
               }
 
