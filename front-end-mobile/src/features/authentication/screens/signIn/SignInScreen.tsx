@@ -1,6 +1,7 @@
 import React, {
   useRef,
   useState,
+  useEffect,
 } from 'react';
 import R from 'shared/res/R';
 import Layout from '../../components/layout/Layout';
@@ -22,11 +23,18 @@ import {
   signUpOrSignInWithSocialConnection,
   SocialConnection,
   signInManual,
+  getProfileFromToken,
 } from '../../utils/auth0';
 import { navigate } from 'shared/utils/navigation';
 import navigationMap from '../../constants/navigationMap';
-import { SignInScreenPropsForMapDispatch, mapDispatchToProps } from './SignInScreen.container';
+import {
+  SignInScreenPropsForMapDispatch,
+  mapDispatchToProps,
+  mapStateToProps,
+  SignInScreenPropsForMapState,
+} from './SignInScreen.container';
 import { connect } from 'react-redux';
+import { isNullOrWhitespace } from 'shared/utils/string';
 
 const strings = {
   signIn: R.strings.authentication.signIn,
@@ -34,14 +42,24 @@ const strings = {
 };
 const dimens = R.dimens.authentication;
 
-type SignInScreenProps = SignInScreenPropsForMapDispatch;
+type SignInScreenProps = SignInScreenPropsForMapDispatch & SignInScreenPropsForMapState;
 
 const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => {
   const [isPasswordShown, showPassword] = useState(false);
+  const [picture, setPicture] = useState('');
   const inputRefs = useRef<Array<TextInputRef>>([]);
   const usernameId = 'username';
   const passwordId = 'password';
   const signUpScreenId = 'https://gotoSignUpScreen';
+
+  useEffect(() => {
+    if (props.idToken) {
+      const profile = getProfileFromToken(props.idToken);
+      if (profile.picture) {
+        setPicture(profile.picture);
+      }
+    }
+  }, [props.idToken]);
 
   const _handleOnShowPressed = () => {
     showPassword(!isPasswordShown);
@@ -67,7 +85,7 @@ const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => 
     await signUpOrSignInWithSocialConnection(connection)
       .then(credentials => {
         if (props.onAuthenticated) {
-          props.onAuthenticated(credentials.accessToken, credentials.refreshToken);
+          props.onAuthenticated(credentials.accessToken, credentials.idToken, credentials.refreshToken);
           return;
         }
 
@@ -103,7 +121,7 @@ const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => 
           await signInManual(values)
             .then(credentials => {
               if (props.onAuthenticated) {
-                props.onAuthenticated(credentials.accessToken, credentials.refreshToken);
+                props.onAuthenticated(credentials.accessToken, credentials.idToken, credentials.refreshToken);
                 return;
               }
 
@@ -130,7 +148,10 @@ const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => 
             (
               <View style={styles.container}>
                 <Image
-                  source={R.images.avatar_default}
+                  source={isNullOrWhitespace(picture) ? R.images.avatar_default : {
+                    uri: picture,
+                  }}
+                  defaultSource={R.images.avatar_default}
                   style={styles.avatar} />
 
                 <View style={styles.socialSignUpContainer}>
@@ -216,6 +237,9 @@ const styles = StyleSheet.create({
   avatar: {
     alignSelf: 'center',
     marginBottom: dimens.spacingBetweenForms,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
   },
   buzzSignUpContainer: {
   },
@@ -241,4 +265,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(null, mapDispatchToProps)(SignInScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(SignInScreen);

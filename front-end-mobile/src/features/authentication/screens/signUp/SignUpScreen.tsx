@@ -63,7 +63,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = (props: SignUpScreenProps) => 
     await signUpOrSignInWithSocialConnection(connection)
       .then(credentials => {
         if (props.onAuthenticated) {
-          props.onAuthenticated(credentials.accessToken, credentials.refreshToken);
+          props.onAuthenticated(credentials.accessToken, credentials.idToken, credentials.refreshToken);
           return;
         }
 
@@ -130,7 +130,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = (props: SignUpScreenProps) => 
             }))
             .then(credentials => {
               if (props.onAuthenticated) {
-                props.onAuthenticated(credentials.accessToken, credentials.refreshToken);
+                props.onAuthenticated(credentials.accessToken, credentials.idToken, credentials.refreshToken);
                 return;
               }
 

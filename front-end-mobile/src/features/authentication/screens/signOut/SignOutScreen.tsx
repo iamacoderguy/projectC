@@ -23,6 +23,7 @@ import {
   getProfile,
   UserInfo,
 } from '../../utils/auth0';
+import { isNullOrWhitespace } from 'shared/utils/string';
 
 const strings = {
   signOut: R.strings.authentication.signOut,
@@ -65,9 +66,10 @@ const SignOutScreen: React.FC<SignOutScreenProps> = (props: SignOutScreenProps) 
     >
       <View style={styles.container}>
         <Image
-          source={{
-            uri: profile?.picture,
-          }}
+          source={isNullOrWhitespace(profile?.picture) ? R.images.avatar_default :
+            {
+              uri: profile?.picture,
+            }}
           defaultSource={R.images.avatar_default}
           style={styles.avatar} />
 

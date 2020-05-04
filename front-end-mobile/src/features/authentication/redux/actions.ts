@@ -10,6 +10,7 @@ export const initialize = createAction(makeType('INITIALIZE'))<AuthProps>();
 export const renewToken = createAction(makeType('RENEW_TOKEN'))<string>();
 export const authenticated = createAction(makeType('AUTHENTICATED'))<{
   accessToken: string;
+  idToken: string;
   refreshToken?: string;
 }>();
 

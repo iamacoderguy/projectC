@@ -4,6 +4,7 @@ import Auth0, {
 import R from 'shared/res/R';
 import { User } from 'shared/types/user';
 import { contain } from 'shared/utils/string';
+import jwt_decode from 'jwt-decode';
 
 const config = R.config.AUTH0;
 const auth0 = new Auth0(config.credentials);
@@ -97,4 +98,9 @@ export const signOut = async (refreshToken?: string, sub?: string) => {
       refreshToken,
     });
   }
+};
+
+export const getProfileFromToken = (idToken: string) => {
+  const decodedToken: UserInfo = jwt_decode(idToken);
+  return decodedToken;
 };

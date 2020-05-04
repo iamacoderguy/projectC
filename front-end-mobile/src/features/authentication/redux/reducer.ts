@@ -30,6 +30,7 @@ function rootReducer(previousState: RootState = initialState, action: Action): R
       return {
         ...previousState,
         accessToken: (action as ReturnType<typeof authenticated>).payload.accessToken,
+        idToken: (action as ReturnType<typeof authenticated>).payload.idToken,
         refreshToken: (action as ReturnType<typeof authenticated>).payload.refreshToken,
       };
 
