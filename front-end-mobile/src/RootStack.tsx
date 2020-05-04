@@ -28,7 +28,7 @@ const RootStack = (props: RootStackProps & { myForwardedRef: Ref<IRootStack> }) 
   const _render = () => {
     switch (props.stage) {
       case Stage.Authenticating:
-        return <Authentication onAuthenticated={props.onAuthenticationFinished} />;
+        return <Authentication onAuthenticated={props.onAuthenticationFinished} refreshToken={props.refreshToken} />;
 
       case Stage.InApp:
         return <InAppTabs />;

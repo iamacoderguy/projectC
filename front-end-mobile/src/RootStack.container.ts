@@ -1,10 +1,10 @@
 import { Dispatch } from 'redux';
 import { RootState } from './types/rootState';
 import {
-  finishLoadingRequest,
   finishAuthenticationRequest,
   installLocalizationRequest,
   uninstallLocalizationRequest,
+  installAuthenticationRequest,
 } from './redux/actions';
 import * as apiFetcher from 'shared/utils/apiFetcher';
 import { isNullOrWhitespace } from 'shared/utils/string';
@@ -18,10 +18,12 @@ export enum Stage {
 // === mapStateToProps ===
 export type RootStackPropsForMapState = {
   stage: Stage;
+  refreshToken?: string;
 }
 export function mapStateToProps(state: RootState): RootStackPropsForMapState {
   return {
     stage: getActivatedStage(state),
+    refreshToken: state.auth?.refreshToken,
   };
 }
 
@@ -62,10 +64,7 @@ export function mapDispatchToProps(dispatch: Dispatch): RootStackPropsForMapDisp
 
 const handleAppStarted = (dispatch: Dispatch, stage: Stage) => {
   dispatch(installLocalizationRequest());
-
-  if (stage == Stage.Loading) {
-    setTimeout(() => dispatch(finishLoadingRequest()), 2000);
-  }
+  dispatch(installAuthenticationRequest());
 };
 
 const handleAppFinished = (dispatch: Dispatch) => {

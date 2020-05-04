@@ -1,5 +1,7 @@
 export type RootState = {
-  auth?: any,
+  auth?: {
+    refreshToken?: string;
+  },
   inApp?: any,
   lng?: string,
   isLocalizationInstalled?: boolean;

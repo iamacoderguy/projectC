@@ -7,6 +7,8 @@ import {
   uninstallLocalizationRequest,
   installLocalizationSuccess,
   uninstallLocalizationSuccess,
+  installAuthenticationRequest,
+  installAuthenticationSuccess,
 } from './actions';
 import { Action } from 'shared/types/action';
 import { 
@@ -28,7 +30,13 @@ orchestrator.onError((error: Error) => {
 });
 
 orchestrator
-  .takeEvery(getType(finishAuthenticationRequest), function* (action: Action) {
+  .takeLatest(getType(installAuthenticationRequest), function* (action: Action) {
+    console.log(`${appTag} - ${tag} - ${getType(installAuthenticationRequest)}`);
+    const refreshToken = yield call(storage.loadCredentials, 'refreshToken');
+    yield put(installAuthenticationSuccess(refreshToken));
+  })
+
+  .takeLatest(getType(finishAuthenticationRequest), function* (action: Action) {
     console.log(`${appTag} - ${tag} - ${getType(finishAuthenticationRequest)}`);
     const credentials = (action as ReturnType<typeof finishAuthenticationRequest>).payload;
 
@@ -37,7 +45,7 @@ orchestrator
     yield put(finishAuthenticationSuccess());
   })
 
-  .takeEvery(getType(installLocalizationRequest), function* () {
+  .takeLatest(getType(installLocalizationRequest), function* () {
     console.log(`${appTag} - ${tag} - ${getType(installLocalizationRequest)}`);
     let isLocalizationInstalled: boolean | undefined = yield select((state: RootState) => state.isLocalizationInstalled);
 
@@ -47,7 +55,7 @@ orchestrator
     }
   })
 
-  .takeEvery(getType(uninstallLocalizationRequest), function* () {
+  .takeLatest(getType(uninstallLocalizationRequest), function* () {
     console.log(`${appTag} - ${tag} - ${getType(uninstallLocalizationRequest)}`);
     let isLocalizationInstalled: boolean | undefined = yield select((state: RootState) => state.isLocalizationInstalled);
 

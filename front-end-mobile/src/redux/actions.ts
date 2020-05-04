@@ -6,8 +6,8 @@ const makeType = (type: string) => {
   return `${tag}_${type}`;
 };
 
-export const finishLoadingRequest = createAction(makeType('FINISH_LOADING_REQUEST'))();
-
+export const installAuthenticationRequest = createAction(makeType('INSTALL_AUTHENTICATION_REQUEST'))();
+export const installAuthenticationSuccess = createAction(makeType('INSTALL_AUTHENTICATION_SUCCESS'))<string>();
 export const finishAuthenticationRequest = createAction(makeType('FINISH_AUTHENTICATING_REQUEST'))<Credentials>();
 export const finishAuthenticationSuccess = createAction(makeType('FINISH_AUTHENTICATING_SUCCESS'))();
 
