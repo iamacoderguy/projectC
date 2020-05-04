@@ -1,4 +1,6 @@
-import Auth0 from 'react-native-auth0';
+import Auth0, {
+  UserInfo as Auth0UserInfo,
+} from 'react-native-auth0';
 import R from 'shared/res/R';
 import { User } from 'shared/types/user';
 
@@ -18,6 +20,9 @@ export type Credentials = {
   tokenType: 'Bearer';
   refreshToken?: string;
 }
+export type UserInfo = Auth0UserInfo<{
+  'https://buzz.iamacoderguy.me/displayName': string;
+}>;
 
 const scopes = {
   // used by an application during authentication to authorize access to a user's details, like name and picture
@@ -72,4 +77,11 @@ export const signInManual = async (user: PasswordRealm) => {
     });
 
   return credentials;
+};
+
+export const getProfile = (accessToken: string) => {
+  return auth0.auth
+    .userInfo<UserInfo>({
+      token: accessToken,
+    });
 };
