@@ -25,8 +25,6 @@ import {
   signInManual,
   getProfileFromToken,
 } from '../../utils/auth0';
-import { navigate } from 'shared/utils/navigation';
-import navigationMap from '../../constants/navigationMap';
 import {
   SignInScreenPropsForMapDispatch,
   mapDispatchToProps,
@@ -72,7 +70,7 @@ const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => 
 
   const _handleOnSignUpScreenLinkPress = (url: string, _text: string) => {
     if (url == signUpScreenId) {
-      navigate(navigationMap.SignUp);
+      props.onSignUpLinkPress();
       return;
     }
 
@@ -84,12 +82,7 @@ const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => 
 
     await signUpOrSignInWithSocialConnection(connection)
       .then(credentials => {
-        if (props.onAuthenticated) {
-          props.onAuthenticated(credentials);
-          return;
-        }
-
-        console.warn(credentials);
+        props.onAuthenticated(credentials);
       })
       .catch(error => {
         console.warn(error);

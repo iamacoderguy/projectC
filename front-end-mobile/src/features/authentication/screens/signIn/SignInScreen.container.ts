@@ -1,5 +1,8 @@
 import { Dispatch } from 'redux';
-import { authenticated } from '../../redux/actions';
+import { 
+  authenticated, 
+  goToSignUp,
+} from '../../redux/actions';
 import { RootState } from '../../types/rootState';
 import { Credentials } from 'shared/types/credentials';
 
@@ -14,11 +17,13 @@ export function mapStateToProps(state: RootState): SignInScreenPropsForMapState 
 }
 
 export type SignInScreenPropsForMapDispatch = {
-  onAuthenticated?: (credentials: Credentials) => void;
+  onAuthenticated: (credentials: Credentials) => void;
+  onSignUpLinkPress: () => void;
 }
 
 export function mapDispatchToProps(dispatch: Dispatch): SignInScreenPropsForMapDispatch {
   return {
     onAuthenticated: (credentials: Credentials) => dispatch(authenticated(credentials)),
+    onSignUpLinkPress: () => dispatch(goToSignUp()),
   };
 }

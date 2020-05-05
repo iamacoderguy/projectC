@@ -6,6 +6,8 @@ import {
   authenticated, 
   signOutRequest,
   signOutSuccess,
+  goToSignUp,
+  goToSignIn,
 } from './actions';
 import { Action } from 'shared/types/action';
 import { call, put, select } from 'redux-saga/effects';
@@ -89,6 +91,14 @@ orchestrator
     }
 
     console.warn(`${tag} - It isn't in test mode, neither is onSignedOut provided`);
+  })
+
+  .takeLatest(getType(goToSignUp), function* () {
+    yield call(navigate, navigationMap.SignUp);
+  })
+
+  .takeLatest(getType(goToSignIn), function* () {
+    yield call(navigate, navigationMap.SignIn);
   })
 ;
 

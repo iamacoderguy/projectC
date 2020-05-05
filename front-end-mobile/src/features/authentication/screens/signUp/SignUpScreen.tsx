@@ -25,8 +25,6 @@ import {
   signUpManual,
   signInManual,
 } from '../../utils/auth0';
-import { navigate } from 'shared/utils/navigation';
-import navigationMap from '../../constants/navigationMap';
 import { SignUpScreenPropsForMapDispatch, mapDispatchToProps } from './SignUpScreen.container';
 import { connect } from 'react-redux';
 
@@ -62,12 +60,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = (props: SignUpScreenProps) => 
 
     await signUpOrSignInWithSocialConnection(connection)
       .then(credentials => {
-        if (props.onAuthenticated) {
-          props.onAuthenticated(credentials);
-          return;
-        }
-
-        console.warn(credentials);
+        props.onAuthenticated(credentials);
       })
       .catch(error => {
         console.warn(error);
@@ -78,7 +71,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = (props: SignUpScreenProps) => 
 
   const _handleOnSignInScreenLinkPress = (url: string, _text: string) => {
     if (url == signInScreenId) {
-      navigate(navigationMap.SignIn);
+      props.onSignInLinkPress();
       return;
     }
 
