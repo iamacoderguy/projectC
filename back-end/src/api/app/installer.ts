@@ -6,7 +6,8 @@ import { installer as dataInstaller } from '../../data/installer';
 import helloWorldController from './controllers/helloWorld';
 import { container } from 'tsyringe';
 import { DbContext } from '../../data/dbContext';
-import jwtErrorWrapper from './middlewares/jwtErrorWrapper';
+import unauthorizedErrorHandler from './middlewares/unauthorizedErrorHandler';
+import forbiddenErrorHandler from './middlewares/forbiddenErrorHandler';
 
 console.info('Installing dependencies...');
 dataInstaller.install(container);
@@ -16,7 +17,8 @@ const logger = morgan('combined');
 
 app.use(logger);
 app.use('/api/helloWorld', helloWorldController);
-app.use(jwtErrorWrapper);
+app.use(unauthorizedErrorHandler);
+app.use(forbiddenErrorHandler);
 
 export async function connectToDb(): Promise<void> {
   console.info('Connecting to Mongo Atlas...');

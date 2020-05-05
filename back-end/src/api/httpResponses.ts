@@ -8,6 +8,6 @@ type ResponseFailure = {
   reason: string;
 }
 
-export const UnauthorizedResult = (failure: ResponseFailure): ResponseResult => ({
+export const ErrorResult = (failure: ResponseFailure): ResponseResult => ({
   failures: [failure],
 });
