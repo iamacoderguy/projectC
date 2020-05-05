@@ -16,8 +16,9 @@ import navigationMap from '../constants/navigationMap';
 import * as auth0 from '../utils/auth0';
 import { RootState } from '../types/rootState';
 import MODULE_TAG from '../constants/tag';
-import apiFetcher from 'shared/utils/apiFetcher';
+import apiFetcher, { ErrorHandler } from 'shared/utils/apiFetcher';
 import store from './store';
+import { isNullOrWhitespace } from 'shared/utils/string';
 
 const TAG = 'SAGA';
 const orchestrator = new SagaOrchestrator();
@@ -63,29 +64,9 @@ orchestrator
     const state: RootState = yield select();
 
     if (state.testMode) {
-      apiFetcher.setErrorHandler(async (err, callParams) => {
-        if (err.name == '401' || err.name == '403') {
-          if (err.message == 'jwt expired') {
-            try {
-              const newCredentials = await auth0.renewToken(credentials.refreshToken);
-              apiFetcher.setToken(newCredentials.accessToken);
-              store.dispatch(authenticated(newCredentials));
-  
-              return apiFetcher.fetch(callParams.method, callParams.path, callParams.data, callParams.auth); 
-            } catch (error) {
-              auth0.signOut(credentials.refreshToken);
-              navigate(navigationMap.SignIn);
-              throw error;
-            }
-          }
-
-          auth0.signOut(credentials.refreshToken);
-          navigate(navigationMap.SignIn);
-          throw err;
-        }
-
-        throw err;
-      });
+      apiFetcher.setErrorHandler(
+        renewTokenWhenJWTExpired(credentials.refreshToken),
+      );
 
       yield call(navigate, navigationMap.SignOut);
       return;
@@ -129,3 +110,41 @@ orchestrator
 ;
 
 export default orchestrator;
+
+function renewTokenWhenJWTExpired(
+  refreshToken?: string,
+): ErrorHandler {
+  return async (res, callParams) => {
+    let error = new Error();
+    error.name = res.status.toString();
+
+    if (apiFetcher.isJsonResponse(res)) {
+      error.message = (await res.json()).failure?.reason;
+    }
+
+    if (isNullOrWhitespace(error.message)) {
+      error.message = 'unknown error';
+    }
+
+    if (error.name == '401' || error.name == '403') {
+      if (error.message == 'jwt expired') {
+        try {
+          const newCredentials = await auth0.renewToken(refreshToken);
+          apiFetcher.setToken(newCredentials.accessToken);
+          store.dispatch(authenticated(newCredentials));
+          return apiFetcher.fetch(callParams.method, callParams.path, callParams.data, callParams.auth);
+        }
+        catch (error) {
+          auth0.signOut(refreshToken);
+          navigate(navigationMap.SignIn);
+          throw error;
+        }
+      }
+
+      auth0.signOut(refreshToken);
+      navigate(navigationMap.SignIn);
+      throw error;
+    }
+    throw error;
+  };
+}

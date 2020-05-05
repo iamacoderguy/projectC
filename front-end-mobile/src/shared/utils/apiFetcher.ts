@@ -1,6 +1,5 @@
 import R from 'shared/res/R';
 import { URL } from 'whatwg-url';
-import { isNullOrWhitespace } from './string';
 
 const TAG = 'API_FETCHER';
 
@@ -12,7 +11,7 @@ const getToken = () => {
   return _token;
 };
 
-type ErrorHandler = (err: Error, callParams: {
+export type ErrorHandler = (res: Response, callParams: {
   method: 'POST' | 'GET' | 'DELETE' | 'PUT',
   path: string,
   data?: any, 
@@ -23,7 +22,8 @@ const setErrorHandler = (handler: ErrorHandler) => {
   _errorHandler = handler;
 };
 
-const isJsonResponse = (contentType: string | null) => {
+const isJsonResponse = (res: Response) => {
+  const contentType = res.headers.get('content-type');
   return contentType && contentType.indexOf('application/json') !== -1;
 };
 const _fetch = async (
@@ -46,31 +46,18 @@ const _fetch = async (
     },
     body: data ? JSON.stringify(data) : null,
   });
-  const contentType = res.headers.get('content-type');
 
   console.info(`${TAG} - status: ${res.status}`);
-  console.info(`${TAG} - contentType: ${contentType}`);
-
-  if (res.status == 200) {
-    return isJsonResponse(contentType) ? res.json() : res.text(); 
-  }
-
-  let error = new Error();
-  error.name = res.status.toString();
-
-  if (isJsonResponse(contentType)) {
-    error.message = (await res.json()).failure?.reason;
-  }
-
-  if (isNullOrWhitespace(error.message)) {
-    error.message = 'unknown error';
-  }
 
   if (_errorHandler) {
-    return _errorHandler(error, { method, path, data, auth });
+    if (res.status == 200) {
+      return isJsonResponse(res) ? res.json() : res.text(); 
+    }
+    
+    return _errorHandler(res, { method, path, data, auth });
   }
 
-  throw error;
+  return isJsonResponse(res) ? res.json() : res.text();
 };
 
 export default {
@@ -78,4 +65,5 @@ export default {
   getToken,
   fetch: _fetch,
   setErrorHandler,
+  isJsonResponse,
 };
