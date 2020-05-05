@@ -6,9 +6,9 @@ import {
 } from './actions';
 import { getType } from 'typesafe-actions';
 import { RootState } from '../types/rootState';
-import moduleTag from '../constants/tag';
+import MODULE_TAG from '../constants/tag';
 
-const tag = 'REDUCER';
+const TAG = 'REDUCER';
 const initialState: RootState = {
   testMode: false,
 };
@@ -16,14 +16,14 @@ const initialState: RootState = {
 function rootReducer(previousState: RootState = initialState, action: Action): RootState {
   switch (action.type) {
     case getType(initialize):
-      console.info(`${moduleTag} - ${tag} - ${getType(initialize)}`);
+      console.info(`${MODULE_TAG} - ${TAG} - ${getType(initialize)}`);
       return {
         ...previousState,
         ...(action as ReturnType<typeof initialize>).payload,
       };
 
     case getType(authenticated):
-      console.info(`${moduleTag} - ${tag} - ${getType(authenticated)}`);
+      console.info(`${MODULE_TAG} - ${TAG} - ${getType(authenticated)}`);
       return {
         ...previousState,
         accessToken: (action as ReturnType<typeof authenticated>).payload.accessToken,
@@ -32,7 +32,7 @@ function rootReducer(previousState: RootState = initialState, action: Action): R
       };
 
     case getType(signOutSuccess):
-      console.info(`${moduleTag} - ${tag} - ${getType(signOutSuccess)}`);
+      console.info(`${MODULE_TAG} - ${TAG} - ${getType(signOutSuccess)}`);
       return {
         ...previousState,
         accessToken: undefined,

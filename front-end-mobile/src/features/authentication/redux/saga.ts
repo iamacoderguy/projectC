@@ -15,9 +15,9 @@ import { navigate } from 'shared/utils/navigation';
 import navigationMap from '../constants/navigationMap';
 import * as auth0 from '../utils/auth0';
 import { RootState } from '../types/rootState';
-import moduleTag from '../constants/tag';
+import MODULE_TAG from '../constants/tag';
 
-const tag = 'SAGA';
+const TAG = 'SAGA';
 const orchestrator = new SagaOrchestrator();
 orchestrator.onError((error: Error) => {
   console.warn(error);
@@ -26,7 +26,7 @@ orchestrator.onError((error: Error) => {
 
 orchestrator
   .takeLatest(getType(initialize), function* (action: Action) {
-    console.info(`${moduleTag} - ${tag} - ${getType(initialize)}`);
+    console.info(`${MODULE_TAG} - ${TAG} - ${getType(initialize)}`);
     const authProps = (action as ReturnType<typeof initialize>).payload;
 
     if (!authProps.refreshToken) {
@@ -38,7 +38,7 @@ orchestrator
   })
 
   .takeLatest(getType(renewToken), function* (action: Action) {
-    console.info(`${moduleTag} - ${tag} - ${getType(renewToken)}`);
+    console.info(`${MODULE_TAG} - ${TAG} - ${getType(renewToken)}`);
     const refreshToken = (action as ReturnType<typeof renewToken>).payload;
     const state: RootState = yield select();
     try {
@@ -56,7 +56,7 @@ orchestrator
   })
 
   .takeLatest(getType(authenticated), function* (action: Action) {
-    console.info(`${moduleTag} - ${tag} - ${getType(authenticated)}`);
+    console.info(`${MODULE_TAG} - ${TAG} - ${getType(authenticated)}`);
     const credentials = (action as ReturnType<typeof authenticated>).payload;
     const state: RootState = yield select();
 
@@ -70,11 +70,11 @@ orchestrator
       return;
     }
 
-    console.warn(`${tag} - It isn't in test mode, neither is onAuthenticated provided`);
+    console.warn(`${TAG} - It isn't in test mode, neither is onAuthenticated provided`);
   })
 
   .takeLatest(getType(signOutRequest), function* (action: Action) {
-    console.info(`${moduleTag} - ${tag} - ${getType(signOutRequest)}`);
+    console.info(`${MODULE_TAG} - ${TAG} - ${getType(signOutRequest)}`);
     const sub = (action as ReturnType<typeof signOutRequest>).payload;
     const state: RootState = yield select();
     yield call(auth0.signOut, state.refreshToken, sub);
@@ -90,7 +90,7 @@ orchestrator
       return;
     }
 
-    console.warn(`${tag} - It isn't in test mode, neither is onSignedOut provided`);
+    console.warn(`${TAG} - It isn't in test mode, neither is onSignedOut provided`);
   })
 
   .takeLatest(getType(goToSignUp), function* () {

@@ -20,11 +20,11 @@ import {
 } from 'redux-saga/effects';
 import { localizer } from 'features/localization';
 import { RootState } from '../types/rootState';
-import appTag from '../constants/tag';
+import APP_TAG from '../constants/tag';
 import * as storage from '../utils/storage';
 import apiFetcher from 'shared/utils/apiFetcher';
 
-const tag = 'SAGA';
+const TAG = 'SAGA';
 const orchestrator = new SagaOrchestrator();
 orchestrator.onError((error: Error) => {
   console.warn(error);
@@ -33,24 +33,24 @@ orchestrator.onError((error: Error) => {
 
 orchestrator
   .takeLatest(getType(installAuthenticationRequest), function* (action: Action) {
-    console.info(`${appTag} - ${tag} - ${getType(installAuthenticationRequest)}`);
+    console.info(`${APP_TAG} - ${TAG} - ${getType(installAuthenticationRequest)}`);
     const refreshToken: string | undefined = yield call(storage.loadCredentials, 'refreshToken');
     const idToken: string | undefined = yield call(storage.loadCredentials, 'idToken');
     yield put(installAuthenticationSuccess({ refreshToken, idToken }));
   })
 
   .takeLatest(getType(handleOnAuthenticatedRequest), function* (action: Action) {
-    console.info(`${appTag} - ${tag} - ${getType(handleOnAuthenticatedRequest)}`);
+    console.info(`${APP_TAG} - ${TAG} - ${getType(handleOnAuthenticatedRequest)}`);
     const credentials = (action as ReturnType<typeof handleOnAuthenticatedRequest>).payload;
 
     yield call(storage.saveCredentials, 'refreshToken', credentials.refreshToken || '');
     yield call(storage.saveCredentials, 'idToken', credentials.idToken);
     yield call(apiFetcher.setToken, credentials.accessToken);
-    yield put(handleOnAuthenticatedSuccess());
+    // yield put(handleOnAuthenticatedSuccess());
   })
 
   .takeLatest(getType(handleOnSignedOutRequest), function* (action: Action) {
-    console.info(`${appTag} - ${tag} - ${getType(handleOnSignedOutRequest)}`);
+    console.info(`${APP_TAG} - ${TAG} - ${getType(handleOnSignedOutRequest)}`);
 
     yield call(storage.saveCredentials, 'refreshToken', '');
     yield call(apiFetcher.setToken, '');
@@ -58,7 +58,7 @@ orchestrator
   })
 
   .takeLatest(getType(installLocalizationRequest), function* () {
-    console.info(`${appTag} - ${tag} - ${getType(installLocalizationRequest)}`);
+    console.info(`${APP_TAG} - ${TAG} - ${getType(installLocalizationRequest)}`);
     let isLocalizationInstalled: boolean | undefined = yield select((state: RootState) => state.isLocalizationInstalled);
 
     if (!isLocalizationInstalled) {
@@ -68,7 +68,7 @@ orchestrator
   })
 
   .takeLatest(getType(uninstallLocalizationRequest), function* () {
-    console.info(`${appTag} - ${tag} - ${getType(uninstallLocalizationRequest)}`);
+    console.info(`${APP_TAG} - ${TAG} - ${getType(uninstallLocalizationRequest)}`);
     let isLocalizationInstalled: boolean | undefined = yield select((state: RootState) => state.isLocalizationInstalled);
 
     if (isLocalizationInstalled) {

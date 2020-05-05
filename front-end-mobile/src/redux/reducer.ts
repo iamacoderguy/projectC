@@ -9,9 +9,9 @@ import {
   handleOnSignedOutSuccess,
 } from './actions';
 import { RootState } from '../types/rootState';
-import appTag from '../constants/tag';
+import APP_TAG from '../constants/tag';
 
-const tag = 'REDUCER';
+const TAG = 'REDUCER';
 const initialState: RootState = {};
 
 function rootReducer (
@@ -20,14 +20,14 @@ function rootReducer (
 ): RootState {
   switch (action.type) {
     case getType(installAuthenticationSuccess):
-      console.info(`${appTag} - ${tag} - ${getType(installAuthenticationSuccess)}`);
+      console.info(`${APP_TAG} - ${TAG} - ${getType(installAuthenticationSuccess)}`);
       return {
         ...previousState,
         auth: (action as ReturnType<typeof installAuthenticationSuccess>).payload,
       };
 
     case getType(handleOnSignedOutSuccess):
-      console.info(`${appTag} - ${tag} - ${getType(handleOnSignedOutSuccess)}`);
+      console.info(`${APP_TAG} - ${TAG} - ${getType(handleOnSignedOutSuccess)}`);
       return {
         ...previousState,
         auth: {
@@ -36,19 +36,19 @@ function rootReducer (
       };
     
     case getType(handleOnAuthenticatedSuccess):
-      console.info(`${appTag} - ${tag} - ${getType(handleOnAuthenticatedSuccess)}`);
+      console.info(`${APP_TAG} - ${TAG} - ${getType(handleOnAuthenticatedSuccess)}`);
       return { ...previousState, auth: undefined, inApp: {} };
 
     case getType(changeLanguageSuccess):
-      console.info(`${appTag} - ${tag} - ${getType(changeLanguageSuccess)}`);
+      console.info(`${APP_TAG} - ${TAG} - ${getType(changeLanguageSuccess)}`);
       return { ...previousState, lng: (action as ReturnType<typeof changeLanguageSuccess>).payload.lng };
 
     case getType(installLocalizationSuccess):
-      console.info(`${appTag} - ${tag} - ${getType(installLocalizationSuccess)}`);
+      console.info(`${APP_TAG} - ${TAG} - ${getType(installLocalizationSuccess)}`);
       return { ...previousState, isLocalizationInstalled: true};
 
     case getType(uninstallLocalizationSuccess):
-      console.info(`${appTag} - ${tag} - ${getType(uninstallLocalizationSuccess)}`);
+      console.info(`${APP_TAG} - ${TAG} - ${getType(uninstallLocalizationSuccess)}`);
       return { ...previousState, isLocalizationInstalled: false};
 
     default:
