@@ -5,7 +5,9 @@ import createSagaMiddleware from 'redux-saga';
 import rootReducer from './reducer';
 import orchestrator from './saga';
 
-const loggerMiddleware = createLogger();
+const loggerMiddleware = createLogger({
+  level: 'info',
+});
 const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(

@@ -26,7 +26,7 @@ orchestrator.onError((error: Error) => {
 
 orchestrator
   .takeLatest(getType(initialize), function* (action: Action) {
-    console.log(`${moduleTag} - ${tag} - ${getType(initialize)}`);
+    console.info(`${moduleTag} - ${tag} - ${getType(initialize)}`);
     const authProps = (action as ReturnType<typeof initialize>).payload;
 
     if (!authProps.refreshToken) {
@@ -38,7 +38,7 @@ orchestrator
   })
 
   .takeLatest(getType(renewToken), function* (action: Action) {
-    console.log(`${moduleTag} - ${tag} - ${getType(renewToken)}`);
+    console.info(`${moduleTag} - ${tag} - ${getType(renewToken)}`);
     const refreshToken = (action as ReturnType<typeof renewToken>).payload;
     const state: RootState = yield select();
     try {
@@ -56,7 +56,7 @@ orchestrator
   })
 
   .takeLatest(getType(authenticated), function* (action: Action) {
-    console.log(`${moduleTag} - ${tag} - ${getType(authenticated)}`);
+    console.info(`${moduleTag} - ${tag} - ${getType(authenticated)}`);
     const credentials = (action as ReturnType<typeof authenticated>).payload;
     const state: RootState = yield select();
 
@@ -74,7 +74,7 @@ orchestrator
   })
 
   .takeLatest(getType(signOutRequest), function* (action: Action) {
-    console.log(`${moduleTag} - ${tag} - ${getType(signOutRequest)}`);
+    console.info(`${moduleTag} - ${tag} - ${getType(signOutRequest)}`);
     const sub = (action as ReturnType<typeof signOutRequest>).payload;
     const state: RootState = yield select();
     yield call(auth0.signOut, state.refreshToken, sub);

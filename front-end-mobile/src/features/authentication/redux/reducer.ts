@@ -16,14 +16,14 @@ const initialState: RootState = {
 function rootReducer(previousState: RootState = initialState, action: Action): RootState {
   switch (action.type) {
     case getType(initialize):
-      console.log(`${moduleTag} - ${tag} - ${getType(initialize)}`);
+      console.info(`${moduleTag} - ${tag} - ${getType(initialize)}`);
       return {
         ...previousState,
         ...(action as ReturnType<typeof initialize>).payload,
       };
 
     case getType(authenticated):
-      console.log(`${moduleTag} - ${tag} - ${getType(authenticated)}`);
+      console.info(`${moduleTag} - ${tag} - ${getType(authenticated)}`);
       return {
         ...previousState,
         accessToken: (action as ReturnType<typeof authenticated>).payload.accessToken,
@@ -32,7 +32,7 @@ function rootReducer(previousState: RootState = initialState, action: Action): R
       };
 
     case getType(signOutSuccess):
-      console.log(`${moduleTag} - ${tag} - ${getType(signOutSuccess)}`);
+      console.info(`${moduleTag} - ${tag} - ${getType(signOutSuccess)}`);
       return {
         ...previousState,
         accessToken: undefined,

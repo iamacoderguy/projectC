@@ -33,14 +33,14 @@ orchestrator.onError((error: Error) => {
 
 orchestrator
   .takeLatest(getType(installAuthenticationRequest), function* (action: Action) {
-    console.log(`${appTag} - ${tag} - ${getType(installAuthenticationRequest)}`);
+    console.info(`${appTag} - ${tag} - ${getType(installAuthenticationRequest)}`);
     const refreshToken: string | undefined = yield call(storage.loadCredentials, 'refreshToken');
     const idToken: string | undefined = yield call(storage.loadCredentials, 'idToken');
     yield put(installAuthenticationSuccess({ refreshToken, idToken }));
   })
 
   .takeLatest(getType(handleOnAuthenticatedRequest), function* (action: Action) {
-    console.log(`${appTag} - ${tag} - ${getType(handleOnAuthenticatedRequest)}`);
+    console.info(`${appTag} - ${tag} - ${getType(handleOnAuthenticatedRequest)}`);
     const credentials = (action as ReturnType<typeof handleOnAuthenticatedRequest>).payload;
 
     yield call(storage.saveCredentials, 'refreshToken', credentials.refreshToken || '');
@@ -50,7 +50,7 @@ orchestrator
   })
 
   .takeLatest(getType(handleOnSignedOutRequest), function* (action: Action) {
-    console.log(`${appTag} - ${tag} - ${getType(handleOnSignedOutRequest)}`);
+    console.info(`${appTag} - ${tag} - ${getType(handleOnSignedOutRequest)}`);
 
     yield call(storage.saveCredentials, 'refreshToken', '');
     yield call(apiFetcher.setToken, '');
@@ -58,7 +58,7 @@ orchestrator
   })
 
   .takeLatest(getType(installLocalizationRequest), function* () {
-    console.log(`${appTag} - ${tag} - ${getType(installLocalizationRequest)}`);
+    console.info(`${appTag} - ${tag} - ${getType(installLocalizationRequest)}`);
     let isLocalizationInstalled: boolean | undefined = yield select((state: RootState) => state.isLocalizationInstalled);
 
     if (!isLocalizationInstalled) {
@@ -68,7 +68,7 @@ orchestrator
   })
 
   .takeLatest(getType(uninstallLocalizationRequest), function* () {
-    console.log(`${appTag} - ${tag} - ${getType(uninstallLocalizationRequest)}`);
+    console.info(`${appTag} - ${tag} - ${getType(uninstallLocalizationRequest)}`);
     let isLocalizationInstalled: boolean | undefined = yield select((state: RootState) => state.isLocalizationInstalled);
 
     if (isLocalizationInstalled) {

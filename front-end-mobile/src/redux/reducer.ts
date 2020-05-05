@@ -20,14 +20,14 @@ function rootReducer (
 ): RootState {
   switch (action.type) {
     case getType(installAuthenticationSuccess):
-      console.log(`${appTag} - ${tag} - ${getType(installAuthenticationSuccess)}`);
+      console.info(`${appTag} - ${tag} - ${getType(installAuthenticationSuccess)}`);
       return {
         ...previousState,
         auth: (action as ReturnType<typeof installAuthenticationSuccess>).payload,
       };
 
     case getType(handleOnSignedOutSuccess):
-      console.log(`${appTag} - ${tag} - ${getType(handleOnSignedOutSuccess)}`);
+      console.info(`${appTag} - ${tag} - ${getType(handleOnSignedOutSuccess)}`);
       return {
         ...previousState,
         auth: {
@@ -36,19 +36,19 @@ function rootReducer (
       };
     
     case getType(handleOnAuthenticatedSuccess):
-      console.log(`${appTag} - ${tag} - ${getType(handleOnAuthenticatedSuccess)}`);
+      console.info(`${appTag} - ${tag} - ${getType(handleOnAuthenticatedSuccess)}`);
       return { ...previousState, auth: undefined, inApp: {} };
 
     case getType(changeLanguageSuccess):
-      console.log(`${appTag} - ${tag} - ${getType(changeLanguageSuccess)}`);
+      console.info(`${appTag} - ${tag} - ${getType(changeLanguageSuccess)}`);
       return { ...previousState, lng: (action as ReturnType<typeof changeLanguageSuccess>).payload.lng };
 
     case getType(installLocalizationSuccess):
-      console.log(`${appTag} - ${tag} - ${getType(installLocalizationSuccess)}`);
+      console.info(`${appTag} - ${tag} - ${getType(installLocalizationSuccess)}`);
       return { ...previousState, isLocalizationInstalled: true};
 
     case getType(uninstallLocalizationSuccess):
-      console.log(`${appTag} - ${tag} - ${getType(uninstallLocalizationSuccess)}`);
+      console.info(`${appTag} - ${tag} - ${getType(uninstallLocalizationSuccess)}`);
       return { ...previousState, isLocalizationInstalled: false};
 
     default:

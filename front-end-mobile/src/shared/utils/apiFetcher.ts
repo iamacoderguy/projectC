@@ -20,7 +20,7 @@ const fetchToJson = async (
   const apiHost = R.config.API_HOST;
   const url = new URL(path, apiHost);
 
-  console.log(`${tag} - ${method} at ${url}`);
+  console.info(`${tag} - ${method} at ${url}`);
 
   const res = await fetch(url.href, {
     method,
@@ -33,8 +33,8 @@ const fetchToJson = async (
   });
   const contentType = res.headers.get('content-type');
 
-  console.log(`${tag} - status: ${res.status}`);
-  console.log(`${tag} - contentType: ${contentType}`);
+  console.info(`${tag} - status: ${res.status}`);
+  console.info(`${tag} - contentType: ${contentType}`);
 
   if (contentType && contentType.indexOf('application/json') !== -1) {
     return await res.json();
