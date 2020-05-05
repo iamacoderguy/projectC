@@ -6,7 +6,7 @@ import config from '../../../config';
 // Authentication middleware. When used, the
 // Access Token must exist and be verified against
 // the Auth0 JSON Web Key Set
-const checkJwt = jwt({
+const jwtChecker = jwt({
   // Dynamically provide a signing key
   // based on the kid in the header and
   // the signing keys provided by the JWKS endpoint.
@@ -23,4 +23,4 @@ const checkJwt = jwt({
   algorithms: ['RS256'],
 });
 
-export default checkJwt;
+export default jwtChecker;

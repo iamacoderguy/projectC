@@ -94,6 +94,7 @@ const SignOutScreen: React.FC<SignOutScreenProps> = (props: SignOutScreenProps) 
       </>
     );
   };
+
   return (
     <Layout
       title={strings.signOut.title()}

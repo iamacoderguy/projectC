@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import jwtAuthz from 'express-jwt-authz';
-import checkJwt from '../middlewares/checkJwt';
+import jwtChecker from '../middlewares/jwtChecker';
 
 type AuthenticatedRequest = express.Request & {
   user?: unknown;
@@ -9,8 +9,8 @@ const router = express.Router();
 const checkScopes = jwtAuthz(['read:helloWorld'], { customScopeKey: 'permissions' });
 
 router.get('/', nonAuthenticatedRequests);
-router.get('/private', checkJwt, authenticatedRequests);
-router.get('/private-scoped', checkJwt, checkScopes, authorizedRequests);
+router.get('/private', jwtChecker, authenticatedRequests);
+router.get('/private-scoped', jwtChecker, checkScopes, authorizedRequests);
 
 function nonAuthenticatedRequests(_req: Request, res: Response): void {
   res

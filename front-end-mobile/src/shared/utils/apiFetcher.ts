@@ -22,7 +22,7 @@ const fetchToJson = async (
 
   console.log(`${tag} - ${method} at ${url}`);
 
-  const fetchTask = fetch(url.href, {
+  const res = await fetch(url.href, {
     method,
     headers: {
       Accept: 'application/json',
@@ -32,12 +32,16 @@ const fetchToJson = async (
     body: data ? JSON.stringify(data) : null,
   });
 
-  const res = (await fetchTask) as Response;
   console.log(`${tag} - status: ${res.status}`);
 
-  const apiResponse = (res.status == 200) ? (await res.json()) : (await res.text());
-
-  return apiResponse;
+  switch (res.status) {
+    case 200:
+    case 401:
+      return await res.json();
+  
+    default:
+      return await res.text();
+  }
 };
 
 export default {
