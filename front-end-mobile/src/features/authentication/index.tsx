@@ -37,3 +37,5 @@ export const Authentication: React.FC<AuthProps> = (props: AuthProps) => {
     </Provider>
   );
 };
+
+export { jwtErrorHandler } from './utils/jwtErrorHandler';
