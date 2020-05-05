@@ -94,9 +94,11 @@ export const signOut = async (refreshToken?: string, sub?: string) => {
   }
 
   if (refreshToken) {
-    await auth0.auth.revoke({
-      refreshToken,
-    });
+    try {
+      await auth0.auth.revoke({ refreshToken }); 
+    } catch (error) {
+      console.warn(error);
+    }
   }
 };
 

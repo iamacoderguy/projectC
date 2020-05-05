@@ -6,7 +6,7 @@ type AuthenticatedRequest = express.Request & {
   user?: unknown;
 }
 const router = express.Router();
-const checkScopes = jwtAuthz(['read:helloWorld'], { customScopeKey: 'permissions' });
+const checkScopes = jwtAuthz(['read:helloWorld'], { customScopeKey: 'permissions', failWithError: true });
 
 router.get('/', nonAuthenticatedRequests);
 router.get('/private', jwtChecker, authenticatedRequests);

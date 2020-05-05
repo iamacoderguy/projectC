@@ -66,11 +66,17 @@ orchestrator
       apiFetcher.setErrorHandler(async (err, callParams) => {
         if (err.name == '401' || err.name == '403') {
           if (err.message == 'jwt expired') {
-            const newCredentials = await auth0.renewToken(credentials.refreshToken);
-            apiFetcher.setToken(newCredentials.accessToken);
-            store.dispatch(authenticated(newCredentials));
-
-            return apiFetcher.fetch(callParams.method, callParams.path, callParams.data, callParams.auth);
+            try {
+              const newCredentials = await auth0.renewToken(credentials.refreshToken);
+              apiFetcher.setToken(newCredentials.accessToken);
+              store.dispatch(authenticated(newCredentials));
+  
+              return apiFetcher.fetch(callParams.method, callParams.path, callParams.data, callParams.auth); 
+            } catch (error) {
+              auth0.signOut(credentials.refreshToken);
+              navigate(navigationMap.SignIn);
+              throw error;
+            }
           }
 
           auth0.signOut(credentials.refreshToken);
