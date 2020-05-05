@@ -31,17 +31,16 @@ const fetchToJson = async (
     },
     body: data ? JSON.stringify(data) : null,
   });
+  const contentType = res.headers.get('content-type');
 
   console.log(`${tag} - status: ${res.status}`);
+  console.log(`${tag} - contentType: ${contentType}`);
 
-  switch (res.status) {
-    case 200:
-    case 401:
-      return await res.json();
-  
-    default:
-      return await res.text();
+  if (contentType && contentType.indexOf('application/json') !== -1) {
+    return await res.json();
   }
+
+  return await res.text();
 };
 
 export default {
