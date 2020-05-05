@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import express from 'express';
+import morgan from 'morgan';
 import { installer as dataInstaller } from '../../data/installer';
 
 import helloWorldController from './controllers/helloWorld';
@@ -10,7 +11,9 @@ console.info('Installing dependencies...');
 dataInstaller.install(container);
 
 const app = express();
+const logger = morgan('combined');
 
+app.use(logger);
 app.use('/api/helloWorld', helloWorldController);
 
 export async function connectToDb(): Promise<void> {

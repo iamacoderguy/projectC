@@ -22,7 +22,7 @@ import { localizer } from 'features/localization';
 import { RootState } from '../types/rootState';
 import appTag from '../constants/tag';
 import * as storage from '../utils/storage';
-import * as apiFetcher from 'shared/utils/apiFetcher';
+import apiFetcher from 'shared/utils/apiFetcher';
 
 const tag = 'SAGA';
 const orchestrator = new SagaOrchestrator();

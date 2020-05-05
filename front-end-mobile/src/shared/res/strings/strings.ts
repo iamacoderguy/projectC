@@ -44,6 +44,9 @@ export const strings = {
     signOut: {
       title: () => _localizer.t('authentication_signOut_title'),
       signOutButton: () => _localizer.t('authentication_signOut_signOutButton'),
+      helloWorldButton: () => _localizer.t('authentication_signOut_helloWorldButton'),
+      helloWorldPrivateButton: () => _localizer.t('authentication_signOut_helloWorldPrivateButton'),
+      helloWorldPrivateScopedButton: () => _localizer.t('authentication_signOut_helloWorldPrivateScopedButton'),
     },
     shared: {
       usernamePlaceholder: () => _localizer.t('authentication_usernamePlaceholder'),

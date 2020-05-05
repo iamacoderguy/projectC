@@ -1,16 +1,17 @@
 import R from 'shared/res/R';
 import { URL } from 'whatwg-url';
 
+const tag = 'API_FETCHER';
 let _token: string;
-export const setToken = (token: string) => {
+const setToken = (token: string) => {
   _token = token;
 };
 
-export const getToken = () => {
+const getToken = () => {
   return _token;
 };
 
-export const fetchToJson = async (
+const fetchToJson = async (
   method: 'POST' | 'GET' | 'DELETE' | 'PUT',
   path: string,
   data?: any,
@@ -19,7 +20,7 @@ export const fetchToJson = async (
   const apiHost = R.config.API_HOST;
   const url = new URL(path, apiHost);
 
-  console.log(`${method} at ${url}`);
+  console.log(`${tag} - ${method} at ${url}`);
 
   const fetchTask = fetch(url.href, {
     method,
@@ -32,6 +33,15 @@ export const fetchToJson = async (
   });
 
   const res = (await fetchTask) as Response;
+  console.log(`${tag} - status: ${res.status}`);
+
   const apiResponse = (res.status == 200) ? (await res.json()) : (await res.text());
+
   return apiResponse;
+};
+
+export default {
+  setToken,
+  getToken,
+  fetchToJson,
 };

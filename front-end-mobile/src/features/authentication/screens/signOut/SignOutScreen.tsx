@@ -10,6 +10,7 @@ import {
   StyleSheet,
   Image,
   Text,
+  Alert,
 } from 'react-native';
 import Button from 'shared/components/button/Button';
 import {
@@ -24,6 +25,7 @@ import {
   UserInfo,
 } from '../../utils/auth0';
 import { isNullOrWhitespace } from 'shared/utils/string';
+import apiFetcher from 'shared/utils/apiFetcher';
 
 const strings = {
   signOut: R.strings.authentication.signOut,
@@ -39,10 +41,42 @@ const SignOutScreen: React.FC<SignOutScreenProps> = (props: SignOutScreenProps) 
       if (props.accessToken) {
         const profile = await getProfile(props.accessToken);
         setProfile(profile);
+        apiFetcher.setToken(props.accessToken);
       }
     }
     fetchProfile();
   }, [props.accessToken]);
+
+  const _handleOnHelloWorldButtonPress = async () => {
+    const result = await apiFetcher.fetchToJson(
+      'GET',
+      '/api/helloWorld',
+    );
+
+    Alert.alert(strings.signOut.helloWorldButton(), `${JSON.stringify(result, null, 2)}`);
+  };
+
+  const _handleOnHelloWorldPrivateButtonPress = async () => {
+    const result = await apiFetcher.fetchToJson(
+      'GET',
+      '/api/helloWorld/private',
+      undefined,
+      true,
+    );
+
+    Alert.alert(strings.signOut.helloWorldPrivateButton(), `${JSON.stringify(result, null, 2)}`);
+  };
+
+  const _handleOnHelloWorldPrivateScopedButtonPress = async () => {
+    const result = await apiFetcher.fetchToJson(
+      'GET',
+      '/api/helloWorld/private-scoped',
+      undefined,
+      true,
+    );
+
+    Alert.alert(strings.signOut.helloWorldPrivateScopedButton(), `${JSON.stringify(result, null, 2)}`);
+  };
 
   const _renderInfo = () => {
     if (!profile) {
@@ -77,6 +111,24 @@ const SignOutScreen: React.FC<SignOutScreenProps> = (props: SignOutScreenProps) 
           {_renderInfo()}
         </View>
 
+        <View style={styles.apiContainer}>
+          <Button
+            style={styles.apiButton}
+            title={strings.signOut.helloWorldButton()}
+            onPress={_handleOnHelloWorldButtonPress}
+          />
+          <Button
+            style={styles.apiButton}
+            title={strings.signOut.helloWorldPrivateButton()}
+            onPress={_handleOnHelloWorldPrivateButtonPress}
+          />
+          <Button
+            style={styles.apiButton}
+            title={strings.signOut.helloWorldPrivateScopedButton()}
+            onPress={_handleOnHelloWorldPrivateScopedButtonPress}
+          />
+        </View>
+
         <Button
           style={styles.signOutButton}
           title={strings.signOut.signOutButton()}
@@ -103,6 +155,12 @@ const styles = StyleSheet.create({
   },
   info: {
     ...R.palette.normal,
+    marginBottom: dimens.spacingBetweenInputs,
+  },
+  apiContainer: {
+    marginBottom: dimens.spacingBetweenForms - dimens.spacingBetweenInputs,
+  },
+  apiButton: {
     marginBottom: dimens.spacingBetweenInputs,
   },
   signOutButton: {},
