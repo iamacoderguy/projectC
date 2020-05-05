@@ -48,7 +48,7 @@ const SignOutScreen: React.FC<SignOutScreenProps> = (props: SignOutScreenProps) 
   }, [props.accessToken]);
 
   const _handleOnHelloWorldButtonPress = async () => {
-    const result = await apiFetcher.fetchToJson(
+    const result = await apiFetcher.fetch(
       'GET',
       '/api/helloWorld',
     );
@@ -57,7 +57,7 @@ const SignOutScreen: React.FC<SignOutScreenProps> = (props: SignOutScreenProps) 
   };
 
   const _handleOnHelloWorldPrivateButtonPress = async () => {
-    const result = await apiFetcher.fetchToJson(
+    const result = await apiFetcher.fetch(
       'GET',
       '/api/helloWorld/private',
       undefined,
@@ -68,7 +68,7 @@ const SignOutScreen: React.FC<SignOutScreenProps> = (props: SignOutScreenProps) 
   };
 
   const _handleOnHelloWorldPrivateScopedButtonPress = async () => {
-    const result = await apiFetcher.fetchToJson(
+    const result = await apiFetcher.fetch(
       'GET',
       '/api/helloWorld/private-scoped',
       undefined,

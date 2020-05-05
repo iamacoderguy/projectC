@@ -1,17 +1,32 @@
 import R from 'shared/res/R';
 import { URL } from 'whatwg-url';
+import { isNullOrWhitespace } from './string';
 
-const tag = 'API_FETCHER';
+const TAG = 'API_FETCHER';
+
 let _token: string;
 const setToken = (token: string) => {
   _token = token;
 };
-
 const getToken = () => {
   return _token;
 };
 
-const fetchToJson = async (
+type ErrorHandler = (err: Error, callParams: {
+  method: 'POST' | 'GET' | 'DELETE' | 'PUT',
+  path: string,
+  data?: any, 
+  auth?: boolean
+}) => Promise<any>;
+let _errorHandler: ErrorHandler | undefined;
+const setErrorHandler = (handler: ErrorHandler) => {
+  _errorHandler = handler;
+};
+
+const isJsonResponse = (contentType: string | null) => {
+  return contentType && contentType.indexOf('application/json') !== -1;
+};
+const _fetch = async (
   method: 'POST' | 'GET' | 'DELETE' | 'PUT',
   path: string,
   data?: any,
@@ -20,7 +35,7 @@ const fetchToJson = async (
   const apiHost = R.config.API_HOST;
   const url = new URL(path, apiHost);
 
-  console.info(`${tag} - ${method} at ${url}`);
+  console.info(`${TAG} - ${method} at ${url}`);
 
   const res = await fetch(url.href, {
     method,
@@ -33,18 +48,34 @@ const fetchToJson = async (
   });
   const contentType = res.headers.get('content-type');
 
-  console.info(`${tag} - status: ${res.status}`);
-  console.info(`${tag} - contentType: ${contentType}`);
+  console.info(`${TAG} - status: ${res.status}`);
+  console.info(`${TAG} - contentType: ${contentType}`);
 
-  if (contentType && contentType.indexOf('application/json') !== -1) {
-    return await res.json();
+  if (res.status == 200) {
+    return isJsonResponse(contentType) ? res.json() : res.text(); 
   }
 
-  return await res.text();
+  let error = new Error();
+  error.name = res.status.toString();
+
+  if (isJsonResponse(contentType)) {
+    error.message = (await res.json()).failure?.reason;
+  }
+
+  if (isNullOrWhitespace(error.message)) {
+    error.message = 'unknown error';
+  }
+
+  if (_errorHandler) {
+    return _errorHandler(error, { method, path, data, auth });
+  }
+
+  throw error;
 };
 
 export default {
   setToken,
   getToken,
-  fetchToJson,
+  fetch: _fetch,
+  setErrorHandler,
 };

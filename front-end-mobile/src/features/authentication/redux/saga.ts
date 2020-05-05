@@ -16,6 +16,8 @@ import navigationMap from '../constants/navigationMap';
 import * as auth0 from '../utils/auth0';
 import { RootState } from '../types/rootState';
 import MODULE_TAG from '../constants/tag';
+import apiFetcher from 'shared/utils/apiFetcher';
+import store from './store';
 
 const TAG = 'SAGA';
 const orchestrator = new SagaOrchestrator();
@@ -61,6 +63,24 @@ orchestrator
     const state: RootState = yield select();
 
     if (state.testMode) {
+      apiFetcher.setErrorHandler(async (err, callParams) => {
+        if (err.name == '401' || err.name == '403') {
+          if (err.message == 'jwt expired') {
+            const newCredentials = await auth0.renewToken(credentials.refreshToken);
+            apiFetcher.setToken(newCredentials.accessToken);
+            store.dispatch(authenticated(newCredentials));
+
+            return apiFetcher.fetch(callParams.method, callParams.path, callParams.data, callParams.auth);
+          }
+
+          auth0.signOut(credentials.refreshToken);
+          navigate(navigationMap.SignIn);
+          throw err;
+        }
+
+        throw err;
+      });
+
       yield call(navigate, navigationMap.SignOut);
       return;
     }

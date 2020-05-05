@@ -1,7 +1,7 @@
 type ResponseResult = {
   message?: string[];
   payload?: unknown;
-  failures?: ResponseFailure[];
+  failure: ResponseFailure;
 }
 
 type ResponseFailure = {
@@ -9,5 +9,5 @@ type ResponseFailure = {
 }
 
 export const ErrorResult = (failure: ResponseFailure): ResponseResult => ({
-  failures: [failure],
+  failure,
 });
