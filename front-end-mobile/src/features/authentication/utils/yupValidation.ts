@@ -11,3 +11,7 @@ export const usernameValidation = (placeholder: string) => Yup.string()
 export const passwordValidation = (placeholder: string) => Yup.string()
   .min(8, strings.validationMessageMinLength(placeholder, 8))
   .required(strings.validationMessageRequired(placeholder));
+
+export const emailValidation = (placeholder: string) => Yup.string()
+  .email(strings.validationMessageEmail(placeholder))
+  .required(strings.validationMessageRequired(placeholder));

@@ -83,6 +83,13 @@ const signInManual = async (user: PasswordRealm) => {
   return credentials;
 };
 
+const forgotPasswordManual = (email: string) => {
+  return auth0.auth.resetPassword({
+    email,
+    connection: config.connections.database,
+  });
+};
+
 const getProfile = (accessToken: string) => {
   return auth0.auth
     .userInfo<UserInfo>({
@@ -114,6 +121,7 @@ export default {
   signUpOrSignInWithSocialConnection,
   signUpManual,
   signInManual,
+  forgotPasswordManual,
   getProfile,
   getProfileFromToken,
   signOut,
