@@ -51,6 +51,12 @@ export const strings = {
       usernameDescription: () => _localizer.t('authentication_forgotPassword_usernameDescription'),
       emailDescription: () => _localizer.t('authentication_forgotPassword_emailDescription'),
     },
+    checkEmail: {
+      title: () => _localizer.t('authentication_checkEmail_title'),
+      didntReceiveAnEmail: () => _localizer.t('authentication_checkEmail_didntReceiveAnEmail'),
+      usernameMessage: (username: string) => format(_localizer.t('authentication_checkEmail_usernameMessage'), username),
+      emailMessage: () => _localizer.t('authentication_checkEmail_emailMessage'),
+    },
     shared: {
       usernamePlaceholder: () => _localizer.t('authentication_usernamePlaceholder'),
       passwordPlaceholder: () => _localizer.t('authentication_passwordPlaceholder'),
@@ -64,6 +70,7 @@ export const strings = {
       validationMessageCharactersAllowed: (fieldName: string, specialCharacters: string) => format(_localizer.t('authentication_validationMessage_charactersAllowed'), fieldName, specialCharacters),
       validationMessageDoesNotMatch: (fieldName: string) => format(_localizer.t('authentication_validationMessage_doesNotMatch'), fieldName),
       continueButton: () => _localizer.t('authentication_continueButton'),
+      doneButton: () => _localizer.t('authentication_doneButton'),
     },
     components: {
       show: () => _localizer.t('authentication_components_show'),

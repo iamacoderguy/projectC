@@ -4,7 +4,7 @@ import R from 'shared/res/R';
 import Button from 'shared/components/button/Button';
 import auth0 from '../../utils/auth0';
 import MODULE_TAG from '../../constants/tag';
-import { ForgotPasswordScreenPropsForMapDispatch, mapDispatchToProps } from './ForgotPassword.container';
+import { ForgotPasswordScreenPropsForMapDispatch, mapDispatchToProps } from './ForgotPasswordScreen.container';
 import { connect } from 'react-redux';
 import { View, StyleSheet, Text } from 'react-native';
 import SwitchSelector from 'shared/components/switchSelector/SwitchSelector';
@@ -19,20 +19,20 @@ const strings = {
   shared: R.strings.authentication.shared,
 };
 
+export const emailForm = 0;
+export const usernameForm = 1;
 type ForgotPasswordScreenProps = ForgotPasswordScreenPropsForMapDispatch;
 
 const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = (props: ForgotPasswordScreenProps) => {
-  const usernameForm = 0;
-  const emailForm = 1;
   const selectors = [
-    {
-      label: strings.shared.usernamePlaceholder(), value: usernameForm,
-    },
     {
       label: strings.forgotPassword.emailButton(), value: emailForm,
     },
+    {
+      label: strings.shared.usernamePlaceholder(), value: usernameForm,
+    },
   ];
-  const [selectedForm, setSelectedForm] = useState(usernameForm);
+  const [selectedForm, setSelectedForm] = useState(emailForm);
   const [_validateForm, setValidateForm] = useState<Function>();
 
   const usernameId = 'username';
@@ -80,9 +80,8 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = (props: Forgot
             })}
         onSubmit={async (values, { setSubmitting }) => {
           try {
-            const result = await auth0.forgotPasswordManual('kieukhuongthinh@gmail.com');
-            console.warn(`${TAG} - result`);
-            console.warn(result);
+            await auth0.forgotPasswordManual(values[emailId]);
+            props.onGoToCheckEmail(selectedForm, values[usernameId]);
           } catch (error) {
             console.warn(`${TAG} - ${error}`);
           } finally {
@@ -115,6 +114,7 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = (props: Forgot
                         setValidateForm(() => validateForm);
                       }
                     }}
+                    disabled
                   />
                   <Text style={styles.descriptionText}>
                     {selectedForm == usernameForm

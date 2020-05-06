@@ -9,6 +9,8 @@ import {
   goToSignUp,
   goToSignIn,
   goToForgotPassword,
+  goToCheckEmail,
+  checkEmailDone,
 } from './actions';
 import { Action } from 'shared/types/action';
 import { call, put, select } from 'redux-saga/effects';
@@ -123,6 +125,14 @@ orchestrator
 
   .takeLatest(getType(goToForgotPassword), function* () {
     yield call(navigate, navigationMap.ForgotPassword);
+  })
+
+  .takeLatest(getType(goToCheckEmail), function* () {
+    yield call(navigate, navigationMap.CheckEmail);
+  })
+
+  .takeLatest(getType(checkEmailDone), function* () {
+    yield call(navigate, navigationMap.SignIn);
   })
 ;
 

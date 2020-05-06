@@ -14,6 +14,7 @@ import ForgotPasswordScreen from './screens/forgotPassword/ForgotPasswordScreen'
 import { AuthProps } from './types/authProps';
 import LoadingScreen from 'shared/components/loading/LoadingScreen';
 import storeManager from './utils/storeManager';
+import CheckEmailScreen from './screens/checkEmail/CheckEmailScreen';
 
 const Stack = createStackNavigator();
 
@@ -37,6 +38,7 @@ export const Authentication: React.FC<AuthProps> = (props: AuthProps) => {
         <Stack.Screen name={navigationMap.SignUp} component={SignUpScreen} />
         <Stack.Screen name={navigationMap.SignOut} component={SignOutScreen} />
         <Stack.Screen name={navigationMap.ForgotPassword} component={ForgotPasswordScreen} />
+        <Stack.Screen name={navigationMap.CheckEmail} component={CheckEmailScreen} />
       </Stack.Navigator>
     </Provider>
   );
