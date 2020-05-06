@@ -19,11 +19,8 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { usernameValidation, passwordValidation } from '../../utils/yupValidation';
 import { clearInputRefs, addInputRef, goNext } from '../../utils/inputRefs';
-import {
+import auth0, {
   SocialConnection,
-  signUpOrSignInWithSocialConnection,
-  signUpManual,
-  signInManual,
 } from '../../utils/auth0';
 import { SignUpScreenPropsForMapDispatch, mapDispatchToProps } from './SignUpScreen.container';
 import { connect } from 'react-redux';
@@ -60,7 +57,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = (props: SignUpScreenProps) => 
   const _handleOnSocialButtonPress = async (connection: SocialConnection, setSubmitting: (isSubmitting: boolean) => void) => {
     setSubmitting(true);
 
-    await signUpOrSignInWithSocialConnection(connection)
+    await auth0.signUpOrSignInWithSocialConnection(connection)
       .then(credentials => {
         props.onAuthenticated(credentials);
       })
@@ -118,8 +115,8 @@ const SignUpScreen: React.FC<SignUpScreenProps> = (props: SignUpScreenProps) => 
             return;
           }
 
-          await signUpManual(values)
-            .then(_success => signInManual({
+          await auth0.signUpManual(values)
+            .then(_success => auth0.signInManual({
               username: values[usernameId],
               password: values[passwordId],
             }))

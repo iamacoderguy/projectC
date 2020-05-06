@@ -14,7 +14,7 @@ import { Action } from 'shared/types/action';
 import { call, put, select } from 'redux-saga/effects';
 import { navigate } from 'shared/utils/navigation';
 import navigationMap from '../constants/navigationMap';
-import * as auth0 from '../utils/auth0';
+import auth0, { Credentials } from '../utils/auth0';
 import { RootState } from '../types/rootState';
 import MODULE_TAG from '../constants/tag';
 import apiFetcher from 'shared/utils/apiFetcher';
@@ -46,7 +46,7 @@ orchestrator
     const refreshToken = (action as ReturnType<typeof renewToken>).payload;
     const state: RootState = yield select();
     try {
-      const credentials: auth0.Credentials = yield call(auth0.renewToken, refreshToken); 
+      const credentials: Credentials = yield call(auth0.renewToken, refreshToken); 
       yield put(authenticated(credentials));
     } catch (error) {
       yield call(navigate, navigationMap.SignIn);

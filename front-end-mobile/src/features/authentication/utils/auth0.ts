@@ -34,7 +34,7 @@ const scopes = {
   OIDC: 'openid profile email offline_access',
 };
 
-export const renewToken = async (refreshToken?: string) => {
+const renewToken = async (refreshToken?: string) => {
   try {
     const credentials: Credentials = await auth0.auth
       .refreshToken({
@@ -48,7 +48,7 @@ export const renewToken = async (refreshToken?: string) => {
   }
 };
 
-export const signUpOrSignInWithSocialConnection = async (socialConnection: SocialConnection) => {
+const signUpOrSignInWithSocialConnection = async (socialConnection: SocialConnection) => {
   const credentials: Credentials = await auth0.webAuth
     .authorize({
       scope: scopes.OIDC,
@@ -59,7 +59,7 @@ export const signUpOrSignInWithSocialConnection = async (socialConnection: Socia
   return credentials;
 };
 
-export const signUpManual = (user: User) => {
+const signUpManual = (user: User) => {
   return auth0.auth
     .createUser({
       username: user.username,
@@ -70,7 +70,7 @@ export const signUpManual = (user: User) => {
     });
 };
 
-export const signInManual = async (user: PasswordRealm) => {
+const signInManual = async (user: PasswordRealm) => {
   const credentials = await auth0.auth
     .passwordRealm({
       username: user.username,
@@ -83,14 +83,19 @@ export const signInManual = async (user: PasswordRealm) => {
   return credentials;
 };
 
-export const getProfile = (accessToken: string) => {
+const getProfile = (accessToken: string) => {
   return auth0.auth
     .userInfo<UserInfo>({
       token: accessToken,
     });
 };
 
-export const signOut = async (refreshToken?: string, sub?: string) => {
+const getProfileFromToken = (idToken: string) => {
+  const decodedToken: UserInfo = jwt_decode(idToken);
+  return decodedToken;
+};
+
+const signOut = async (refreshToken?: string, sub?: string) => {
   if (sub && contain(sub, 'github', 'google-oauth2')) {
     await auth0.webAuth.clearSession(); 
   }
@@ -104,7 +109,12 @@ export const signOut = async (refreshToken?: string, sub?: string) => {
   }
 };
 
-export const getProfileFromToken = (idToken: string) => {
-  const decodedToken: UserInfo = jwt_decode(idToken);
-  return decodedToken;
+export default {
+  renewToken,
+  signUpOrSignInWithSocialConnection,
+  signUpManual,
+  signInManual,
+  getProfile,
+  getProfileFromToken,
+  signOut,
 };
