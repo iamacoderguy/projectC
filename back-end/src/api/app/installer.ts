@@ -13,7 +13,7 @@ console.info('Installing dependencies...');
 dataInstaller.install(container);
 
 const app = express();
-const logger = morgan('combined');
+const logger = morgan('common');
 
 app.use(logger);
 app.use('/api/helloWorld', helloWorldController);

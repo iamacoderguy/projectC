@@ -11,7 +11,7 @@ import {
 import { RootState } from '../types/rootState';
 import APP_TAG from '../constants/tag';
 
-const TAG = 'REDUCER';
+const TAG = `${APP_TAG} - REDUCER`;
 const initialState: RootState = {};
 
 function rootReducer (
@@ -20,14 +20,14 @@ function rootReducer (
 ): RootState {
   switch (action.type) {
     case getType(installAuthenticationSuccess):
-      console.info(`${APP_TAG} - ${TAG} - ${getType(installAuthenticationSuccess)}`);
+      console.info(`${TAG} - ${getType(installAuthenticationSuccess)}`);
       return {
         ...previousState,
         auth: (action as ReturnType<typeof installAuthenticationSuccess>).payload,
       };
 
     case getType(handleOnSignedOutSuccess):
-      console.info(`${APP_TAG} - ${TAG} - ${getType(handleOnSignedOutSuccess)}`);
+      console.info(`${TAG} - ${getType(handleOnSignedOutSuccess)}`);
       return {
         ...previousState,
         auth: {
@@ -36,19 +36,19 @@ function rootReducer (
       };
     
     case getType(handleOnAuthenticatedSuccess):
-      console.info(`${APP_TAG} - ${TAG} - ${getType(handleOnAuthenticatedSuccess)}`);
+      console.info(`${TAG} - ${getType(handleOnAuthenticatedSuccess)}`);
       return { ...previousState, auth: undefined, inApp: {} };
 
     case getType(changeLanguageSuccess):
-      console.info(`${APP_TAG} - ${TAG} - ${getType(changeLanguageSuccess)}`);
+      console.info(`${TAG} - ${getType(changeLanguageSuccess)}`);
       return { ...previousState, lng: (action as ReturnType<typeof changeLanguageSuccess>).payload.lng };
 
     case getType(installLocalizationSuccess):
-      console.info(`${APP_TAG} - ${TAG} - ${getType(installLocalizationSuccess)}`);
+      console.info(`${TAG} - ${getType(installLocalizationSuccess)}`);
       return { ...previousState, isLocalizationInstalled: true};
 
     case getType(uninstallLocalizationSuccess):
-      console.info(`${APP_TAG} - ${TAG} - ${getType(uninstallLocalizationSuccess)}`);
+      console.info(`${TAG} - ${getType(uninstallLocalizationSuccess)}`);
       return { ...previousState, isLocalizationInstalled: false};
 
     default:

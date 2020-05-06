@@ -33,7 +33,9 @@ import {
 } from './SignInScreen.container';
 import { connect } from 'react-redux';
 import { isNullOrWhitespace } from 'shared/utils/string';
+import MODULE_TAG from '../../constants/tag';
 
+const TAG = `${MODULE_TAG} - SIGN_IN_SCREEN`;
 const strings = {
   signIn: R.strings.authentication.signIn,
   shared: R.strings.authentication.shared,
@@ -74,7 +76,7 @@ const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => 
       return;
     }
 
-    console.warn('Nani?!?');
+    console.warn(`${TAG} - Nani?!?`);
   };
 
   const _handleOnSocialSignInButtonPress = async (connection: SocialConnection, setSubmitting: (isSubmitting: boolean) => void) => {
@@ -85,7 +87,7 @@ const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => 
         props.onAuthenticated(credentials);
       })
       .catch(error => {
-        console.warn(error);
+        console.warn(`${TAG} - ${error}`);
       });
 
     setSubmitting(false);
@@ -113,15 +115,10 @@ const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => 
         onSubmit={async (values, { setSubmitting }) => {
           await signInManual(values)
             .then(credentials => {
-              if (props.onAuthenticated) {
-                props.onAuthenticated(credentials);
-                return;
-              }
-
-              console.warn(credentials);
+              props.onAuthenticated(credentials);
             })
             .catch(error => {
-              console.warn(error);
+              console.warn(`${TAG} - ${error}`);
             });
 
           setSubmitting(false);

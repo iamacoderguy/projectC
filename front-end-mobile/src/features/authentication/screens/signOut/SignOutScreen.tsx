@@ -26,7 +26,9 @@ import {
 } from '../../utils/auth0';
 import { isNullOrWhitespace } from 'shared/utils/string';
 import apiFetcher from 'shared/utils/apiFetcher';
+import MODULE_TAG from '../../constants/tag';
 
+const TAG = `${MODULE_TAG} - SIGN_OUT_SCREEN`;
 const strings = {
   signOut: R.strings.authentication.signOut,
 };
@@ -48,34 +50,43 @@ const SignOutScreen: React.FC<SignOutScreenProps> = (props: SignOutScreenProps) 
   }, [props.accessToken]);
 
   const _handleOnHelloWorldButtonPress = async () => {
-    const result = await apiFetcher.fetch(
-      'GET',
-      '/api/helloWorld',
-    );
-
-    Alert.alert(strings.signOut.helloWorldButton(), `${JSON.stringify(result, null, 2)}`);
+    try {
+      const result = await apiFetcher.fetch(
+        'GET',
+        '/api/helloWorld',
+      );
+      Alert.alert(strings.signOut.helloWorldButton(), `${JSON.stringify(result, null, 2)}`);
+    } catch (error) {
+      console.warn(`${TAG} - ${error}`);
+    }
   };
 
   const _handleOnHelloWorldPrivateButtonPress = async () => {
-    const result = await apiFetcher.fetch(
-      'GET',
-      '/api/helloWorld/private',
-      undefined,
-      true,
-    );
-
-    Alert.alert(strings.signOut.helloWorldPrivateButton(), `${JSON.stringify(result, null, 2)}`);
+    try {
+      const result = await apiFetcher.fetch(
+        'GET',
+        '/api/helloWorld/private',
+        undefined,
+        true,
+      );
+      Alert.alert(strings.signOut.helloWorldPrivateButton(), `${JSON.stringify(result, null, 2)}`);
+    } catch (error) {
+      console.warn(`${TAG} - ${error}`);
+    }
   };
 
   const _handleOnHelloWorldPrivateScopedButtonPress = async () => {
-    const result = await apiFetcher.fetch(
-      'GET',
-      '/api/helloWorld/private-scoped',
-      undefined,
-      true,
-    );
-
-    Alert.alert(strings.signOut.helloWorldPrivateScopedButton(), `${JSON.stringify(result, null, 2)}`);
+    try {
+      const result = await apiFetcher.fetch(
+        'GET',
+        '/api/helloWorld/private-scoped',
+        undefined,
+        true,
+      );
+      Alert.alert(strings.signOut.helloWorldPrivateScopedButton(), `${JSON.stringify(result, null, 2)}`);
+    } catch (error) {
+      console.warn(`${TAG} - ${error}`);
+    }
   };
 
   const _renderInfo = () => {

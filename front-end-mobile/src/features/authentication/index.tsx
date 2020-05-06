@@ -43,4 +43,5 @@ export const Authentication: React.FC<AuthProps> = (props: AuthProps) => {
 };
 
 export { jwtErrorHandler } from './utils/jwtErrorHandler';
-export * as auth0 from './utils/auth0';
+import * as auth0 from './utils/auth0';
+export { auth0 };

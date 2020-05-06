@@ -20,16 +20,16 @@ import apiFetcher from 'shared/utils/apiFetcher';
 import { jwtErrorHandler } from '../utils/jwtErrorHandler';
 import storeManager from '../utils/storeManager';
 
-const TAG = 'SAGA';
+const TAG = `${MODULE_TAG} - SAGA`;
 const orchestrator = new SagaOrchestrator();
 orchestrator.onError((error: Error) => {
-  console.warn(error);
+  console.warn(`${MODULE_TAG} - ${TAG} - ${error}`);
   return true;
 });
 
 orchestrator
   .takeLatest(getType(initialize), function* (action: Action) {
-    console.info(`${MODULE_TAG} - ${TAG} - ${getType(initialize)}`);
+    console.info(`${TAG} - ${getType(initialize)}`);
     const authProps = (action as ReturnType<typeof initialize>).payload;
 
     if (!authProps.refreshToken) {
@@ -41,7 +41,7 @@ orchestrator
   })
 
   .takeLatest(getType(renewToken), function* (action: Action) {
-    console.info(`${MODULE_TAG} - ${TAG} - ${getType(renewToken)}`);
+    console.info(`${TAG} - ${getType(renewToken)}`);
     const refreshToken = (action as ReturnType<typeof renewToken>).payload;
     const state: RootState = yield select();
     try {
@@ -59,16 +59,16 @@ orchestrator
   })
 
   .takeLatest(getType(authenticated), function* (action: Action) {
-    console.info(`${MODULE_TAG} - ${TAG} - ${getType(authenticated)}`);
+    console.info(`${TAG} - ${getType(authenticated)}`);
     const credentials = (action as ReturnType<typeof authenticated>).payload;
     const state: RootState = yield select();
-
+    
     if (!state.testMode && !state.onAuthenticated) {
       console.warn(`${TAG} - It isn't in test mode, neither is onAuthenticated provided`);
     }
 
     if (state.testMode) {
-      apiFetcher.setErrorHandler(jwtErrorHandler(
+      const _jwtErrorHandler = jwtErrorHandler(
         async () => {
           const newCredentials = await auth0.renewToken(credentials.refreshToken);
           apiFetcher.setToken(newCredentials.accessToken);
@@ -79,8 +79,9 @@ orchestrator
           navigate(navigationMap.SignIn);
         },
         true,
-      ));
-
+      );
+      
+      yield call(apiFetcher.setErrorHandler, _jwtErrorHandler); 
       yield call(navigate, navigationMap.SignOut);
     }
 
@@ -91,7 +92,7 @@ orchestrator
   })
 
   .takeLatest(getType(signOutRequest), function* (action: Action) {
-    console.info(`${MODULE_TAG} - ${TAG} - ${getType(signOutRequest)}`);
+    console.info(`${TAG} - ${getType(signOutRequest)}`);
     const sub = (action as ReturnType<typeof signOutRequest>).payload;
     const state: RootState = yield select();
     yield call(auth0.signOut, state.refreshToken, sub);

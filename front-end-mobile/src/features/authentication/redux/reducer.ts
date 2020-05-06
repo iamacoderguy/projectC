@@ -8,7 +8,7 @@ import { getType } from 'typesafe-actions';
 import { RootState } from '../types/rootState';
 import MODULE_TAG from '../constants/tag';
 
-const TAG = 'REDUCER';
+const TAG = `${MODULE_TAG} - REDUCER`;
 const initialState: RootState = {
   testMode: false,
 };
@@ -16,14 +16,14 @@ const initialState: RootState = {
 function rootReducer(previousState: RootState = initialState, action: Action): RootState {
   switch (action.type) {
     case getType(initialize):
-      console.info(`${MODULE_TAG} - ${TAG} - ${getType(initialize)}`);
+      console.info(`${TAG} - ${getType(initialize)}`);
       return {
         ...previousState,
         ...(action as ReturnType<typeof initialize>).payload,
       };
 
     case getType(authenticated):
-      console.info(`${MODULE_TAG} - ${TAG} - ${getType(authenticated)}`);
+      console.info(`${TAG} - ${getType(authenticated)}`);
       return {
         ...previousState,
         accessToken: (action as ReturnType<typeof authenticated>).payload.accessToken,
@@ -32,7 +32,7 @@ function rootReducer(previousState: RootState = initialState, action: Action): R
       };
 
     case getType(signOutSuccess):
-      console.info(`${MODULE_TAG} - ${TAG} - ${getType(signOutSuccess)}`);
+      console.info(`${TAG} - ${getType(signOutSuccess)}`);
       return {
         ...previousState,
         accessToken: undefined,

@@ -27,7 +27,9 @@ import {
 } from '../../utils/auth0';
 import { SignUpScreenPropsForMapDispatch, mapDispatchToProps } from './SignUpScreen.container';
 import { connect } from 'react-redux';
+import MODULE_TAG from '../../constants/tag';
 
+const TAG = `${MODULE_TAG} - SIGN_UP_SCREEN`;
 const strings = {
   signUp: R.strings.authentication.signUp,
   shared: R.strings.authentication.shared,
@@ -63,7 +65,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = (props: SignUpScreenProps) => 
         props.onAuthenticated(credentials);
       })
       .catch(error => {
-        console.warn(error);
+        console.warn(`${TAG} - ${error}`);
       });
 
     setSubmitting(false);
@@ -75,7 +77,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = (props: SignUpScreenProps) => 
       return;
     }
 
-    console.warn('Nani?!?');
+    console.warn(`${TAG} - Nani?!?`);
   };
 
   return (
@@ -122,15 +124,10 @@ const SignUpScreen: React.FC<SignUpScreenProps> = (props: SignUpScreenProps) => 
               password: values[passwordId],
             }))
             .then(credentials => {
-              if (props.onAuthenticated) {
-                props.onAuthenticated(credentials);
-                return;
-              }
-
-              console.warn(credentials);
+              props.onAuthenticated(credentials);
             })
             .catch(error => {
-              console.warn(error);
+              console.warn(`${TAG} - ${error}`);
             });
 
           setSubmitting(false);

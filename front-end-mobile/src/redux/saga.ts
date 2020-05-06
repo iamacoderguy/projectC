@@ -20,7 +20,6 @@ import {
 } from 'redux-saga/effects';
 import { localizer } from 'features/localization';
 import { RootState } from '../types/rootState';
-import APP_TAG from '../constants/tag';
 import * as storage from '../utils/storage';
 import apiFetcher from 'shared/utils/apiFetcher';
 import { 
@@ -28,24 +27,25 @@ import {
   auth0,
 } from 'features/authentication';
 import storeManager from '../utils/storeManager';
+import APP_TAG from '../constants/tag';
 
-const TAG = 'SAGA';
+const TAG = `${APP_TAG} - SAGA`;
 const orchestrator = new SagaOrchestrator();
 orchestrator.onError((error: Error) => {
-  console.warn(error);
+  console.warn(`${APP_TAG} - ${TAG} - ${error}`);
   return true;
 });
 
 orchestrator
   .takeLatest(getType(installAuthenticationRequest), function* (action: Action) {
-    console.info(`${APP_TAG} - ${TAG} - ${getType(installAuthenticationRequest)}`);
+    console.info(`${TAG} - ${getType(installAuthenticationRequest)}`);
     const refreshToken: string | undefined = yield call(storage.loadCredentials, 'refreshToken');
     const idToken: string | undefined = yield call(storage.loadCredentials, 'idToken');
     yield put(installAuthenticationSuccess({ refreshToken, idToken }));
   })
 
   .takeLatest(getType(handleOnAuthenticatedRequest), function* (action: Action) {
-    console.info(`${APP_TAG} - ${TAG} - ${getType(handleOnAuthenticatedRequest)}`);
+    console.info(`${TAG} - ${getType(handleOnAuthenticatedRequest)}`);
     const credentials = (action as ReturnType<typeof handleOnAuthenticatedRequest>).payload;
 
     yield call(storage.saveCredentials, 'refreshToken', credentials.refreshToken || '');
@@ -59,7 +59,7 @@ orchestrator
         storeManager.getStore()?.dispatch(handleOnAuthenticatedRequest(newCredentials));
       },
       async () => {
-        console.warn('should logged out');
+        console.warn(`${TAG} - should logged out`);
         // auth0.signOut(credentials.refreshToken);
         // navigate(navigationMap.SignIn);
       },
@@ -71,7 +71,7 @@ orchestrator
   })
 
   .takeLatest(getType(handleOnSignedOutRequest), function* (action: Action) {
-    console.info(`${APP_TAG} - ${TAG} - ${getType(handleOnSignedOutRequest)}`);
+    console.info(`${TAG} - ${getType(handleOnSignedOutRequest)}`);
 
     yield call(storage.saveCredentials, 'refreshToken', '');
     yield call(apiFetcher.setToken, '');
@@ -79,7 +79,7 @@ orchestrator
   })
 
   .takeLatest(getType(installLocalizationRequest), function* () {
-    console.info(`${APP_TAG} - ${TAG} - ${getType(installLocalizationRequest)}`);
+    console.info(`${TAG} - ${getType(installLocalizationRequest)}`);
     let isLocalizationInstalled: boolean | undefined = yield select((state: RootState) => state.isLocalizationInstalled);
 
     if (!isLocalizationInstalled) {
@@ -89,7 +89,7 @@ orchestrator
   })
 
   .takeLatest(getType(uninstallLocalizationRequest), function* () {
-    console.info(`${APP_TAG} - ${TAG} - ${getType(uninstallLocalizationRequest)}`);
+    console.info(`${TAG} - ${getType(uninstallLocalizationRequest)}`);
     let isLocalizationInstalled: boolean | undefined = yield select((state: RootState) => state.isLocalizationInstalled);
 
     if (isLocalizationInstalled) {
