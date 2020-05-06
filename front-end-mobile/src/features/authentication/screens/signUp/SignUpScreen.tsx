@@ -7,25 +7,38 @@ import {
   View,
 } from 'react-native';
 import Layout from '../../components/layout/Layout';
-import R from 'res/R';
+import R from 'shared/res/R';
 import TextInput, {
   TextInputRef,
-} from 'res/components/textInput/TextInput';
-import Button from 'res/components/button/Button';
-import PasswordInputWithAction from 'features/authentication/components/passwordInputWithAction/PasswordInputWithAction';
-import SeparateLine from 'features/authentication/components/separateLine/SeparateLine';
-import Hyperlink from 'res/components/hyperlink';
-import { findNextIndex, clean, contain } from 'lib/utils/array';
+} from 'shared/components/textInput/TextInput';
+import Button from 'shared/components/button/Button';
+import PasswordInputWithAction from '../../components/passwordInputWithAction/PasswordInputWithAction';
+import SeparateLine from '../../components/separateLine/SeparateLine';
+import Hyperlink from 'shared/components/hyperlink/Hyperlink';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import Auth0 from 'react-native-auth0';
-import { User } from 'lib/types/user';
+import { usernameValidation, passwordValidation } from '../../utils/yupValidation';
+import { clearInputRefs, addInputRef, goNext } from '../../utils/inputRefs';
+import {
+  SocialConnection,
+  signUpOrSignInWithSocialConnection,
+  signUpManual,
+  signInManual,
+} from '../../utils/auth0';
+import { SignUpScreenPropsForMapDispatch, mapDispatchToProps } from './SignUpScreen.container';
+import { connect } from 'react-redux';
+import MODULE_TAG from '../../constants/tag';
 
-const strings = R.strings.authentication.signUp;
+const TAG = `${MODULE_TAG} - SIGN_UP_SCREEN`;
+const strings = {
+  signUp: R.strings.authentication.signUp,
+  shared: R.strings.authentication.shared,
+};
 const dimens = R.dimens.authentication;
-const auth0 = new Auth0(R.config.AUTH0.credentials);
 
-const SignUpScreen = () => {
+type SignUpScreenProps = SignUpScreenPropsForMapDispatch;
+
+const SignUpScreen: React.FC<SignUpScreenProps> = (props: SignUpScreenProps) => {
   const [isPasswordShown, showPassword] = useState(false);
   const inputRefs = useRef<Array<TextInputRef>>([]);
   const usernameId = 'username';
@@ -33,73 +46,49 @@ const SignUpScreen = () => {
   const displayNameId = 'displayName';
   const passwordId = 'password';
   const confirmPasswordId = 'confirmPassword';
-  const currentPredicate = (currentId: string | undefined) => (txtInpt: TextInputRef) => txtInpt.id() == currentId;
+  const signInScreenId = 'https://gotoLoginScreen';
 
-  const _addInputRef = (ref: TextInputRef | null) => {
-    if (ref && !contain(inputRefs.current, currentPredicate(ref.id()))) {
-      inputRefs.current.push(ref);
-    }
-  };
-
-  const _clearInputRefs = () => {
-    clean(inputRefs.current);
-  };
-
-  const _goNext = (currentId: string) => () => {
-    const nextIndex = findNextIndex(inputRefs.current, currentPredicate(currentId));
-    if (nextIndex != -1) {
-      inputRefs.current[nextIndex].focus();
-    }
-  };
-
-  const _handleOnShowPressed = () => {
+  const _handleOnShowPress = () => {
     showPassword(!isPasswordShown);
     _handleOnLayoutChange();
   };
 
   const _handleOnLayoutChange = () => {
-    _clearInputRefs();
+    clearInputRefs(inputRefs);
   };
 
-  const _createUser = async (user: User) => {
-    await auth0.auth
-      .createUser({
-        username: user.username,
-        email: user.email,
-        password: user.password,
-        connection: R.config.AUTH0.connections.database,
-        metadata: { displayName: user.displayName },
-      })
-      .then(success => {
-        console.warn(success);
-      })
-      .catch(error => {
-        console.warn(error.json.description);
-      });
-  };
-
-  const _webAuth = async (connection: string, setSubmitting: (isSubmitting: boolean) => void) => {
+  const _handleOnSocialButtonPress = async (connection: SocialConnection, setSubmitting: (isSubmitting: boolean) => void) => {
     setSubmitting(true);
-    await auth0.webAuth
-      .authorize({
-        scope: 'openid profile email',
-        connection: connection,
-        audience: 'https://' + R.config.AUTH0.credentials.domain + '/userinfo',
-      })
+
+    await signUpOrSignInWithSocialConnection(connection)
       .then(credentials => {
-        console.warn(credentials);
+        props.onAuthenticated(credentials);
       })
       .catch(error => {
-        console.warn(error.error_description);
+        console.warn(`${TAG} - ${error}`);
       });
+
     setSubmitting(false);
+  };
+
+  const _handleOnSignInScreenLinkPress = (url: string, _text: string) => {
+    if (url == signInScreenId) {
+      props.onSignInLinkPress();
+      return;
+    }
+
+    console.warn(`${TAG} - Nani?!?`);
   };
 
   return (
     <Layout
-      title={strings.title()}
+      title={strings.signUp.title()}
+      subtitleProps={{
+        children: strings.signUp.alreadyHaveAnAccount(),
+        links: [signInScreenId],
+        onPress: _handleOnSignInScreenLinkPress,
+      }}
       onLayoutChange={_handleOnLayoutChange}
-      keyboardVerticalOffset={R.dimens.inputHeight - R.dimens.inputPadding}
     >
       <Formik
         initialValues={{
@@ -110,38 +99,37 @@ const SignUpScreen = () => {
           [confirmPasswordId]: '',
         }}
         validationSchema={Yup.object({
-          [usernameId]: Yup.string()
-            .max(15, strings.validationMessageMaxLength(strings.usernamePlaceholder(), 15))
-            .matches(/^[a-zA-Z@^$.!`\-#+'~_]+$/, strings.validationMessageCharactersAllowed(strings.usernamePlaceholder(), '@^$.!`-#+\'~_'))
-            .required(strings.validationMessageRequired(strings.usernamePlaceholder())),
+          [usernameId]: usernameValidation(strings.shared.usernamePlaceholder()),
           [emailId]: Yup.string()
-            .email(strings.validationMessageEmail(strings.emailPlaceholder()))
-            .required(strings.validationMessageRequired(strings.emailPlaceholder())),
+            .email(strings.shared.validationMessageEmail(strings.shared.emailPlaceholder()))
+            .required(strings.shared.validationMessageRequired(strings.shared.emailPlaceholder())),
           [displayNameId]: Yup.string()
-            .max(128, strings.validationMessageMaxLength(strings.displayNamePlaceholder(), 128)),
-          [passwordId]: Yup.string()
-            .min(8, strings.validationMessageMinLength(strings.passwordPlaceholder(), 8))
-            .required(strings.validationMessageRequired(strings.passwordPlaceholder())),
-          [confirmPasswordId]: Yup.string()
-            .min(8, strings.validationMessageMinLength(strings.confirmPasswordPlaceholder(), 8))
-            .required(strings.validationMessageRequired(strings.confirmPasswordPlaceholder())),
+            .max(128, strings.shared.validationMessageMaxLength(strings.shared.displayNamePlaceholder(), 128)),
+          [passwordId]: passwordValidation(strings.shared.passwordPlaceholder()),
+          [confirmPasswordId]: passwordValidation(strings.shared.confirmPasswordPlaceholder()),
         })}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
           if (!isPasswordShown && values[passwordId] != values[confirmPasswordId]) {
             setErrors({
-              confirmPassword: strings.validationMessageDoesNotMatch(strings.confirmPasswordPlaceholder()),
+              confirmPassword: strings.shared.validationMessageDoesNotMatch(strings.shared.confirmPasswordPlaceholder()),
             });
 
             setSubmitting(false);
             return;
           }
 
-          await _createUser({
-            username: values[usernameId],
-            email: values[emailId],
-            displayName: values[displayNameId],
-            password: values[passwordId],
-          });
+          await signUpManual(values)
+            .then(_success => signInManual({
+              username: values[usernameId],
+              password: values[passwordId],
+            }))
+            .then(credentials => {
+              props.onAuthenticated(credentials);
+            })
+            .catch(error => {
+              console.warn(`${TAG} - ${error}`);
+            });
+
           setSubmitting(false);
         }}
       >
@@ -162,13 +150,12 @@ const SignUpScreen = () => {
                 <View style={styles.buzzSignUpContainer}>
                   <TextInput
                     id={usernameId}
-                    ref={_addInputRef}
+                    ref={addInputRef(inputRefs)}
                     style={styles.textInput}
-                    placeholder={strings.usernamePlaceholder()}
-                    autoFocus
+                    placeholder={strings.shared.usernamePlaceholder()}
                     autoCapitalize='none'
                     returnKeyType='next'
-                    onSubmitEditing={_goNext(usernameId)}
+                    onSubmitEditing={goNext(inputRefs, usernameId)}
                     onChangeText={handleChange(usernameId)}
                     onBlur={handleBlur(usernameId)}
                     value={values[usernameId]}
@@ -179,12 +166,12 @@ const SignUpScreen = () => {
                   />
                   <TextInput
                     id={emailId}
-                    ref={_addInputRef}
+                    ref={addInputRef(inputRefs)}
                     style={styles.textInput}
-                    placeholder={strings.emailPlaceholder()}
+                    placeholder={strings.shared.emailPlaceholder()}
                     keyboardType='email-address'
                     returnKeyType='next'
-                    onSubmitEditing={_goNext(emailId)}
+                    onSubmitEditing={goNext(inputRefs, emailId)}
                     onChangeText={handleChange(emailId)}
                     onBlur={handleBlur(emailId)}
                     value={values[emailId]}
@@ -195,12 +182,12 @@ const SignUpScreen = () => {
                   />
                   <TextInput
                     id={displayNameId}
-                    ref={_addInputRef}
+                    ref={addInputRef(inputRefs)}
                     style={styles.textInput}
-                    placeholder={strings.displayNamePlaceholder()}
+                    placeholder={strings.shared.displayNamePlaceholder()}
                     autoCapitalize='words'
                     returnKeyType='next'
-                    onSubmitEditing={_goNext(displayNameId)}
+                    onSubmitEditing={goNext(inputRefs, displayNameId)}
                     onChangeText={handleChange(displayNameId)}
                     onBlur={handleBlur(displayNameId)}
                     value={values[displayNameId]}
@@ -211,13 +198,13 @@ const SignUpScreen = () => {
                   />
                   <PasswordInputWithAction
                     id={passwordId}
-                    ref={_addInputRef}
+                    ref={addInputRef(inputRefs)}
                     style={styles.textInput}
-                    placeholder={strings.passwordPlaceholder()}
+                    placeholder={strings.shared.passwordPlaceholder()}
                     isShown={isPasswordShown}
-                    onPress={_handleOnShowPressed}
+                    onPress={_handleOnShowPress}
                     returnKeyType='next'
-                    onSubmitEditing={_goNext(passwordId)}
+                    onSubmitEditing={goNext(inputRefs, passwordId)}
                     onChangeText={handleChange(passwordId)}
                     onBlur={handleBlur(passwordId)}
                     value={values[passwordId]}
@@ -229,12 +216,12 @@ const SignUpScreen = () => {
                   {!isPasswordShown &&
                     <TextInput
                       id={confirmPasswordId}
-                      ref={_addInputRef}
+                      ref={addInputRef(inputRefs)}
                       style={styles.textInput}
-                      placeholder={strings.confirmPasswordPlaceholder()}
+                      placeholder={strings.shared.confirmPasswordPlaceholder()}
                       secureTextEntry
                       returnKeyType='next'
-                      onSubmitEditing={_goNext(confirmPasswordId)}
+                      onSubmitEditing={goNext(inputRefs, confirmPasswordId)}
                       onChangeText={handleChange(confirmPasswordId)}
                       onBlur={handleBlur(confirmPasswordId)}
                       value={values[confirmPasswordId]}
@@ -245,14 +232,14 @@ const SignUpScreen = () => {
                     />}
                   <Hyperlink
                     style={styles.termsOfService}
-                    links={[strings.termsOfServiceLink()]}
+                    links={[strings.signUp.termsOfServiceLink()]}
                     disabled={isSubmitting}
                   >
-                    {strings.agreeWithTermsOfService()}
+                    {strings.signUp.agreeWithTermsOfService()}
                   </Hyperlink>
                   <Button
                     style={styles.signUpButton}
-                    title={strings.signUpButton()}
+                    title={strings.signUp.signUpButton()}
                     onPress={handleSubmit}
                     disabled={!isValid || isSubmitting}
                   />
@@ -263,16 +250,16 @@ const SignUpScreen = () => {
                 <View style={styles.socialSignUpContainer}>
                   <Button
                     style={styles.socialButton}
-                    title={strings.signUpWithGithubButton()}
+                    title={strings.signUp.signUpWithGithubButton()}
                     imageSource={R.images.ic_github}
-                    onPress={() => _webAuth('github', setSubmitting)}
+                    onPress={() => _handleOnSocialButtonPress('github', setSubmitting)}
                     disabled={isSubmitting}
                   />
                   <Button
                     style={styles.socialButton}
-                    title={strings.signUpWithGoogleButton()}
+                    title={strings.signUp.signUpWithGoogleButton()}
                     imageSource={R.images.ic_google}
-                    onPress={() => _webAuth('google-oauth2', setSubmitting)}
+                    onPress={() => _handleOnSocialButtonPress('google-oauth2', setSubmitting)}
                     disabled={isSubmitting}
                   />
                 </View>
@@ -293,23 +280,23 @@ const styles = StyleSheet.create({
   socialSignUpContainer: {
   },
   textInput: {
-    marginBottom: dimens.inputMargin,
+    marginBottom: dimens.spacingBetweenInputs,
   },
   termsOfService: {
     ...R.palette.normal,
     alignSelf: 'center',
     textAlign: 'center',
-    marginTop: dimens.itemMargin - dimens.inputMargin,
-    marginBottom: dimens.itemMargin,
+    marginTop: dimens.spacingBetweenFormItems - dimens.spacingBetweenInputs,
+    marginBottom: dimens.spacingBetweenFormItems,
   },
   OR: {
-    marginTop: dimens.separateLineMargin,
-    marginBottom: dimens.separateLineMargin - dimens.itemMargin,
+    marginTop: dimens.spacingBetweenForms,
+    marginBottom: dimens.spacingBetweenForms - dimens.spacingBetweenFormItems,
   },
   signUpButton: {},
   socialButton: {
-    marginTop: dimens.itemMargin,
+    marginTop: dimens.spacingBetweenFormItems,
   },
 });
 
-export default SignUpScreen;
+export default connect(null, mapDispatchToProps)(SignUpScreen);

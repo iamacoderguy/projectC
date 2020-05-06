@@ -5,7 +5,7 @@ import {
   StyleSheet,
   Text,
 } from 'react-native';
-import R from 'res/R';
+import R from 'shared/res/R';
 
 const strings = R.strings.authentication.components;
 type SeparateLineProps = ViewProps;

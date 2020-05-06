@@ -1,5 +1,9 @@
 {
   "dbConfig": {
     "connectionString": "mongodb+srv://admin:<password>@cluster0-3r0bp.mongodb.net/dev?retryWrites=true"
+  },
+  "auth0": {
+    "domain": "https://dev-projectaz.au.auth0.com",
+    "buzz_api_id": "https://api.iamacoderguy.me/buzz"
   }
 }

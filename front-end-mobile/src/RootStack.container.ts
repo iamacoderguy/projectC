@@ -1,13 +1,15 @@
 import { Dispatch } from 'redux';
-import { RootState } from './reducer';
-import { 
-  finishLoadingRequest,
-  finishAuthenticationRequest,
+import { RootState } from './types/rootState';
+import {
+  handleOnAuthenticatedRequest,
   installLocalizationRequest,
   uninstallLocalizationRequest,
-} from './actions';
-import { loadCredentials } from 'lib/utils/storage';
-import { RootStackPropsForMapState, RootStackPropsForMapDispatch } from './RootStack';
+  installAuthenticationRequest,
+  handleOnSignedOutRequest,
+} from './redux/actions';
+import { isNullOrWhitespace } from 'shared/utils/string';
+import { Credentials } from 'shared/types/credentials';
+import apiFetcher from 'shared/utils/apiFetcher';
 
 export enum Stage {
   'Loading',
@@ -16,9 +18,16 @@ export enum Stage {
 }
 
 // === mapStateToProps ===
+export type RootStackPropsForMapState = {
+  stage: Stage;
+  refreshToken?: string;
+  idToken?: string;
+}
 export function mapStateToProps(state: RootState): RootStackPropsForMapState {
   return {
     stage: getActivatedStage(state),
+    refreshToken: state.auth?.refreshToken,
+    idToken: state.auth?.idToken,
   };
 }
 
@@ -39,24 +48,29 @@ const isAuthStageReady = (state: RootState) => {
 };
 
 const isInAppStageReady = (state: RootState) => {
-  return state.inApp !== undefined && loadCredentials() !== '';
+  return state.inApp !== undefined && 
+    !isNullOrWhitespace(apiFetcher.getToken());
 };
 
 // === mapDispatchToProps ===
+export type RootStackPropsForMapDispatch = {
+  onAppStarted: (stage: Stage) => void;
+  onAppFinished: () => void;
+  onAuthenticated: (credentials: Credentials) => void;
+  onSignedOut: () => void;
+}
 export function mapDispatchToProps(dispatch: Dispatch): RootStackPropsForMapDispatch {
   return {
     onAppStarted: (stage: Stage) => handleAppStarted(dispatch, stage),
     onAppFinished: () => handleAppFinished(dispatch),
-    onAuthenticationFinished: (token: string) => dispatch(finishAuthenticationRequest({ token })),
+    onAuthenticated: (credentials: Credentials) => dispatch(handleOnAuthenticatedRequest(credentials)),
+    onSignedOut: () => dispatch(handleOnSignedOutRequest()),
   };
 }
 
 const handleAppStarted = (dispatch: Dispatch, stage: Stage) => {
   dispatch(installLocalizationRequest());
-
-  if (stage == Stage.Loading) {
-    setTimeout(() => dispatch(finishLoadingRequest()), 2000);
-  }
+  dispatch(installAuthenticationRequest());
 };
 
 const handleAppFinished = (dispatch: Dispatch) => {

@@ -11,10 +11,12 @@ import {
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
   Keyboard,
+  Platform,
 } from 'react-native';
-import R from 'res/R';
-import StatusBar from 'res/components/statusBar/StatusBar';
+import R from 'shared/res/R';
+import StatusBar from 'shared/components/statusBar/StatusBar';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
+import Hyperlink, { HyperlinkProps } from 'shared/components/hyperlink/Hyperlink';
 
 enum Theme {
   OutsideScrolling = 0,
@@ -25,13 +27,13 @@ enum Theme {
 type LayoutProps = {
   children: React.ReactNode;
   title: string;
+  subtitleProps?: HyperlinkProps;
   contentContainerStyle?: StyleProp<ViewStyle>;
   onLayoutChange?: () => void;
-  keyboardVerticalOffset?: number;
 }
 
 const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
-  const [theme, changeTheme] = useState(Theme.InsideScrollingWithMaxHeight);
+  const [theme, changeTheme] = useState(Theme.OutsideScrolling);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   useEffect(() => {
@@ -69,13 +71,18 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
     }
   };
 
-  const _renderLogoAndTitle = (props: LayoutProps) => {
+  const _renderAboveItems = (props: LayoutProps) => {
     return (
       <>
-        <TouchableWithoutFeedback onPress={_handleOnLogoPress}>
-          <Image source={R.images.ic_black_yellow} style={styles.contentImage} />
+        <TouchableWithoutFeedback onLongPress={_handleOnLogoPress}>
+          <Image source={R.images.ic_black_yellow} style={styles.image} />
         </TouchableWithoutFeedback>
-        <Text style={styles.contentTitle} >{props.title}</Text>
+        <Text style={styles.title} >{props.title}</Text>
+        {
+          (props.subtitleProps &&
+            <Hyperlink {...props.subtitleProps}
+              style={{ ...styles.subtitle, ...(props.subtitleProps.style as object) }} />)
+        }
       </>
     );
   };
@@ -85,11 +92,11 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
       case Theme.InsideScrolling:
         return (
           <View style={styleSheetInsideScrolling.contentContainer}>
-            {_renderLogoAndTitle(props)}
-            <View style={styleSheetInsideScrolling.contentInnerContainer}>
+            {_renderAboveItems(props)}
+            <View style={styleSheetInsideScrolling.formContainer(props.subtitleProps)}>
               <KeyboardAvoidingView
                 behavior={'padding'}
-                keyboardVerticalOffset={isKeyboardVisible ? 0 : 200}
+                keyboardVerticalOffset={isKeyboardVisible ? 0 : (aboveItemsHeight(props.subtitleProps) + formContainerVerticalPaddingForInsideScrolling)}
               >
                 <ScrollView
                   showsVerticalScrollIndicator={false}
@@ -109,7 +116,7 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
           <KeyboardAvoidingView
             style={styleSheetOutsideScrolling.contentContainer}
             behavior={'padding'}
-            keyboardVerticalOffset={isKeyboardVisible ? 0 : props.keyboardVerticalOffset}
+            keyboardVerticalOffset={isKeyboardVisible ? 0 : statusBarHeight}
           >
             <ScrollView
               showsVerticalScrollIndicator={false}
@@ -117,8 +124,8 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
                 ...styleSheetOutsideScrolling.scrollViewContainerStyle,
                 ...(props.contentContainerStyle as object),
               }}>
-              {_renderLogoAndTitle(props)}
-              <View style={styleSheetOutsideScrolling.contentInnerContainer} >
+              {_renderAboveItems(props)}
+              <View style={styleSheetOutsideScrolling.formContainer} >
                 {props.children}
               </View>
             </ScrollView>
@@ -129,11 +136,11 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
       default:
         return (
           <View style={styleSheetInsideScrolling.contentContainer}>
-            {_renderLogoAndTitle(props)}
-            <View style={styleSheetInsideScrollingWithMaxHeight.contentInnerContainer}>
+            {_renderAboveItems(props)}
+            <View style={styleSheetInsideScrollingWithMaxHeight.formContainer(props.subtitleProps)}>
               <KeyboardAvoidingView
                 behavior={'padding'}
-                keyboardVerticalOffset={isKeyboardVisible ? 0 : 200}
+                keyboardVerticalOffset={isKeyboardVisible ? 0 : (aboveItemsHeight(props.subtitleProps) + formContainerVerticalPaddingForInsideScrolling)}
               >
                 <ScrollView
                   showsVerticalScrollIndicator={false}
@@ -166,14 +173,30 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
 
 const circleDiameter = Dimensions.get('window').width * 0.7;
 const statusBarHeight = getStatusBarHeight();
-const contentMargin = 50;
-const contentContainerPaddingTop = contentMargin - statusBarHeight;
+
 const contentContainerHeight = (Dimensions.get('window').height - statusBarHeight);
+const contentContainerHorizontalPadding = 30;
+const contentContainerVerticalPadding = 60;
+const contentContainerPaddingTop = contentContainerVerticalPadding - statusBarHeight;
+const contentContainerSpacingBetweenItems = 25;
+const scrollViewSafeAreaHorizontalPadding = 10;
+
+const formContainerHorizontalPadding = 30;
+const formContainerVerticalPadding = 50;
+
 const logoHeight = 80;
 const titleHeight = Number(R.palette.title.height);
-const contentSpace = 20;
+const subtitleHeight = Number(Platform.select({
+  // default font's height
+  ios: 17,
+  android: 19,
+}));
 const contentInnerContainerBorderRadius = 25;
-const scrollViewPadding = 10;
+
+const aboveItemsHeight = (subtitleProps?: HyperlinkProps) => {
+  const _subtitleHeight = subtitleProps ? (subtitleHeight + contentContainerSpacingBetweenItems) : 0;
+  return contentContainerPaddingTop + logoHeight + titleHeight + contentContainerSpacingBetweenItems * 2 + _subtitleHeight;
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -206,15 +229,19 @@ const styles = StyleSheet.create({
     height: contentContainerHeight,
     top: 0,
   },
-  contentImage: {
+  image: {
     height: logoHeight,
     width: logoHeight,
   },
-  contentTitle: {
+  title: {
     ...R.palette.title,
-    marginVertical: contentSpace,
+    marginVertical: contentContainerSpacingBetweenItems,
   },
-  contentInnerContainer: {
+  subtitle: {
+    ...R.palette.normal,
+    marginBottom: contentContainerSpacingBetweenItems,
+  },
+  formContainer: {
     width: '100%',
     backgroundColor: R.colors.WHITE,
     borderRadius: contentInnerContainerBorderRadius,
@@ -234,54 +261,62 @@ const styles = StyleSheet.create({
 const styleSheetOutsideScrolling = StyleSheet.create({
   contentContainer: {
     ...styles.contentContainer,
-    paddingHorizontal: 25,
+    paddingHorizontal: contentContainerHorizontalPadding - scrollViewSafeAreaHorizontalPadding,
   },
-  contentInnerContainer: {
-    ...styles.contentInnerContainer,
-    paddingHorizontal: 35,
-    paddingBottom: 35,
-    paddingTop: 35,
+  formContainer: {
+    ...styles.formContainer,
+    paddingHorizontal: formContainerHorizontalPadding,
+    paddingVertical: formContainerVerticalPadding,
     elevation: 8,
   },
   scrollViewContainerStyle: {
     ...styles.scrollViewContainerStyle,
-    paddingHorizontal: 10,
-    paddingBottom: contentMargin,
+    paddingHorizontal: scrollViewSafeAreaHorizontalPadding,
+    paddingBottom: contentContainerVerticalPadding,
     paddingTop: contentContainerPaddingTop,
   },
 });
 
-const styleSheetInsideScrolling = StyleSheet.create({
+const formContainerVerticalPaddingForInsideScrolling = formContainerVerticalPadding - scrollViewSafeAreaHorizontalPadding;
+const styleSheetInsideScrollingShared = (subtitleProps?: HyperlinkProps) => StyleSheet.create({
   contentContainer: {
     ...styles.contentContainer,
-    paddingHorizontal: 35,
+    paddingHorizontal: contentContainerHorizontalPadding,
     alignItems: 'center',
     paddingTop: contentContainerPaddingTop,
   },
-  contentInnerContainer: {
-    ...styles.contentInnerContainer,
-    maxHeight: contentContainerHeight - (contentContainerPaddingTop + logoHeight + titleHeight + contentSpace * 2 + contentMargin),
-    paddingHorizontal: 25,
-    paddingBottom: 35,
-    paddingTop: 35,
+  formContainer: {
+    ...styles.formContainer,
+    maxHeight: contentContainerHeight - (aboveItemsHeight(subtitleProps) + contentContainerVerticalPadding),
+    paddingHorizontal: formContainerHorizontalPadding - scrollViewSafeAreaHorizontalPadding,
+    paddingVertical: formContainerVerticalPaddingForInsideScrolling,
     elevation: 10,
   },
   scrollViewContainerStyle: {
     ...styles.scrollViewContainerStyle,
-    padding: scrollViewPadding,
-    paddingTop: 0,
+    padding: scrollViewSafeAreaHorizontalPadding,
   },
 });
+const styleSheetInsideScrolling = {
+  contentContainer: styleSheetInsideScrollingShared().contentContainer,
+  formContainer: (subtitleProps?: HyperlinkProps) => styleSheetInsideScrollingShared(subtitleProps).formContainer,
+  scrollViewContainerStyle: styleSheetInsideScrollingShared().scrollViewContainerStyle,
+};
 
-const styleSheetInsideScrollingWithMaxHeight = StyleSheet.create({
-  contentInnerContainer: {
-    ...styleSheetInsideScrolling.contentInnerContainer,
-    maxHeight: contentContainerHeight - (contentContainerPaddingTop + logoHeight + titleHeight + contentSpace * 2) + contentInnerContainerBorderRadius + scrollViewPadding,
+const hiddenHeight = contentInnerContainerBorderRadius;
+const styleSheetInsideScrollingWithMaxHeightShared = (subtitleProps?: HyperlinkProps) => StyleSheet.create({
+  formContainer: {
+    ...styleSheetInsideScrolling.formContainer(subtitleProps),
+    maxHeight: contentContainerHeight - (aboveItemsHeight()) + hiddenHeight,
   },
   scrollViewContainerStyle: {
     ...styleSheetInsideScrolling.scrollViewContainerStyle,
-    paddingBottom: contentMargin,
+    paddingBottom: hiddenHeight + scrollViewSafeAreaHorizontalPadding + formContainerVerticalPaddingForInsideScrolling,
   },
 });
+const styleSheetInsideScrollingWithMaxHeight = {
+  formContainer: (subtitleProps?: HyperlinkProps) => styleSheetInsideScrollingWithMaxHeightShared(subtitleProps).formContainer,
+  scrollViewContainerStyle: styleSheetInsideScrollingWithMaxHeightShared().scrollViewContainerStyle,
+};
 
 export default Layout;

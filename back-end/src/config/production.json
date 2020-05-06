@@ -1,5 +1,8 @@
 {
   "dbConfig": {
     "connectionString": "mongodb+srv://admin:<password>@cluster0-3r0bp.mongodb.net/prod?retryWrites=true"
+  },
+  "auth0": {
+    "domain": "https://prod-projectaz.au.auth0.com"
   }
 }

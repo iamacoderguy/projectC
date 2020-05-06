@@ -2,5 +2,9 @@
   "dbConfig": {
     "connectionString": "",
     "connectTimeoutInMs": 10000
+  },
+  "auth0": {
+    "domain": "",
+    "buzz_api_id": ""
   }
 }

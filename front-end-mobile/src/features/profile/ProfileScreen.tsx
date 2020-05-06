@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Button } from 'react-native';
-import R from 'res/R';
-import { Theme } from 'lib/types/theme';
+import R from 'shared/res/R';
+import { Theme } from 'shared/types/theme';
 
 export type ProfileScreenPropsForOutput = {
   theme: Theme;

@@ -1,7 +1,11 @@
 import { Dispatch } from 'redux';
 import { localizer } from 'features/localization';
-import { changeLanguageSuccess, installLocalizationRequest, uninstallLocalizationRequest } from './actions';
-import { RootState } from './reducer';
+import { 
+  changeLanguageSuccess,
+  installLocalizationRequest,
+  uninstallLocalizationRequest,
+} from './redux/actions';
+import { RootState } from './types/rootState';
 import { InAppTabsPropsForMapState, InAppTabsPropsForMapDispatch } from './InAppTabs';
 
 // === mapStateToProps ===
