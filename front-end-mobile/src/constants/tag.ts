@@ -1,1 +1,1 @@
-export default 'BUZZ';
+export default 'APP';

@@ -1,1 +1,1 @@
-export default 'BUZZ_MODULE';
+export default 'BUZZ';
