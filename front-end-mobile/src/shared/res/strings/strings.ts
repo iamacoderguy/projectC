@@ -43,10 +43,6 @@ export const strings = {
     },
     signOut: {
       title: () => _localizer.t('authentication_signOut_title'),
-      signOutButton: () => _localizer.t('authentication_signOut_signOutButton'),
-      helloWorldButton: () => _localizer.t('authentication_signOut_helloWorldButton'),
-      helloWorldPrivateButton: () => _localizer.t('authentication_signOut_helloWorldPrivateButton'),
-      helloWorldPrivateScopedButton: () => _localizer.t('authentication_signOut_helloWorldPrivateScopedButton'),
     },
     shared: {
       usernamePlaceholder: () => _localizer.t('authentication_usernamePlaceholder'),
@@ -65,6 +61,10 @@ export const strings = {
       show: () => _localizer.t('authentication_components_show'),
       hide: () => _localizer.t('authentication_components_hide'),
       or: () => _localizer.t('authentication_components_or'),
+      signOutButton: () => _localizer.t('authentication_components_signOutButton'),
+      helloWorldButton: () => _localizer.t('authentication_components_helloWorldButton'),
+      helloWorldPrivateButton: () => _localizer.t('authentication_components_helloWorldPrivateButton'),
+      helloWorldPrivateScopedButton: () => _localizer.t('authentication_components_helloWorldPrivateScopedButton'),
     },
   },
   inAppTabs: {

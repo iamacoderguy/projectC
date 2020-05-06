@@ -6,13 +6,8 @@ import React, {
 import R from 'shared/res/R';
 import Layout from '../../components/layout/Layout';
 import {
-  View,
-  StyleSheet,
-  Image,
-  Text,
   Alert,
 } from 'react-native';
-import Button from 'shared/components/button/Button';
 import {
   SignOutScreenPropsForMapState,
   mapStateToProps,
@@ -24,20 +19,29 @@ import {
   getProfile,
   UserInfo,
 } from '../../utils/auth0';
-import { isNullOrWhitespace } from 'shared/utils/string';
 import apiFetcher from 'shared/utils/apiFetcher';
 import MODULE_TAG from '../../constants/tag';
+import TestLayout from '../../components/testLayout/TestLayout';
 
 const TAG = `${MODULE_TAG} - SIGN_OUT_SCREEN`;
 const strings = {
   signOut: R.strings.authentication.signOut,
+  components: R.strings.authentication.components,
 };
-const dimens = R.dimens.authentication;
 
 type SignOutScreenProps = SignOutScreenPropsForMapState & SignOutScreenPropsForMapDispatch;
 
 const SignOutScreen: React.FC<SignOutScreenProps> = (props: SignOutScreenProps) => {
-  const [profile, setProfile] = useState<UserInfo>();
+  const [profile, setProfile] = useState<UserInfo>({
+    email: '',
+    emailVerified: false,
+    name: '',
+    picture: '',
+    sub: '',
+    updatedAt: '',
+    nickname: '',
+    'https://buzz.iamacoderguy.me/displayName': '',
+  });
   useEffect(() => {
     async function fetchProfile() {
       if (props.accessToken) {
@@ -55,7 +59,7 @@ const SignOutScreen: React.FC<SignOutScreenProps> = (props: SignOutScreenProps) 
         'GET',
         '/api/helloWorld',
       );
-      Alert.alert(strings.signOut.helloWorldButton(), `${JSON.stringify(result, null, 2)}`);
+      Alert.alert(strings.components.helloWorldButton(), `${JSON.stringify(result, null, 2)}`);
     } catch (error) {
       console.warn(`${TAG} - ${error}`);
     }
@@ -69,7 +73,7 @@ const SignOutScreen: React.FC<SignOutScreenProps> = (props: SignOutScreenProps) 
         undefined,
         true,
       );
-      Alert.alert(strings.signOut.helloWorldPrivateButton(), `${JSON.stringify(result, null, 2)}`);
+      Alert.alert(strings.components.helloWorldPrivateButton(), `${JSON.stringify(result, null, 2)}`);
     } catch (error) {
       console.warn(`${TAG} - ${error}`);
     }
@@ -83,99 +87,25 @@ const SignOutScreen: React.FC<SignOutScreenProps> = (props: SignOutScreenProps) 
         undefined,
         true,
       );
-      Alert.alert(strings.signOut.helloWorldPrivateScopedButton(), `${JSON.stringify(result, null, 2)}`);
+      Alert.alert(strings.components.helloWorldPrivateScopedButton(), `${JSON.stringify(result, null, 2)}`);
     } catch (error) {
       console.warn(`${TAG} - ${error}`);
     }
-  };
-
-  const _renderInfo = () => {
-    if (!profile) {
-      return null;
-    }
-
-    const profileArr = Object.entries(profile);
-    return (
-      <>
-        {
-          profileArr.map((value, index) => {
-            return <Text key={index} style={styles.info}>{`${value[0]}: ${value[1]}`}</Text>;
-          })
-        }
-      </>
-    );
   };
 
   return (
     <Layout
       title={strings.signOut.title()}
     >
-      <View style={styles.container}>
-        <Image
-          source={isNullOrWhitespace(profile?.picture) ? R.images.avatar_default :
-            {
-              uri: profile?.picture,
-            }}
-          defaultSource={R.images.avatar_default}
-          style={styles.avatar} />
-
-        <View style={styles.infoContainer}>
-          {_renderInfo()}
-        </View>
-
-        <View style={styles.apiContainer}>
-          <Button
-            style={styles.apiButton}
-            title={strings.signOut.helloWorldButton()}
-            onPress={_handleOnHelloWorldButtonPress}
-          />
-          <Button
-            style={styles.apiButton}
-            title={strings.signOut.helloWorldPrivateButton()}
-            onPress={_handleOnHelloWorldPrivateButtonPress}
-          />
-          <Button
-            style={styles.apiButton}
-            title={strings.signOut.helloWorldPrivateScopedButton()}
-            onPress={_handleOnHelloWorldPrivateScopedButtonPress}
-          />
-        </View>
-
-        <Button
-          style={styles.signOutButton}
-          title={strings.signOut.signOutButton()}
-          onPress={() => props.signOut(profile?.sub || '')}
-        />
-      </View>
+      <TestLayout
+        profile={profile}
+        onHelloWorldButtonPress={_handleOnHelloWorldButtonPress}
+        onHelloWorldPrivateButtonPress={_handleOnHelloWorldPrivateButtonPress}
+        onHelloWorldPrivateScopedButtonPress={_handleOnHelloWorldPrivateScopedButtonPress}
+        onSignOutPress={() => props.signOut(profile.sub)}
+      />
     </Layout>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-  },
-  avatar: {
-    alignSelf: 'center',
-    marginBottom: dimens.spacingBetweenForms,
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-  },
-  infoContainer: {
-    marginBottom: dimens.spacingBetweenForms - dimens.spacingBetweenInputs,
-  },
-  info: {
-    ...R.palette.normal,
-    marginBottom: dimens.spacingBetweenInputs,
-  },
-  apiContainer: {
-    marginBottom: dimens.spacingBetweenForms - dimens.spacingBetweenInputs,
-  },
-  apiButton: {
-    marginBottom: dimens.spacingBetweenInputs,
-  },
-  signOutButton: {},
-});
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignOutScreen);

@@ -43,5 +43,8 @@ export const Authentication: React.FC<AuthProps> = (props: AuthProps) => {
 };
 
 export { jwtErrorHandler } from './utils/jwtErrorHandler';
+
 import * as auth0 from './utils/auth0';
 export { auth0 };
+
+export { default as TestLayout } from './components/testLayout/TestLayout';

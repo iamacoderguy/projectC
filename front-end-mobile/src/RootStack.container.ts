@@ -7,9 +7,9 @@ import {
   installAuthenticationRequest,
   handleOnSignedOutRequest,
 } from './redux/actions';
-import * as apiFetcher from 'shared/utils/apiFetcher';
 import { isNullOrWhitespace } from 'shared/utils/string';
 import { Credentials } from 'shared/types/credentials';
+import apiFetcher from 'shared/utils/apiFetcher';
 
 export enum Stage {
   'Loading',
