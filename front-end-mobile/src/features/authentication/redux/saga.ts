@@ -8,6 +8,7 @@ import {
   signOutSuccess,
   goToSignUp,
   goToSignIn,
+  goToForgotPassword,
 } from './actions';
 import { Action } from 'shared/types/action';
 import { call, put, select } from 'redux-saga/effects';
@@ -118,6 +119,10 @@ orchestrator
 
   .takeLatest(getType(goToSignIn), function* () {
     yield call(navigate, navigationMap.SignIn);
+  })
+
+  .takeLatest(getType(goToForgotPassword), function* () {
+    yield call(navigate, navigationMap.ForgotPassword);
   })
 ;
 

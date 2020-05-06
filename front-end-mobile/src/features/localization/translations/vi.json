@@ -13,6 +13,7 @@
   "authentication_signUp_agreeWithTermsOfService": "Bằng việc nhấn vào bất kỳ nút Đăng ký nào dưới đây, tôi đồng ý với <_các điều khoản dịch vụ của ứng dụng_>.",
   "authentication_signUp_termsOfServiceLink": "https://iamacoderguy.github.io/projectC/docs/termsOfService.vi.html",
   "authentication_signOut_title": "Đăng xuất",
+  "authentication_forgotPassword_title": "Quên mật khẩu",
   "authentication_usernamePlaceholder": "Tên đăng nhập",
   "authentication_emailPlaceholder": "Thư điện tử của bạn",
   "authentication_displayNamePlaceholder": "Tên hiển thị",

@@ -44,6 +44,9 @@ export const strings = {
     signOut: {
       title: () => _localizer.t('authentication_signOut_title'),
     },
+    forgotPassword: {
+      title: () => _localizer.t('authentication_forgotPassword_title'),
+    },
     shared: {
       usernamePlaceholder: () => _localizer.t('authentication_usernamePlaceholder'),
       passwordPlaceholder: () => _localizer.t('authentication_passwordPlaceholder'),

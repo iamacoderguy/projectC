@@ -1,9 +1,19 @@
 import React from 'react';
-import { Text } from 'react-native';
+import Layout from '../../components/layout/Layout';
+import R from 'shared/res/R';
+
+const strings = {
+  forgotPassword: R.strings.authentication.forgotPassword,
+  shared: R.strings.authentication.shared,
+};
 
 const ForgotPasswordScreen = () => {
+
   return (
-    <Text>ForgotPasswordScreen.tsx</Text>
+    <Layout
+      title={strings.forgotPassword.title()}
+    >
+    </Layout>
   );
 };
 

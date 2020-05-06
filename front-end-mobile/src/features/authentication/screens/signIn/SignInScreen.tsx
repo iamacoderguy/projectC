@@ -51,6 +51,7 @@ const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => 
   const usernameId = 'username';
   const passwordId = 'password';
   const signUpScreenId = 'https://gotoSignUpScreen';
+  const forgotPasswordScreenId = 'https://gotoForgotPasswordScreen';
 
   useEffect(() => {
     if (props.idToken) {
@@ -70,13 +71,19 @@ const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => 
     clearInputRefs(inputRefs);
   };
 
-  const _handleOnSignUpScreenLinkPress = (url: string, _text: string) => {
-    if (url == signUpScreenId) {
-      props.onSignUpLinkPress();
-      return;
-    }
+  const _handleOnHyperlinkLinkPress = (url: string, _text: string) => {
+    switch (url) {
+      case signUpScreenId:
+        props.onSignUpLinkPress();
+        return;
 
-    console.warn(`${TAG} - Nani?!?`);
+      case forgotPasswordScreenId:
+        props.onForgotPasswordLinkPress();
+        return;
+
+      default:
+        console.warn(`${TAG} - Nani?!?`);
+    }
   };
 
   const _handleOnSocialSignInButtonPress = async (connection: SocialConnection, setSubmitting: (isSubmitting: boolean) => void) => {
@@ -99,7 +106,7 @@ const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => 
       subtitleProps={{
         children: strings.signIn.dontHaveAnAccount(),
         links: [signUpScreenId],
-        onPress: _handleOnSignUpScreenLinkPress,
+        onPress: _handleOnHyperlinkLinkPress,
       }}
       onLayoutChange={_handleOnLayoutChange}
     >
@@ -200,7 +207,8 @@ const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => 
 
                   <Hyperlink
                     style={styles.dontRememberPassword}
-                    links={['https://gotoForgotPasswordScreen']}
+                    links={[forgotPasswordScreenId]}
+                    onPress={_handleOnHyperlinkLinkPress}
                     disabled={isSubmitting}
                   >
                     {strings.signIn.dontRememberPassword()}

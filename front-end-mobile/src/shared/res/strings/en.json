@@ -13,6 +13,7 @@
   "authentication_signUp_agreeWithTermsOfService": "By clicking any of the Sign up buttons, I agree to the <_terms of service_>.",
   "authentication_signUp_termsOfServiceLink": "https://iamacoderguy.github.io/projectC/docs/termsOfService.en.html",
   "authentication_signOut_title": "Sign out",
+  "authentication_forgotPassword_title": "Forgot password",
   "authentication_usernamePlaceholder": "Username",
   "authentication_emailPlaceholder": "Your email",
   "authentication_displayNamePlaceholder": "Display name",
