@@ -17,8 +17,8 @@ import * as auth0 from '../utils/auth0';
 import { RootState } from '../types/rootState';
 import MODULE_TAG from '../constants/tag';
 import apiFetcher from 'shared/utils/apiFetcher';
-import store from './store';
 import { jwtErrorHandler } from '../utils/jwtErrorHandler';
+import storeManager from '../utils/storeManager';
 
 const TAG = 'SAGA';
 const orchestrator = new SagaOrchestrator();
@@ -63,12 +63,16 @@ orchestrator
     const credentials = (action as ReturnType<typeof authenticated>).payload;
     const state: RootState = yield select();
 
+    if (!state.testMode && !state.onAuthenticated) {
+      console.warn(`${TAG} - It isn't in test mode, neither is onAuthenticated provided`);
+    }
+
     if (state.testMode) {
       apiFetcher.setErrorHandler(jwtErrorHandler(
         async () => {
           const newCredentials = await auth0.renewToken(credentials.refreshToken);
           apiFetcher.setToken(newCredentials.accessToken);
-          store.dispatch(authenticated(newCredentials));
+          storeManager.getStore()?.dispatch(authenticated(newCredentials));
         },
         async () => {
           auth0.signOut(credentials.refreshToken);
@@ -78,15 +82,12 @@ orchestrator
       ));
 
       yield call(navigate, navigationMap.SignOut);
-      return;
     }
 
     if (state.onAuthenticated) {
       yield call(state.onAuthenticated, credentials);
       return;
     }
-
-    console.warn(`${TAG} - It isn't in test mode, neither is onAuthenticated provided`);
   })
 
   .takeLatest(getType(signOutRequest), function* (action: Action) {
@@ -96,17 +97,18 @@ orchestrator
     yield call(auth0.signOut, state.refreshToken, sub);
     yield put(signOutSuccess());
 
+    if (!state.testMode && !state.onSignedOut) {
+      console.warn(`${TAG} - It isn't in test mode, neither is onSignedOut provided`);
+    }
+
     if (state.testMode) {
       yield call(navigate, navigationMap.SignIn);
-      return;
     }
 
     if (state.onSignedOut) {
       state.onSignedOut();
       return;
     }
-
-    console.warn(`${TAG} - It isn't in test mode, neither is onSignedOut provided`);
   })
 
   .takeLatest(getType(goToSignUp), function* () {

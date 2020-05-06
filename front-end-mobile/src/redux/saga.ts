@@ -23,6 +23,11 @@ import { RootState } from '../types/rootState';
 import APP_TAG from '../constants/tag';
 import * as storage from '../utils/storage';
 import apiFetcher from 'shared/utils/apiFetcher';
+import { 
+  jwtErrorHandler, 
+  auth0,
+} from 'features/authentication';
+import storeManager from '../utils/storeManager';
 
 const TAG = 'SAGA';
 const orchestrator = new SagaOrchestrator();
@@ -46,7 +51,23 @@ orchestrator
     yield call(storage.saveCredentials, 'refreshToken', credentials.refreshToken || '');
     yield call(storage.saveCredentials, 'idToken', credentials.idToken);
     yield call(apiFetcher.setToken, credentials.accessToken);
-    // yield put(handleOnAuthenticatedSuccess());
+
+    const _jwtErrorHandler = jwtErrorHandler(
+      async () => {
+        const newCredentials = await auth0.renewToken(credentials.refreshToken);
+        apiFetcher.setToken(newCredentials.accessToken);
+        storeManager.getStore()?.dispatch(handleOnAuthenticatedRequest(newCredentials));
+      },
+      async () => {
+        console.warn('should logged out');
+        // auth0.signOut(credentials.refreshToken);
+        // navigate(navigationMap.SignIn);
+      },
+      true,
+    );
+    yield call(apiFetcher.setErrorHandler, _jwtErrorHandler);
+
+    yield put(handleOnAuthenticatedSuccess());
   })
 
   .takeLatest(getType(handleOnSignedOutRequest), function* (action: Action) {

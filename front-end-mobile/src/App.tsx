@@ -18,6 +18,7 @@ import SplashScreen from 'react-native-splash-screen';
 import RootStack, { IRootStack } from './RootStack';
 import { rootNavigationRef } from 'shared/utils/navigation';
 import store from './redux/store';
+import storeManager from './utils/storeManager';
 
 const App = () => {
   const rootStackRef = useRef<IRootStack>(null);
@@ -30,6 +31,8 @@ const App = () => {
       rootStackRefCurrent = rootStackRef.current;
       rootStackRefCurrent.start();
     }
+
+    storeManager.setStore(store);
 
     return function cleanup() {
       if (rootStackRefCurrent) {

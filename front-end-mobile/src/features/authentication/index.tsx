@@ -1,4 +1,6 @@
-import React, { useEffect } from 'react';
+import React, {
+  useEffect,
+} from 'react';
 import { Provider } from 'react-redux';
 import store from './redux/store';
 
@@ -11,11 +13,13 @@ import SignOutScreen from './screens/signOut/SignOutScreen';
 import ForgotPasswordScreen from './screens/forgotPassword/ForgotPasswordScreen';
 import { AuthProps } from './types/authProps';
 import LoadingScreen from 'shared/components/loading/LoadingScreen';
+import storeManager from './utils/storeManager';
 
 const Stack = createStackNavigator();
 
 export const Authentication: React.FC<AuthProps> = (props: AuthProps) => {
   useEffect(() => {
+    storeManager.setStore(store);
     store.dispatch(initialize(props));
   }, [props]);
 
@@ -39,3 +43,4 @@ export const Authentication: React.FC<AuthProps> = (props: AuthProps) => {
 };
 
 export { jwtErrorHandler } from './utils/jwtErrorHandler';
+export * as auth0 from './utils/auth0';
