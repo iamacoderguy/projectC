@@ -3,6 +3,8 @@ import {
   authenticated,
   initialize,
   signOutSuccess,
+  goToCheckEmail,
+  checkEmailDone,
 } from './actions';
 import { getType } from 'typesafe-actions';
 import { RootState } from '../types/rootState';
@@ -37,6 +39,22 @@ function rootReducer(previousState: RootState = initialState, action: Action): R
         ...previousState,
         accessToken: undefined,
         refreshToken: undefined,
+      };
+
+    case getType(goToCheckEmail):
+      console.info(`${TAG} - ${getType(goToCheckEmail)}`);
+      return {
+        ...previousState,
+        forgotPasswordForm: (action as ReturnType<typeof goToCheckEmail>).payload.selectedForm,
+        forgotPasswordUsername: (action as ReturnType<typeof goToCheckEmail>).payload.username,
+      };
+
+    case getType(checkEmailDone):
+      console.info(`${TAG} - ${getType(checkEmailDone)}`);
+      return {
+        ...previousState,
+        forgotPasswordForm: undefined,
+        forgotPasswordUsername: undefined,
       };
 
     default:

@@ -17,13 +17,10 @@ import SeparateLine from '../../components/separateLine/SeparateLine';
 import Hyperlink from 'shared/components/hyperlink/Hyperlink';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { usernameValidation, passwordValidation } from '../../utils/yupValidation';
+import { usernameValidation, passwordValidation, emailValidation } from '../../utils/yupValidation';
 import { clearInputRefs, addInputRef, goNext } from '../../utils/inputRefs';
-import {
+import auth0, {
   SocialConnection,
-  signUpOrSignInWithSocialConnection,
-  signUpManual,
-  signInManual,
 } from '../../utils/auth0';
 import { SignUpScreenPropsForMapDispatch, mapDispatchToProps } from './SignUpScreen.container';
 import { connect } from 'react-redux';
@@ -60,7 +57,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = (props: SignUpScreenProps) => 
   const _handleOnSocialButtonPress = async (connection: SocialConnection, setSubmitting: (isSubmitting: boolean) => void) => {
     setSubmitting(true);
 
-    await signUpOrSignInWithSocialConnection(connection)
+    await auth0.signUpOrSignInWithSocialConnection(connection)
       .then(credentials => {
         props.onAuthenticated(credentials);
       })
@@ -100,9 +97,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = (props: SignUpScreenProps) => 
         }}
         validationSchema={Yup.object({
           [usernameId]: usernameValidation(strings.shared.usernamePlaceholder()),
-          [emailId]: Yup.string()
-            .email(strings.shared.validationMessageEmail(strings.shared.emailPlaceholder()))
-            .required(strings.shared.validationMessageRequired(strings.shared.emailPlaceholder())),
+          [emailId]: emailValidation(strings.shared.emailPlaceholder()),
           [displayNameId]: Yup.string()
             .max(128, strings.shared.validationMessageMaxLength(strings.shared.displayNamePlaceholder(), 128)),
           [passwordId]: passwordValidation(strings.shared.passwordPlaceholder()),
@@ -118,8 +113,8 @@ const SignUpScreen: React.FC<SignUpScreenProps> = (props: SignUpScreenProps) => 
             return;
           }
 
-          await signUpManual(values)
-            .then(_success => signInManual({
+          await auth0.signUpManual(values)
+            .then(_success => auth0.signInManual({
               username: values[usernameId],
               password: values[passwordId],
             }))

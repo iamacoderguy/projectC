@@ -15,8 +15,7 @@ import {
   mapDispatchToProps,
 } from './SignOutScreen.container';
 import { connect } from 'react-redux';
-import {
-  getProfile,
+import auth0, {
   UserInfo,
 } from '../../utils/auth0';
 import apiFetcher from 'shared/utils/apiFetcher';
@@ -45,7 +44,7 @@ const SignOutScreen: React.FC<SignOutScreenProps> = (props: SignOutScreenProps) 
   useEffect(() => {
     async function fetchProfile() {
       if (props.accessToken) {
-        const profile = await getProfile(props.accessToken);
+        const profile = await auth0.getProfile(props.accessToken);
         setProfile(profile);
         apiFetcher.setToken(props.accessToken);
       }

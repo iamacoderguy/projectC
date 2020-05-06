@@ -19,11 +19,8 @@ import Hyperlink from 'shared/components/hyperlink/Hyperlink';
 import * as Yup from 'yup';
 import { usernameValidation, passwordValidation } from '../../utils/yupValidation';
 import { clearInputRefs, addInputRef, goNext } from '../../utils/inputRefs';
-import {
-  signUpOrSignInWithSocialConnection,
+import auth0, {
   SocialConnection,
-  signInManual,
-  getProfileFromToken,
 } from '../../utils/auth0';
 import {
   SignInScreenPropsForMapDispatch,
@@ -51,10 +48,11 @@ const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => 
   const usernameId = 'username';
   const passwordId = 'password';
   const signUpScreenId = 'https://gotoSignUpScreen';
+  const forgotPasswordScreenId = 'https://gotoForgotPasswordScreen';
 
   useEffect(() => {
     if (props.idToken) {
-      const profile = getProfileFromToken(props.idToken);
+      const profile = auth0.getProfileFromToken(props.idToken);
       if (profile.picture) {
         setPicture(profile.picture);
       }
@@ -70,19 +68,25 @@ const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => 
     clearInputRefs(inputRefs);
   };
 
-  const _handleOnSignUpScreenLinkPress = (url: string, _text: string) => {
-    if (url == signUpScreenId) {
-      props.onSignUpLinkPress();
-      return;
-    }
+  const _handleOnHyperlinkLinkPress = (url: string, _text: string) => {
+    switch (url) {
+      case signUpScreenId:
+        props.onSignUpLinkPress();
+        return;
 
-    console.warn(`${TAG} - Nani?!?`);
+      case forgotPasswordScreenId:
+        props.onForgotPasswordLinkPress();
+        return;
+
+      default:
+        console.warn(`${TAG} - Nani?!?`);
+    }
   };
 
   const _handleOnSocialSignInButtonPress = async (connection: SocialConnection, setSubmitting: (isSubmitting: boolean) => void) => {
     setSubmitting(true);
 
-    await signUpOrSignInWithSocialConnection(connection)
+    await auth0.signUpOrSignInWithSocialConnection(connection)
       .then(credentials => {
         props.onAuthenticated(credentials);
       })
@@ -99,7 +103,7 @@ const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => 
       subtitleProps={{
         children: strings.signIn.dontHaveAnAccount(),
         links: [signUpScreenId],
-        onPress: _handleOnSignUpScreenLinkPress,
+        onPress: _handleOnHyperlinkLinkPress,
       }}
       onLayoutChange={_handleOnLayoutChange}
     >
@@ -113,7 +117,7 @@ const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => 
           [passwordId]: passwordValidation(strings.shared.passwordPlaceholder()),
         })}
         onSubmit={async (values, { setSubmitting }) => {
-          await signInManual(values)
+          await auth0.signInManual(values)
             .then(credentials => {
               props.onAuthenticated(credentials);
             })
@@ -200,7 +204,8 @@ const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => 
 
                   <Hyperlink
                     style={styles.dontRememberPassword}
-                    links={['https://gotoForgotPasswordScreen']}
+                    links={[forgotPasswordScreenId]}
+                    onPress={_handleOnHyperlinkLinkPress}
                     disabled={isSubmitting}
                   >
                     {strings.signIn.dontRememberPassword()}

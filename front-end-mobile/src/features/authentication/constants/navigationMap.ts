@@ -4,4 +4,5 @@ export default {
   SignUp: 'SignUp',
   SignOut: 'SignOut',
   ForgotPassword: 'ForgotPassword',
+  CheckEmail: 'CheckEmail',
 };
