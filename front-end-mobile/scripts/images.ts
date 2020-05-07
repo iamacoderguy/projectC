@@ -1,8 +1,10 @@
 import fs from 'fs';
 
+const imagesPath =  'src/shared/res/images';
+
 const imageFileNames = () => {
   const array = fs
-    .readdirSync('src/res/images')
+    .readdirSync(imagesPath)
     .filter((file) => {
       return file.endsWith('.png');
     })
@@ -26,7 +28,7 @@ const generate = () => {
 
 export default images;`;
 
-  fs.writeFileSync('src/res/images/index.ts', string, 'utf8');
+  fs.writeFileSync(imagesPath + '/index.ts', string, 'utf8');
 };
 
 generate();
