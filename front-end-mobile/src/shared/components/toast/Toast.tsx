@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useImperativeHandle, useState } from 'react';
 import {
   SafeAreaView,
   View,
@@ -11,24 +11,64 @@ import R from 'shared/res/R';
 
 type ToastType = 'error' | 'info' | 'warn' | 'success' | 'log';
 
-type ToastProps = {
-  type: ToastType;
+type ToastProps = {}
+
+export type ToastRef = {
+  error: (msg: string) => void;
+  info: (msg: string) => void;
+  warn: (msg: string) => void;
+  success: (msg: string) => void;
+  log: (msg: string) => void;
 }
 
-const Toast: React.FC<ToastProps> = (props: ToastProps) => {
+type PropsWithForwardedRef = ToastProps & {
+  myForwardedRef: React.Ref<ToastRef>;
+}
+
+const Toast: React.FC<PropsWithForwardedRef> = (props: PropsWithForwardedRef) => {
+  const [type, setType] = useState<ToastType>('log');
+  const [message, setMessage] = useState('');
+  const [isShowing, setIsShowing] = useState(false);
+
+  useImperativeHandle(props.myForwardedRef, () => ({
+    error: (msg: string) => {
+      _showPopup('error', msg);
+    },
+    info: (msg: string) => {
+      _showPopup('info', msg);
+    },
+    warn: (msg: string) => {
+      _showPopup('warn', msg);
+    },
+    success: (msg: string) => {
+      _showPopup('success', msg);
+    },
+    log: (msg: string) => {
+      _showPopup('log', msg);
+    },
+  }));
+
+  const _showPopup = (type: ToastType, msg: string) => {
+    setType(type);
+    setMessage(msg);
+    setIsShowing(true);
+  };
+
   return (
-    <View style={styles.absoluteContainer}>
-      <SafeAreaView style={styles.safeAreaContainer}>
-        <View style={styles.container(props.type)}>
-          <View style={styles.textContainer}>
-            <Text style={styles.text(props.type)}>{'This is an error popup!'}</Text>
+    <>
+      {isShowing && <View style={styles.absoluteContainer}>
+        <SafeAreaView style={styles.safeAreaContainer}>
+          <View style={styles.container(type)}>
+            <View style={styles.textContainer}>
+              <Text style={styles.text(type)}>{message}</Text>
+            </View>
+            <View style={styles.closeButtonContainer}>
+              <Image source={R.images.ic_close} style={styles.closeImage(type)} />
+            </View>
           </View>
-          <View style={styles.closeButtonContainer}>
-            <Image source={R.images.ic_close} style={styles.closeImage(props.type)} />
-          </View>
-        </View>
-      </SafeAreaView>
-    </View>
+        </SafeAreaView>
+      </View>}
+    </>
   );
 };
 
@@ -114,4 +154,5 @@ const styles = {
   text: (type: ToastType) => shared(type).text,
 };
 
-export default Toast;
+// eslint-disable-next-line react/display-name
+export default React.forwardRef((props: ToastProps, ref: React.Ref<ToastRef>) => <Toast {...props} myForwardedRef={ref} />);

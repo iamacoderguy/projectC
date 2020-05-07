@@ -19,6 +19,8 @@ import RootStack, { IRootStack } from './RootStack';
 import { rootNavigationRef } from 'shared/utils/navigation';
 import store from './redux/store';
 import storeManager from './utils/storeManager';
+import { toastRef } from 'shared/utils/toast';
+import Toast from 'shared/components/toast/Toast';
 
 const App = () => {
   const rootStackRef = useRef<IRootStack>(null);
@@ -44,6 +46,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <NavigationContainer ref={rootNavigationRef}>
+        <Toast ref={toastRef} />
         <RootStack ref={rootStackRef} />
       </NavigationContainer>
     </Provider>
