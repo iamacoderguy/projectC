@@ -14,7 +14,8 @@
     "test:watch": "jest --verbose --watch",
     "code:check": "tsc --project tsconfig.lint.json && eslint . --ext .js,.jsx,.ts,.tsx",
     "code:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
-    "images:update": "ts-node scripts/images.ts"
+    "images:update": "ts-node scripts/images.ts",
+    "upgrade": "react-native upgrade"
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.7",
