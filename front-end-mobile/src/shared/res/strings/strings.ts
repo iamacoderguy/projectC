@@ -82,6 +82,13 @@ export const strings = {
       helloWorldPrivateScopedButton: () => _localizer.t('authentication_components_helloWorldPrivateScopedButton'),
     },
   },
+  helmet: {
+    errorBoundary: {
+      title: () => _localizer.t('helmet_errorBoundary_title'),
+      subTitle: () => _localizer.t('helmet_errorBoundary_subTitle'),
+      button: () => _localizer.t('helmet_errorBoundary_button'),
+    },
+  },
   inAppTabs: {
     activitiesLabel: () => _localizer.t('inAppTabs_activitiesLabel'),
     buzzLabel: () => _localizer.t('inAppTabs_buzzLabel'),

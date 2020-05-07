@@ -4,6 +4,7 @@ import R from 'shared/res/R';
 import apiFetcher from 'shared/utils/apiFetcher';
 import MODULE_TAG from './tag';
 import { TestLayout } from 'features/authentication';
+import toast from 'shared/utils/toast';
 
 const TAG = `${MODULE_TAG} - BUZZ_SCREEN`;
 const strings = {
@@ -30,7 +31,7 @@ const BuzzScreen = () => {
       );
       Alert.alert(strings.components.helloWorldButton(), `${JSON.stringify(result, null, 2)}`);
     } catch (error) {
-      console.warn(`${TAG} - ${error}`);
+      toast.warn(`${TAG} - ${error}`);
     }
   };
 
@@ -44,7 +45,7 @@ const BuzzScreen = () => {
       );
       Alert.alert(strings.components.helloWorldPrivateButton(), `${JSON.stringify(result, null, 2)}`);
     } catch (error) {
-      console.warn(`${TAG} - ${error}`);
+      toast.warn(`${TAG} - ${error}`);
     }
   };
 
@@ -58,7 +59,7 @@ const BuzzScreen = () => {
       );
       Alert.alert(strings.components.helloWorldPrivateScopedButton(), `${JSON.stringify(result, null, 2)}`);
     } catch (error) {
-      console.warn(`${TAG} - ${error}`);
+      toast.warn(`${TAG} - ${error}`);
     }
   };
 
@@ -75,7 +76,7 @@ const BuzzScreen = () => {
         onHelloWorldButtonPress={_handleOnHelloWorldButtonPress}
         onHelloWorldPrivateButtonPress={_handleOnHelloWorldPrivateButtonPress}
         onHelloWorldPrivateScopedButtonPress={_handleOnHelloWorldPrivateScopedButtonPress}
-        onSignOutPress={() => console.warn(`${TAG} - SIGN OUT`)}
+        onSignOutPress={() => toast.warn(`${TAG} - SIGN OUT`)}
       />
     </ScrollView>
   );

@@ -22,11 +22,12 @@ import MODULE_TAG from '../constants/tag';
 import apiFetcher from 'shared/utils/apiFetcher';
 import { jwtErrorHandler } from '../utils/jwtErrorHandler';
 import storeManager from '../utils/storeManager';
+import toast from 'shared/utils/toast';
 
 const TAG = `${MODULE_TAG} - SAGA`;
 const orchestrator = new SagaOrchestrator();
 orchestrator.onError((error: Error) => {
-  console.warn(`${MODULE_TAG} - ${TAG} - ${error}`);
+  toast.warn(`${MODULE_TAG} - ${TAG} - ${error}`);
   return true;
 });
 
@@ -67,7 +68,7 @@ orchestrator
     const state: RootState = yield select();
     
     if (!state.testMode && !state.onAuthenticated) {
-      console.warn(`${TAG} - It isn't in test mode, neither is onAuthenticated provided`);
+      toast.warn(`${TAG} - It isn't in test mode, neither is onAuthenticated provided`);
     }
 
     if (state.testMode) {
@@ -102,7 +103,7 @@ orchestrator
     yield put(signOutSuccess());
 
     if (!state.testMode && !state.onSignedOut) {
-      console.warn(`${TAG} - It isn't in test mode, neither is onSignedOut provided`);
+      toast.warn(`${TAG} - It isn't in test mode, neither is onSignedOut provided`);
     }
 
     if (state.testMode) {

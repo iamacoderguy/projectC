@@ -31,6 +31,7 @@ import {
 import { connect } from 'react-redux';
 import { isNullOrWhitespace } from 'shared/utils/string';
 import MODULE_TAG from '../../constants/tag';
+import toast from 'shared/utils/toast';
 
 const TAG = `${MODULE_TAG} - SIGN_IN_SCREEN`;
 const strings = {
@@ -79,7 +80,7 @@ const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => 
         return;
 
       default:
-        console.warn(`${TAG} - Nani?!?`);
+        toast.warn(`${TAG} - Nani?!?`);
     }
   };
 
@@ -91,7 +92,7 @@ const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => 
         props.onAuthenticated(credentials);
       })
       .catch(error => {
-        console.warn(`${TAG} - ${error}`);
+        toast.warn(`${TAG} - ${error}`);
       });
 
     setSubmitting(false);
@@ -122,7 +123,7 @@ const SignInScreen: React.FC<SignInScreenProps> = (props: SignInScreenProps) => 
               props.onAuthenticated(credentials);
             })
             .catch(error => {
-              console.warn(`${TAG} - ${error}`);
+              toast.warn(`${TAG} - ${error}`);
             });
 
           setSubmitting(false);

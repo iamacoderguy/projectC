@@ -6,6 +6,7 @@ import { User } from 'shared/types/user';
 import { contain } from 'shared/utils/string';
 import jwt_decode from 'jwt-decode';
 import MODULE_TAG from '../constants/tag';
+import toast from 'shared/utils/toast';
 
 const TAG = `${MODULE_TAG} - AUTH0`;
 const config = R.config.AUTH0;
@@ -111,7 +112,7 @@ const signOut = async (refreshToken?: string, sub?: string) => {
     try {
       await auth0.auth.revoke({ refreshToken }); 
     } catch (error) {
-      console.warn(`${TAG} - ${error}`);
+      toast.warn(`${TAG} - ${error}`);
     }
   }
 };
