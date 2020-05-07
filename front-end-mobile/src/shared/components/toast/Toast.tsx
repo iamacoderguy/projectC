@@ -6,6 +6,7 @@ import {
   Text,
   Image,
   Platform,
+  TouchableOpacity,
 } from 'react-native';
 import R from 'shared/res/R';
 
@@ -54,6 +55,10 @@ const Toast: React.FC<PropsWithForwardedRef> = (props: PropsWithForwardedRef) =>
     setIsShowing(true);
   };
 
+  const _hidePopup = () => {
+    setIsShowing(false);
+  };
+
   return (
     <>
       {isShowing && <View style={styles.absoluteContainer}>
@@ -63,7 +68,12 @@ const Toast: React.FC<PropsWithForwardedRef> = (props: PropsWithForwardedRef) =>
               <Text style={styles.text(type)}>{message}</Text>
             </View>
             <View style={styles.closeButtonContainer}>
-              <Image source={R.images.ic_close} style={styles.closeImage(type)} />
+              {/* If you cannot click on the button, make sure you put the Toast under other views*/}
+              <TouchableOpacity
+                style={styles.closeButton}
+                onPress={_hidePopup}>
+                <Image source={R.images.ic_close} style={styles.closeImage(type)} />
+              </TouchableOpacity>
             </View>
           </View>
         </SafeAreaView>
@@ -74,6 +84,8 @@ const Toast: React.FC<PropsWithForwardedRef> = (props: PropsWithForwardedRef) =>
 
 const padding = 20;
 const safeAreaContainerPadding = 10;
+const closeButtonTop = 10;
+const closeButtonPadding = 5;
 
 const shared = (type?: ToastType) => {
   let bgColor: string = R.colors.BLACK;
@@ -125,11 +137,14 @@ const shared = (type?: ToastType) => {
     },
     closeButtonContainer: {
       position: 'absolute',
-      top: 10,
-      right: 10,
+      top: closeButtonTop - closeButtonPadding,
+      right: closeButtonTop - closeButtonPadding,
     },
     closeImage: {
       tintColor: contentColor,
+    },
+    closeButton: {
+      padding: closeButtonPadding,
     },
     textContainer: {
       flex: 1,
@@ -150,6 +165,7 @@ const styles = {
   container: (type: ToastType) => shared(type).container,
   closeButtonContainer: shared().closeButtonContainer,
   closeImage: (type: ToastType) => shared(type).closeImage,
+  closeButton: shared().closeButton,
   textContainer: shared().textContainer,
   text: (type: ToastType) => shared(type).text,
 };

@@ -46,8 +46,8 @@ const App = () => {
   return (
     <Provider store={store}>
       <NavigationContainer ref={rootNavigationRef}>
-        <Toast ref={toastRef} />
         <RootStack ref={rootStackRef} />
+        <Toast ref={toastRef} />
       </NavigationContainer>
     </Provider>
   );
