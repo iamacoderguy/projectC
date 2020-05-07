@@ -1,4 +1,8 @@
-import React, { useImperativeHandle, useState } from 'react';
+import React, {
+  useImperativeHandle,
+  useState,
+  useEffect,
+} from 'react';
 import {
   SafeAreaView,
   View,
@@ -12,14 +16,19 @@ import R from 'shared/res/R';
 
 type ToastType = 'error' | 'info' | 'warn' | 'success' | 'log';
 
+export type ToastMessage = {
+  type: ToastType,
+  content: string;
+}
+export const isToastMessageEqual = (message1: ToastMessage, message2: ToastMessage) => {
+  return message1.content === message2.content && message1.type === message2.type;
+};
+
 type ToastProps = {}
 
 export type ToastRef = {
-  error: (msg: string) => void;
-  info: (msg: string) => void;
-  warn: (msg: string) => void;
-  success: (msg: string) => void;
-  log: (msg: string) => void;
+  show: (toastMsg: ToastMessage, onClose?: () => void) => void;
+  hide: () => void;
 }
 
 type PropsWithForwardedRef = ToastProps & {
@@ -30,34 +39,35 @@ const Toast: React.FC<PropsWithForwardedRef> = (props: PropsWithForwardedRef) =>
   const [type, setType] = useState<ToastType>('log');
   const [message, setMessage] = useState('');
   const [isShowing, setIsShowing] = useState(false);
+  const [_onClose, setOnClose] = useState<Function>();
 
   useImperativeHandle(props.myForwardedRef, () => ({
-    error: (msg: string) => {
-      _showPopup('error', msg);
+    show: (toastMsg: ToastMessage, onClose?: () => void) => {
+      _showPopup(toastMsg.type, toastMsg.content, onClose);
     },
-    info: (msg: string) => {
-      _showPopup('info', msg);
-    },
-    warn: (msg: string) => {
-      _showPopup('warn', msg);
-    },
-    success: (msg: string) => {
-      _showPopup('success', msg);
-    },
-    log: (msg: string) => {
-      _showPopup('log', msg);
+    hide: () => {
+      _hidePopup();
     },
   }));
 
-  const _showPopup = (type: ToastType, msg: string) => {
+  const _showPopup = (type: ToastType, msg: string, onClose?: () => void) => {
     setType(type);
     setMessage(msg);
     setIsShowing(true);
+    if (onClose) {
+      setOnClose(() => onClose);
+    }
   };
 
   const _hidePopup = () => {
     setIsShowing(false);
   };
+
+  useEffect(() => {
+    if (!isShowing && _onClose) {
+      _onClose();
+    }
+  }, [isShowing, _onClose]);
 
   return (
     <>
