@@ -1,5 +1,6 @@
 import React, {
   useEffect,
+  useImperativeHandle,
 } from 'react';
 import {
   ViewProps,
@@ -10,8 +11,20 @@ type FadingViewProps = ViewProps & {
   children: React.ReactNode;
 }
 
-const FadingView: React.FC<FadingViewProps> = (props: FadingViewProps) => {
+export type FadingViewRef = {
+  fadeOut: (callback: () => void) => void;
+}
+
+type PropsWithForwardedRef = FadingViewProps & {
+  myForwardedRef: React.Ref<FadingViewRef>;
+}
+
+const FadingView: React.FC<PropsWithForwardedRef> = (props: PropsWithForwardedRef) => {
   const opacity = new Animated.Value(0);
+
+  useImperativeHandle(props.myForwardedRef, () => ({
+    fadeOut: _fadeOut,
+  }));
 
   useEffect(() => {
     Animated.timing(
@@ -23,7 +36,7 @@ const FadingView: React.FC<FadingViewProps> = (props: FadingViewProps) => {
     ).start();
   }, [opacity]);
 
-  const fadeOut = (callback: () => void) => {
+  const _fadeOut = (callback: () => void) => {
     Animated.timing(
       opacity,
       {
@@ -44,4 +57,5 @@ const FadingView: React.FC<FadingViewProps> = (props: FadingViewProps) => {
   );
 };
 
-export default FadingView;
+// eslint-disable-next-line react/display-name
+export default React.forwardRef((props: FadingViewProps, ref: React.Ref<FadingViewRef>) => <FadingView {...props} myForwardedRef={ref} />);

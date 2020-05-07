@@ -2,6 +2,7 @@ import React, {
   useImperativeHandle,
   useState,
   useEffect,
+  useRef,
 } from 'react';
 import {
   SafeAreaView,
@@ -13,7 +14,9 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import R from 'shared/res/R';
-import FadingView from '../fadingView/FadingView';
+import FadingView, {
+  FadingViewRef,
+} from '../fadingView/FadingView';
 
 type ToastType = 'error' | 'info' | 'warn' | 'success' | 'log';
 
@@ -41,6 +44,7 @@ const Toast: React.FC<PropsWithForwardedRef> = (props: PropsWithForwardedRef) =>
   const [message, setMessage] = useState('');
   const [isShowing, setIsShowing] = useState(false);
   const [_onClose, setOnClose] = useState<Function>();
+  const fadingViewRef = useRef<FadingViewRef>(null);
 
   useImperativeHandle(props.myForwardedRef, () => ({
     show: (toastMsg: ToastMessage, onClose?: () => void) => {
@@ -61,7 +65,12 @@ const Toast: React.FC<PropsWithForwardedRef> = (props: PropsWithForwardedRef) =>
   };
 
   const _hidePopup = () => {
-    setIsShowing(false);
+    if (!fadingViewRef.current) {
+      setIsShowing(false);
+      return;
+    }
+
+    fadingViewRef.current.fadeOut(() => setIsShowing(false));
   };
 
   useEffect(() => {
@@ -74,7 +83,7 @@ const Toast: React.FC<PropsWithForwardedRef> = (props: PropsWithForwardedRef) =>
     <>
       {isShowing && <View style={styles.absoluteContainer}>
         <SafeAreaView style={styles.safeAreaContainer}>
-          <FadingView style={styles.container(type)}>
+          <FadingView style={styles.container(type)} ref={fadingViewRef}>
             <View style={styles.textContainer}>
               <Text style={styles.text(type)}>{message}</Text>
             </View>
