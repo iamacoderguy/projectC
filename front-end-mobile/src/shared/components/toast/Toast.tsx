@@ -13,6 +13,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import R from 'shared/res/R';
+import FadingView from '../fadingView/FadingView';
 
 type ToastType = 'error' | 'info' | 'warn' | 'success' | 'log';
 
@@ -73,7 +74,7 @@ const Toast: React.FC<PropsWithForwardedRef> = (props: PropsWithForwardedRef) =>
     <>
       {isShowing && <View style={styles.absoluteContainer}>
         <SafeAreaView style={styles.safeAreaContainer}>
-          <View style={styles.container(type)}>
+          <FadingView style={styles.container(type)}>
             <View style={styles.textContainer}>
               <Text style={styles.text(type)}>{message}</Text>
             </View>
@@ -85,7 +86,7 @@ const Toast: React.FC<PropsWithForwardedRef> = (props: PropsWithForwardedRef) =>
                 <Image source={R.images.ic_close} style={styles.closeImage(type)} />
               </TouchableOpacity>
             </View>
-          </View>
+          </FadingView>
         </SafeAreaView>
       </View>}
     </>

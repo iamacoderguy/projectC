@@ -37,7 +37,7 @@ const start = () => {
   });
 };
 
-const enqueue = (toastMesage: ToastMessage) => {
+const enqueueUnique = (toastMesage: ToastMessage) => {
   if (isMessageExisted(toastMesage)) {
     return;
   }
@@ -56,32 +56,32 @@ const dequeue = () => {
 };
 
 const error = (msg: string) => {
-  enqueue({
+  enqueueUnique({
     type: 'error',
     content: msg,
   });
 };
 const info = (msg: string) => {
-  enqueue({
+  enqueueUnique({
     type: 'info',
     content: msg,
   });
 
 };
 const warn = (msg: string) => {
-  enqueue({
+  enqueueUnique({
     type: 'warn',
     content: msg,
   });
 };
 const success = (msg: string) => {
-  enqueue({
+  enqueueUnique({
     type: 'success',
     content: msg,
   });
 };
 const log = (msg: string) => {
-  enqueue({
+  enqueueUnique({
     type: 'log',
     content: msg,
   });
