@@ -28,11 +28,12 @@ import {
 } from 'features/authentication';
 import storeManager from '../utils/storeManager';
 import APP_TAG from '../constants/tag';
+import toast from 'shared/utils/toast';
 
 const TAG = `${APP_TAG} - SAGA`;
 const orchestrator = new SagaOrchestrator();
 orchestrator.onError((error: Error) => {
-  console.warn(`${APP_TAG} - ${TAG} - ${error}`);
+  toast.warn(`${APP_TAG} - ${TAG} - ${error}`);
   return true;
 });
 
@@ -59,9 +60,7 @@ orchestrator
         storeManager.getStore()?.dispatch(handleOnAuthenticatedRequest(newCredentials));
       },
       async () => {
-        console.warn(`${TAG} - should logged out`);
-        // auth0.signOut(credentials.refreshToken);
-        // navigate(navigationMap.SignIn);
+        toast.warn(`${TAG} - should logged out`);
       },
       true,
     );

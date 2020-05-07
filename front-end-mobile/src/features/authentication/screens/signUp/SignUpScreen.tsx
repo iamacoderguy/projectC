@@ -25,6 +25,7 @@ import auth0, {
 import { SignUpScreenPropsForMapDispatch, mapDispatchToProps } from './SignUpScreen.container';
 import { connect } from 'react-redux';
 import MODULE_TAG from '../../constants/tag';
+import toast from 'shared/utils/toast';
 
 const TAG = `${MODULE_TAG} - SIGN_UP_SCREEN`;
 const strings = {
@@ -62,7 +63,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = (props: SignUpScreenProps) => 
         props.onAuthenticated(credentials);
       })
       .catch(error => {
-        console.warn(`${TAG} - ${error}`);
+        toast.warn(`${TAG} - ${error}`);
       });
 
     setSubmitting(false);
@@ -74,7 +75,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = (props: SignUpScreenProps) => 
       return;
     }
 
-    console.warn(`${TAG} - Nani?!?`);
+    toast.warn(`${TAG} - Nani?!?`);
   };
 
   return (
@@ -122,7 +123,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = (props: SignUpScreenProps) => 
               props.onAuthenticated(credentials);
             })
             .catch(error => {
-              console.warn(`${TAG} - ${error}`);
+              toast.warn(`${TAG} - ${error}`);
             });
 
           setSubmitting(false);

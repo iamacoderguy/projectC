@@ -21,6 +21,7 @@ import auth0, {
 import apiFetcher from 'shared/utils/apiFetcher';
 import MODULE_TAG from '../../constants/tag';
 import TestLayout from '../../components/testLayout/TestLayout';
+import toast from 'shared/utils/toast';
 
 const TAG = `${MODULE_TAG} - SIGN_OUT_SCREEN`;
 const strings = {
@@ -44,9 +45,13 @@ const SignOutScreen: React.FC<SignOutScreenProps> = (props: SignOutScreenProps) 
   useEffect(() => {
     async function fetchProfile() {
       if (props.accessToken) {
-        const profile = await auth0.getProfile(props.accessToken);
-        setProfile(profile);
-        apiFetcher.setToken(props.accessToken);
+        try {
+          const profile = await auth0.getProfile(props.accessToken);
+          setProfile(profile);
+          apiFetcher.setToken(props.accessToken);
+        } catch (error) {
+          toast.warn(`${TAG} - ${error}`);
+        }
       }
     }
     fetchProfile();
@@ -60,7 +65,7 @@ const SignOutScreen: React.FC<SignOutScreenProps> = (props: SignOutScreenProps) 
       );
       Alert.alert(strings.components.helloWorldButton(), `${JSON.stringify(result, null, 2)}`);
     } catch (error) {
-      console.warn(`${TAG} - ${error}`);
+      toast.warn(`${TAG} - ${error}`);
     }
   };
 
@@ -74,7 +79,7 @@ const SignOutScreen: React.FC<SignOutScreenProps> = (props: SignOutScreenProps) 
       );
       Alert.alert(strings.components.helloWorldPrivateButton(), `${JSON.stringify(result, null, 2)}`);
     } catch (error) {
-      console.warn(`${TAG} - ${error}`);
+      toast.warn(`${TAG} - ${error}`);
     }
   };
 
@@ -88,7 +93,7 @@ const SignOutScreen: React.FC<SignOutScreenProps> = (props: SignOutScreenProps) 
       );
       Alert.alert(strings.components.helloWorldPrivateScopedButton(), `${JSON.stringify(result, null, 2)}`);
     } catch (error) {
-      console.warn(`${TAG} - ${error}`);
+      toast.warn(`${TAG} - ${error}`);
     }
   };
 

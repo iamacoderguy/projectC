@@ -14,6 +14,7 @@ import { View, StyleSheet, Text } from 'react-native';
 import { usernameForm } from '../forgotPassword/ForgotPasswordScreen';
 import SeparateLine from '../../components/separateLine/SeparateLine';
 import Hyperlink from 'shared/components/hyperlink/Hyperlink';
+import toast from 'shared/utils/toast';
 
 const TAG = `${MODULE_TAG} - CHECK_EMAIL_SCREEN`;
 const strings = {
@@ -32,7 +33,7 @@ const CheckEmailScreen: React.FC<CheckEmailScreenProps> = (props: CheckEmailScre
         return;
 
       default:
-        console.warn(`${TAG} - Nani?!?`);
+        toast.warn(`${TAG} - Nani?!?`);
     }
   };
 

@@ -12,6 +12,7 @@ import TextInput from 'shared/components/textInput/TextInput';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { usernameValidation, emailValidation } from 'features/authentication/utils/yupValidation';
+import toast from 'shared/utils/toast';
 
 const TAG = `${MODULE_TAG} - FORGOT_PASSWORD_SCREEN`;
 const strings = {
@@ -46,7 +47,7 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = (props: Forgot
         return;
 
       default:
-        console.warn(`${TAG} - Nani?!?`);
+        toast.warn(`${TAG} - Nani?!?`);
     }
   };
 
@@ -83,7 +84,7 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordScreenProps> = (props: Forgot
             await auth0.forgotPasswordManual(values[emailId]);
             props.onGoToCheckEmail(selectedForm, values[usernameId]);
           } catch (error) {
-            console.warn(`${TAG} - ${error}`);
+            toast.warn(`${TAG} - ${error}`);
           } finally {
             setSubmitting(false);
           }
