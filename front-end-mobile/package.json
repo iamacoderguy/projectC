@@ -15,7 +15,9 @@
     "code:check": "tsc --project tsconfig.lint.json && eslint . --ext .js,.jsx,.ts,.tsx",
     "code:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "images:update": "ts-node scripts/images.ts",
-    "upgrade": "react-native upgrade"
+    "upgrade": "react-native upgrade",
+    "clean": "rm -rf node_modules package-lock.json && npm cache clean --force",
+    "reset": "react-native start --reset-cache"
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.10",
