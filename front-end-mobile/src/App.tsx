@@ -21,6 +21,7 @@ import store from './redux/store';
 import storeManager from './utils/storeManager';
 import { toastRef } from 'shared/utils/toast';
 import Toast from 'shared/components/toast/Toast';
+import { ErrorBoundary } from 'features/helmet';
 
 const App = () => {
   const rootStackRef = useRef<IRootStack>(null);
@@ -44,12 +45,14 @@ const App = () => {
   }, []);
 
   return (
-    <Provider store={store}>
-      <NavigationContainer ref={rootNavigationRef}>
-        <RootStack ref={rootStackRef} />
-        <Toast ref={toastRef} />
-      </NavigationContainer>
-    </Provider>
+    <ErrorBoundary>
+      <Provider store={store}>
+        <NavigationContainer ref={rootNavigationRef}>
+          <RootStack ref={rootStackRef} />
+          <Toast ref={toastRef} />
+        </NavigationContainer>
+      </Provider>
+    </ErrorBoundary>
   );
 };
 
