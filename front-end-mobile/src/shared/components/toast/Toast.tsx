@@ -71,7 +71,7 @@ const Toast: React.FC<PropsWithForwardedRef> = (props: PropsWithForwardedRef) =>
   }, [isShowing, _onClose]);
 
   const _renderToast = (theme?: ToastTheme) => {
-    theme = theme ? theme : 'Toastify';
+    theme = theme ? theme : 'LogBox';
 
     switch (theme) {
       case 'Toastify':
