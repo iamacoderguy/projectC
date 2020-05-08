@@ -9,11 +9,12 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* buzzTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* buzzTests.m */; };
 		0193AB0F5FD0D6CEC92E1B9A /* libPods-buzz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDB74D3EEB3E73E9C1ACF3F9 /* libPods-buzz.a */; };
+		075C32692464647200F6B4EA /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075C32682464647200F6B4EA /* File.swift */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		D695DF466775C8239A776165 /* libPods-buzzTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B5E09BA555B444B754BB56F /* libPods-buzzTests.a */; };
+		3FD3F9598E4F16BA19142CD1 /* libPods-buzz-buzzTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F88ED2D0ED9F191BA6E6CEBC /* libPods-buzz-buzzTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,6 +32,8 @@
 		00E356EE1AD99517003FC87E /* buzzTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = buzzTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* buzzTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = buzzTests.m; sourceTree = "<group>"; };
+		075C326324645CCC00F6B4EA /* buzz-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "buzz-Bridging-Header.h"; sourceTree = "<group>"; };
+		075C32682464647200F6B4EA /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* buzz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = buzz.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = buzz/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = buzz/AppDelegate.m; sourceTree = "<group>"; };
@@ -39,8 +42,9 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = buzz/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = buzz/main.m; sourceTree = "<group>"; };
 		1A87D1DD96CB6399D72AFF94 /* Pods-buzz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-buzz.release.xcconfig"; path = "Target Support Files/Pods-buzz/Pods-buzz.release.xcconfig"; sourceTree = "<group>"; };
-		3B5E09BA555B444B754BB56F /* libPods-buzzTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-buzzTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1F2D92E4911C29426DCDA3BE /* Pods-buzz-buzzTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-buzz-buzzTests.release.xcconfig"; path = "Target Support Files/Pods-buzz-buzzTests/Pods-buzz-buzzTests.release.xcconfig"; sourceTree = "<group>"; };
 		45FC442410CB716C9DA206AD /* Pods-buzz-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-buzz-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-buzz-tvOSTests/Pods-buzz-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		64F44BBE09F8B4CBB701CE34 /* Pods-buzz-buzzTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-buzz-buzzTests.debug.xcconfig"; path = "Target Support Files/Pods-buzz-buzzTests/Pods-buzz-buzzTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6C42108F98A6D921B9D3B29C /* Pods-buzz-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-buzz-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-buzz-tvOS/Pods-buzz-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		8632C7665E0CB9787AFD23E5 /* Pods-buzz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-buzz.debug.xcconfig"; path = "Target Support Files/Pods-buzz/Pods-buzz.debug.xcconfig"; sourceTree = "<group>"; };
 		88095B5A35D521D6E0280AC4 /* Pods-buzzTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-buzzTests.debug.xcconfig"; path = "Target Support Files/Pods-buzzTests/Pods-buzzTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -52,6 +56,7 @@
 		E8BEA1D276DFD202EF64E582 /* libPods-buzz-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-buzz-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		F88ED2D0ED9F191BA6E6CEBC /* libPods-buzz-buzzTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-buzz-buzzTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,7 +64,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D695DF466775C8239A776165 /* libPods-buzzTests.a in Frameworks */,
+				3FD3F9598E4F16BA19142CD1 /* libPods-buzz-buzzTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,10 +102,12 @@
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
+				075C32682464647200F6B4EA /* File.swift */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				075C326324645CCC00F6B4EA /* buzz-Bridging-Header.h */,
 			);
 			name = buzz;
 			sourceTree = "<group>";
@@ -113,7 +120,7 @@
 				DDB74D3EEB3E73E9C1ACF3F9 /* libPods-buzz.a */,
 				E8BEA1D276DFD202EF64E582 /* libPods-buzz-tvOS.a */,
 				C97C265E9EF27E804AEF3848 /* libPods-buzz-tvOSTests.a */,
-				3B5E09BA555B444B754BB56F /* libPods-buzzTests.a */,
+				F88ED2D0ED9F191BA6E6CEBC /* libPods-buzz-buzzTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -160,6 +167,8 @@
 				998F3FF37BE4D217EB1EEABA /* Pods-buzz-tvOSTests.release.xcconfig */,
 				88095B5A35D521D6E0280AC4 /* Pods-buzzTests.debug.xcconfig */,
 				C7C8DA1D5AAB2D4B587D5F2B /* Pods-buzzTests.release.xcconfig */,
+				64F44BBE09F8B4CBB701CE34 /* Pods-buzz-buzzTests.debug.xcconfig */,
+				1F2D92E4911C29426DCDA3BE /* Pods-buzz-buzzTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -212,21 +221,23 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0940;
-				ORGANIZATIONNAME = Facebook;
+				LastUpgradeCheck = 1130;
+				ORGANIZATIONNAME = "";
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
+					13B07F861A680F5B00A75B9A = {
+						LastSwiftMigration = 1130;
+					};
 				};
 			};
 			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "buzz" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
 				Base,
 			);
@@ -312,7 +323,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-buzzTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-buzz-buzzTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -354,6 +365,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				075C32692464647200F6B4EA /* File.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -383,8 +395,9 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 88095B5A35D521D6E0280AC4 /* Pods-buzzTests.debug.xcconfig */;
+			baseConfigurationReference = 64F44BBE09F8B4CBB701CE34 /* Pods-buzz-buzzTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -406,8 +419,9 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C7C8DA1D5AAB2D4B587D5F2B /* Pods-buzzTests.release.xcconfig */;
+			baseConfigurationReference = 1F2D92E4911C29426DCDA3BE /* Pods-buzz-buzzTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = buzzTests/Info.plist;
@@ -429,8 +443,9 @@
 			baseConfigurationReference = 8632C7665E0CB9787AFD23E5 /* Pods-buzz.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEAD_CODE_STRIPPING = NO;
+				DEAD_CODE_STRIPPING = YES;
 				INFOPLIST_FILE = buzz/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -440,6 +455,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "me.iamacoderguy.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = buzz;
+				SWIFT_OBJC_BRIDGING_HEADER = "buzz-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -449,6 +467,7 @@
 			baseConfigurationReference = 1A87D1DD96CB6399D72AFF94 /* Pods-buzz.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = buzz/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -459,6 +478,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "me.iamacoderguy.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = buzz;
+				SWIFT_OBJC_BRIDGING_HEADER = "buzz-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
@@ -467,6 +488,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -501,6 +523,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
+					"FB_SONARKIT_ENABLED=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -510,6 +533,11 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(inherited)\"",
+					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
+					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
+				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -520,6 +548,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -556,6 +585,11 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(inherited)\"",
+					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
+					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;

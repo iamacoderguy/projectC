@@ -56,6 +56,11 @@ const dequeue = () => {
 };
 
 const error = (msg: string) => {
+  if (__DEV__) {
+    console.error(msg);
+    return;
+  }
+
   enqueueUnique({
     type: 'error',
     content: msg,
@@ -69,6 +74,11 @@ const info = (msg: string) => {
 
 };
 const warn = (msg: string) => {
+  if (__DEV__) {
+    console.warn(msg);
+    return;
+  }
+
   enqueueUnique({
     type: 'warn',
     content: msg,

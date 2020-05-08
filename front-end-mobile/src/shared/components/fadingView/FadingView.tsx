@@ -32,6 +32,7 @@ const FadingView: React.FC<PropsWithForwardedRef> = (props: PropsWithForwardedRe
       {
         toValue: 1,
         duration: 300,
+        useNativeDriver: true,
       },
     ).start();
   }, [opacity]);
@@ -42,6 +43,7 @@ const FadingView: React.FC<PropsWithForwardedRef> = (props: PropsWithForwardedRe
       {
         toValue: 0,
         duration: 300,
+        useNativeDriver: true,
       },
     ).start(() => callback());
   };
