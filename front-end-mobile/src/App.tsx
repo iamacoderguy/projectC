@@ -20,7 +20,7 @@ import { rootNavigationRef } from 'shared/utils/navigation';
 import store from './redux/store';
 import storeManager from './utils/storeManager';
 import { toastRef } from 'shared/utils/toast';
-import Toast from 'shared/components/toast/Toast';
+import { Toast } from 'shared/components/toast';
 import { ErrorBoundary } from 'features/helmet';
 
 const App = () => {

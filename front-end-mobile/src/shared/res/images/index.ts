@@ -3,6 +3,7 @@ const images = {
   dot: require('./dot.png'),
   ic_black_yellow: require('./ic_black_yellow.png'),
   ic_close: require('./ic_close.png'),
+  ic_exclamation_mark: require('./ic_exclamation_mark.png'),
   ic_github: require('./ic_github.png'),
   ic_google: require('./ic_google.png'),
   ic_nav_activities: require('./ic_nav_activities.png'),

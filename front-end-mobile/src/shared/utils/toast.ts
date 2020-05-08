@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { 
-  ToastRef,
   ToastMessage,
   isToastMessageEqual,
-} from 'shared/components/toast/Toast';
+  ToastRef,
+} from 'shared/components/toast';
 
 export const toastRef = React.createRef<ToastRef>();
 
@@ -56,11 +56,6 @@ const dequeue = () => {
 };
 
 const error = (msg: string) => {
-  if (__DEV__) {
-    console.error(msg);
-    return;
-  }
-
   enqueueUnique({
     type: 'error',
     content: msg,
@@ -74,11 +69,6 @@ const info = (msg: string) => {
 
 };
 const warn = (msg: string) => {
-  if (__DEV__) {
-    console.warn(msg);
-    return;
-  }
-
   enqueueUnique({
     type: 'warn',
     content: msg,
