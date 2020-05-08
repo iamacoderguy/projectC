@@ -52,7 +52,7 @@ const styleSheet = (enabled?: boolean, imageSource?: ImageSourcePropType) => Sty
       }),
     ...(
       !enabled && {
-        backgroundColor: R.colors.GREY,
+        backgroundColor: R.colors.GRAY,
       }
     ),
   },

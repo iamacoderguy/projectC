@@ -1,12 +1,12 @@
 import { Dispatch } from 'redux';
-import { RootState } from './types/rootState';
+import { RootState } from '../../types/rootState';
 import {
   handleOnAuthenticatedRequest,
   installLocalizationRequest,
   uninstallLocalizationRequest,
   installAuthenticationRequest,
   handleOnSignedOutRequest,
-} from './redux/actions';
+} from '../../redux/actions';
 import { isNullOrWhitespace } from 'shared/utils/string';
 import { Credentials } from 'shared/types/credentials';
 import apiFetcher from 'shared/utils/apiFetcher';

@@ -15,12 +15,12 @@ import React, { useEffect, useRef } from 'react';
 import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import SplashScreen from 'react-native-splash-screen';
-import RootStack, { IRootStack } from './RootStack';
+import RootStack, { IRootStack } from './screens/rootStack/RootStack';
 import { rootNavigationRef } from 'shared/utils/navigation';
 import store from './redux/store';
 import storeManager from './utils/storeManager';
 import { toastRef } from 'shared/utils/toast';
-import Toast from 'shared/components/toast/Toast';
+import { Toast } from 'shared/components/toast';
 import { ErrorBoundary } from 'features/helmet';
 
 const App = () => {

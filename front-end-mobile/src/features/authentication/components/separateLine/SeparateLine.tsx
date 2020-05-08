@@ -35,11 +35,11 @@ const styles = StyleSheet.create({
   line: {
     flex: 1,
     height: 1,
-    backgroundColor: R.colors.GREY,
+    backgroundColor: R.colors.GRAY,
   },
   orText: {
     ...R.palette.normal,
-    color: R.colors.GREY,
+    color: R.colors.GRAY,
     textTransform: 'uppercase',
     marginHorizontal: 15,
   },

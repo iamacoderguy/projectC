@@ -51,7 +51,7 @@ const TextInput: React.FC<PropsWithForwardedRef> = (props: PropsWithForwardedRef
           <TextInputRN
             ref={inputRef}
             style={styles.textInput}
-            placeholderTextColor={R.colors.GREY}
+            placeholderTextColor={R.colors.GRAY}
             {...otherProps} />
         </View>
         {children && (
@@ -68,7 +68,7 @@ const shared = (error?: TextInputError) => StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',
-    borderColor: (error && error.isError) ? R.colors.SUNSET : R.colors.GREY,
+    borderColor: (error && error.isError) ? R.colors.SUNSET : R.colors.GRAY,
     borderWidth: 1,
     height: R.dimens.inputHeight,
     borderRadius: 5,

@@ -15,7 +15,7 @@ const SwitchSelector: React.FC<SwitchSelectorProps> = (props: SwitchSelectorProp
       selectedTextStyle={R.palette.normal}
 
       buttonColor={R.colors.YELLOW}
-      borderColor={R.colors.GREY}
+      borderColor={R.colors.GRAY}
       height={45}
       borderRadius={10}
       valuePadding={3}
