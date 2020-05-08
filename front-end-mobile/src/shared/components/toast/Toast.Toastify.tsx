@@ -19,12 +19,15 @@ type ToastifyProps = {
   type: ToastType;
   message: string;
   onClose: (event: GestureResponderEvent) => void;
-  ref: React.RefObject<FadingViewRef>;
 }
 
-const Toastify: React.FC<ToastifyProps> = (props: ToastifyProps) => {
+type PropsWithForwardedRef = ToastifyProps & {
+  myForwardedRef: React.Ref<FadingViewRef>;
+}
+
+const Toastify: React.FC<PropsWithForwardedRef> = (props: PropsWithForwardedRef) => {
   return (
-    <FadingView style={styles.container(props.type)} ref={props.ref}>
+    <FadingView style={styles.container(props.type)} ref={props.myForwardedRef}>
       <View style={styles.textContainer}>
         <Text style={styles.text(props.type)}>{props.message}</Text>
       </View>
@@ -106,4 +109,5 @@ const styles = {
   text: (type: ToastType) => shared(type).text,
 };
 
-export default Toastify;
+// eslint-disable-next-line react/display-name
+export default React.forwardRef((props: ToastifyProps, ref: React.Ref<FadingViewRef>) => <Toastify {...props} myForwardedRef={ref} />);

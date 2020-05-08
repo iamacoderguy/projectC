@@ -17,12 +17,15 @@ type LogBoxProps = {
   type: ToastType;
   message: string;
   onClose: (event: GestureResponderEvent) => void;
-  ref: React.RefObject<FadingViewRef>;
 }
 
-const LogBox: React.FC<LogBoxProps> = (props: LogBoxProps) => {
+type PropsWithForwardedRef = LogBoxProps & {
+  myForwardedRef: React.Ref<FadingViewRef>;
+}
+
+const LogBox: React.FC<PropsWithForwardedRef> = (props: PropsWithForwardedRef) => {
   return (
-    <FadingView style={styles.container} ref={props.ref}>
+    <FadingView style={styles.container} ref={props.myForwardedRef}>
       <View style={styles.contentContainer}>
         <Text style={styles.text}>{props.message}</Text>
       </View>
@@ -57,4 +60,5 @@ const styles = {
   text: shared().text,
 };
 
-export default LogBox;
+// eslint-disable-next-line react/display-name
+export default React.forwardRef((props: LogBoxProps, ref: React.Ref<FadingViewRef>) => <LogBox {...props} myForwardedRef={ref} />);
