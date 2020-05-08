@@ -4,8 +4,8 @@ import {
   changeLanguageSuccess,
   installLocalizationRequest,
   uninstallLocalizationRequest,
-} from './redux/actions';
-import { RootState } from './types/rootState';
+} from '../../redux/actions';
+import { RootState } from '../../types/rootState';
 import { InAppTabsPropsForMapState, InAppTabsPropsForMapDispatch } from './InAppTabs';
 
 // === mapStateToProps ===

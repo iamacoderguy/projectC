@@ -10,7 +10,7 @@ import {
   RootStackPropsForMapState,
   RootStackPropsForMapDispatch,
 } from './RootStack.container';
-import InAppTabs from './InAppTabs';
+import InAppTabs from '../inAppTabs/InAppTabs';
 
 export interface IRootStack {
   start: () => void;

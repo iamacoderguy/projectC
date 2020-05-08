@@ -15,7 +15,7 @@ import React, { useEffect, useRef } from 'react';
 import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import SplashScreen from 'react-native-splash-screen';
-import RootStack, { IRootStack } from './RootStack';
+import RootStack, { IRootStack } from './screens/rootStack/RootStack';
 import { rootNavigationRef } from 'shared/utils/navigation';
 import store from './redux/store';
 import storeManager from './utils/storeManager';
