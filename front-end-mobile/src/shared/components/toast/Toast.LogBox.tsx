@@ -32,7 +32,9 @@ const LogBox: React.FC<PropsWithForwardedRef> = (props: PropsWithForwardedRef) =
         <View style={styles.typeContainer}>
           <Image style={styles.typeIcon(props.type)} source={R.images.ic_exclamation_mark} />
         </View>
-        <View style={styles.separateLine} />
+        <View style={styles.separateLineContainer}>
+          <View style={styles.separateLine} />
+        </View>
         <Text style={styles.text}>{props.message}</Text>
         <TouchableOpacity
           style={styles.closeContainer}
@@ -102,6 +104,9 @@ const shared = (type?: ToastType) => {
       width: 20,
       tintColor: imageColor,
     },
+    separateLineContainer: {
+      paddingVertical: 2,
+    },
     separateLine: {
       height: '100%',
       width: 1,
@@ -127,6 +132,7 @@ const styles = {
   contentContainer: shared().contentContainer,
   typeContainer: shared().typeContainer,
   typeIcon: (type: ToastType) => shared(type).typeIcon,
+  separateLineContainer: shared().separateLineContainer,
   separateLine: shared().separateLine,
   text: shared().text,
   closeContainer: shared().closeContainer,
