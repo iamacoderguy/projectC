@@ -129,7 +129,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.buzz"
+        applicationId "me.iamacoderguy.buzz"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
