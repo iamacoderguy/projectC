@@ -3,13 +3,24 @@
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node-dev index.ts"
+    "start": "ts-node-dev index.ts",
+    "code:check": "tsc --project tsconfig.json && eslint . --ext .js,.jsx,.ts,.tsx",
+    "code:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix"
   },
   "dependencies": {
     "express": "^4.17.1"
   },
   "devDependencies": {
     "@types/express": "^4.17.6",
+    "@typescript-eslint/eslint-plugin": "^2.31.0",
+    "@typescript-eslint/parser": "^2.31.0",
+    "eslint": "^6.0.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-config-typescript": "^3.0.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
     "ts-node": "^8.10.1",
     "ts-node-dev": "^1.0.0-pre.44",
     "typescript": "^3.8.3"
