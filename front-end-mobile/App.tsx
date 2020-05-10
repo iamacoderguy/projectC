@@ -8,7 +8,7 @@
  * @format
  */
 
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -18,7 +18,10 @@ import {
   StatusBar,
 } from 'react-native';
 
-import {Header, Colors} from 'react-native/Libraries/NewAppScreen';
+import {
+  Header,
+  Colors,
+} from 'react-native/Libraries/NewAppScreen';
 import config from './config';
 
 const App = () => {
@@ -30,23 +33,33 @@ const App = () => {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar barStyle='dark-content' />
       <SafeAreaView>
         <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
+          contentInsetAdjustmentBehavior='automatic'
           style={styles.scrollView}>
           <Header />
           <View style={styles.body}>
             <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>config.ENV</Text>
-              <Text style={styles.sectionDescription}>{config.ENV}</Text>
+              <Text style={styles.sectionTitle}>
+                config.ENV
+              </Text>
+              <Text style={styles.sectionDescription}>
+                {config.ENV}
+              </Text>
             </View>
             <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>config.API_HOST</Text>
-              <Text style={styles.sectionDescription}>{config.API_HOST}</Text>
+              <Text style={styles.sectionTitle}>
+                config.API_HOST
+              </Text>
+              <Text style={styles.sectionDescription}>
+                {config.API_HOST}
+              </Text>
             </View>
             <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>config.IS_PRODUCTION</Text>
+              <Text style={styles.sectionTitle}>
+                config.IS_PRODUCTION
+              </Text>
               <Text style={styles.sectionDescription}>
                 {config.IS_PRODUCTION.toString()}
               </Text>
