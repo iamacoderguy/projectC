@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node-dev index.ts",
+    "start": "ts-node-dev src/api/installer.dev.ts",
     "code:check": "tsc --project tsconfig.json && eslint . --ext .js,.jsx,.ts,.tsx",
     "code:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix"
   },
